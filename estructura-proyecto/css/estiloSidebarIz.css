@@ -1,0 +1,45 @@
+.container--tabs {
+	 margin: auto;
+}
+ .container--tabs .nav-tabs {
+	 float: left;
+	 border-bottom: 1px solid #ddd;
+}
+
+/* Para que se mantenga el tab en horizontal */
+ .container--tabs .nav-tabs > li {
+	 float: left;
+}
+ .container--tabs .nav-tabs > li > a {
+	 float: left;
+	 margin: auto;
+	 padding: 5px;
+	 border: 1px solid transparent;
+	 border-radius: 4px 4px 0 0;
+}
+ .container--tabs .nav-tabs > li > a:hover {
+	 border-color: #000000;
+}
+ .container--tabs .nav-tabs > li.active > a, .container--tabs .nav-tabs > li.active > a:hover, .container--tabs .nav-tabs > li.active > a:focus {
+	 cursor: default;
+	 background-color: #29F3A8;
+	 border: 1px solid #ddd;
+	 border-bottom-color: transparent;
+	 border-radius: 8px 8px 0 0;
+}
+ .container--tabs .tab-content {
+	 float: left;
+	 width: 100%;
+}
+ .container--tabs .tab-content > .tab-pane {
+	 display: none;
+}
+ .container--tabs .tab-content > .tab-pane.active {
+	 display: block;
+	 padding: 2.5% 3.5%;
+	 background-color: transparent;
+}
+ .container--tabs .tab-content > .active {
+	 display: block;
+}
+ 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-03-2019 a las 21:27:31
+-- Tiempo de generación: 30-04-2019 a las 18:36:30
 -- Versión del servidor: 10.1.37-MariaDB
 -- Versión de PHP: 7.3.1
 
@@ -48,7 +48,8 @@ CREATE TABLE `consumibles` (
   `fuerza` int(11) UNSIGNED NOT NULL,
   `habilidad` int(11) UNSIGNED NOT NULL,
   `vida` int(11) UNSIGNED NOT NULL,
-  `precio` int(11) UNSIGNED NOT NULL
+  `precio` int(11) UNSIGNED NOT NULL,
+  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -63,7 +64,8 @@ CREATE TABLE `enemigo` (
   `fuerza` int(11) UNSIGNED NOT NULL,
   `habilidad` int(11) UNSIGNED NOT NULL,
   `vida` int(11) UNSIGNED NOT NULL,
-  `precio` int(11) UNSIGNED NOT NULL
+  `precio` int(11) UNSIGNED NOT NULL,
+  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -110,7 +112,12 @@ CREATE TABLE `inventariopartida` (
 CREATE TABLE `mapacontiene` (
   `idMapa` int(11) UNSIGNED NOT NULL,
   `idMazmorra` int(11) UNSIGNED NOT NULL,
-  `idSiguienteMazmorra` int(11) UNSIGNED NOT NULL
+  `mazmorraNorte` int(11) UNSIGNED DEFAULT NULL,
+  `mazmorraEste` int(11) UNSIGNED DEFAULT NULL,
+  `mazmorraSur` int(11) UNSIGNED DEFAULT NULL,
+  `mazmorraOeste` int(11) UNSIGNED DEFAULT NULL,
+  `mazmorraInicial` tinyint(1) NOT NULL,
+  `mazmorraFinal` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -128,6 +135,8 @@ CREATE TABLE `mapas` (
   `recompensa` int(11) NOT NULL DEFAULT '0',
   `mazmorrasSuperadas` set('mazmorra1','mazmorra2','mazmorra3','mazmorra4','mazmorra5') COLLATE utf8mb4_spanish_ci NOT NULL,
   `propietario` int(11) UNSIGNED NOT NULL,
+  `rutaImagen` varchar(100) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
   `valoracion` float NOT NULL DEFAULT '0',
   `numJugado` int(11) NOT NULL DEFAULT '0',
   `terminadoCreado` int(1) NOT NULL DEFAULT '0'
@@ -142,7 +151,7 @@ CREATE TABLE `mapas` (
 CREATE TABLE `mazmorraconsumibles` (
   `idMazmorra` int(11) UNSIGNED NOT NULL,
   `idConsumible` int(11) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -166,7 +175,9 @@ CREATE TABLE `mazmorras` (
   `nombre` varchar(30) COLLATE utf8mb4_spanish_ci NOT NULL,
   `numSalidas` int(11) UNSIGNED NOT NULL,
   `numEnemigos` int(11) UNSIGNED NOT NULL,
-  `recompensa` int(11) UNSIGNED NOT NULL
+  `recompensa` int(11) UNSIGNED NOT NULL,
+  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `historia` varchar(1000) COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -226,7 +237,33 @@ CREATE TABLE `personaje` (
   `habilidad` int(11) UNSIGNED NOT NULL,
   `vida` int(11) UNSIGNED NOT NULL,
   `precio` int(11) UNSIGNED NOT NULL,
-  `idInventario` int(11) UNSIGNED NOT NULL
+  `idInventario` int(11) UNSIGNED NOT NULL,
+  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `preguntas`
+--
+
+CREATE TABLE `preguntas` (
+  `id` int(11) NOT NULL,
+  `idObjeto` int(11) NOT NULL,
+  `tipo` varchar(30) NOT NULL,
+  `pregunta` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `preguntasmazmorra`
+--
+
+CREATE TABLE `preguntasmazmorra` (
+  `idMazmorra` int(11) UNSIGNED NOT NULL,
+  `idPregunta` int(11) UNSIGNED NOT NULL,
+  `respuesta` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -264,7 +301,8 @@ CREATE TABLE `usuarios` (
   `contraseña` varchar(70) COLLATE utf8mb4_spanish_ci NOT NULL,
   `monedas` int(11) NOT NULL DEFAULT '100',
   `puntos` int(11) NOT NULL DEFAULT '0',
-  `foto` binary(255) DEFAULT NULL
+  `rutaFoto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `bloqueado` bit(1) NOT NULL DEFAULT b'0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 --
@@ -318,7 +356,10 @@ ALTER TABLE `mapacontiene`
   ADD PRIMARY KEY (`idMapa`,`idMazmorra`),
   ADD KEY `idMapa` (`idMapa`),
   ADD KEY `idMazmorra` (`idMazmorra`),
-  ADD KEY `idSiguienteMazmorra` (`idSiguienteMazmorra`);
+  ADD KEY `mazmorraEste` (`mazmorraEste`),
+  ADD KEY `mazmorraSur` (`mazmorraSur`),
+  ADD KEY `mazmorraOeste` (`mazmorraOeste`),
+  ADD KEY `mazmorraNorte` (`mazmorraNorte`);
 
 --
 -- Indices de la tabla `mapas`
@@ -382,6 +423,12 @@ ALTER TABLE `partida`
 ALTER TABLE `personaje`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idInventario` (`idInventario`);
+
+--
+-- Indices de la tabla `preguntas`
+--
+ALTER TABLE `preguntas`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `roles`
@@ -453,6 +500,12 @@ ALTER TABLE `mensajes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `preguntas`
+--
+ALTER TABLE `preguntas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
@@ -496,7 +549,11 @@ ALTER TABLE `inventariopartida`
 --
 ALTER TABLE `mapacontiene`
   ADD CONSTRAINT `idMazmorra` FOREIGN KEY (`idMazmorra`) REFERENCES `mazmorras` (`id`),
-  ADD CONSTRAINT `mapacontiene_ibfk_1` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`idMapa`);
+  ADD CONSTRAINT `mapacontiene_ibfk_1` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`idMapa`),
+  ADD CONSTRAINT `mapacontiene_ibfk_2` FOREIGN KEY (`mazmorraNorte`) REFERENCES `mazmorras` (`id`),
+  ADD CONSTRAINT `mapacontiene_ibfk_3` FOREIGN KEY (`mazmorraEste`) REFERENCES `mazmorras` (`id`),
+  ADD CONSTRAINT `mapacontiene_ibfk_4` FOREIGN KEY (`mazmorraSur`) REFERENCES `mazmorras` (`id`),
+  ADD CONSTRAINT `mapacontiene_ibfk_5` FOREIGN KEY (`mazmorraOeste`) REFERENCES `mazmorras` (`id`);
 
 --
 -- Filtros para la tabla `mapas`
@@ -517,12 +574,6 @@ ALTER TABLE `mazmorraconsumibles`
 ALTER TABLE `mazmorraenemigo`
   ADD CONSTRAINT `enemigo` FOREIGN KEY (`idEnemigo`) REFERENCES `enemigo` (`id`),
   ADD CONSTRAINT `mazmorra` FOREIGN KEY (`idMazmorra`) REFERENCES `mazmorras` (`id`);
-
---
--- Filtros para la tabla `mazmorras`
---
-ALTER TABLE `mazmorras`
-  ADD CONSTRAINT `mazmorras_ibfk_1` FOREIGN KEY (`id`) REFERENCES `mapacontiene` (`idSiguienteMazmorra`);
 
 --
 -- Filtros para la tabla `mazmorrassuperadas`
