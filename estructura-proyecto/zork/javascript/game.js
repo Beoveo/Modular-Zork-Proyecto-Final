@@ -4,7 +4,7 @@ var currentRoom = "inicio";
 var commands = ["Ir", "Recoger", "Inventario"];
 
 var inventario = [];
-var pruebaRooms = [];
+var pruebaRooms = {};
 
 
 
@@ -22,33 +22,34 @@ $(document).on('click', '#start', function(e) {
 
                 var result= $.parseJSON(data); 
 
+
                 //var string= [];
-                var myArray = [];
+                var myArrayMap = [];
                
 
-                console.log (result.length)
+                //console.log (result.length)
                 if(result.length !== 0){
                    /* from result create a string of data and append to the div */
                     $.each( result, function( key, value ) { 
                       
                       //string[i] = value['idMap'] + value['idRoom'] + value['inventario']; 
-                      myArray.push(value);
+                      myArrayMap.push(value);
     
                           }); 
-                      console.log(myArray[0]); 
-                      console.log(myArray.length); 
+                      //console.log(myArrayMap[0]); 
+                      //console.log(myArrayMap.length); 
 
                       //for(i=0; i<string.length; i++) alert(i + ': ' + string[i]); 
                     panel.empty()
-                    choiceMap(myArray);
+                    choiceMap(myArrayMap);
                     //load();
                 }
-            else{
-                //panel.empty()
-                alert("Error al cargar la base de datos")
-                p.empty()
+                else{
+                    //panel.empty()
+                    alert("Error al cargar la base de datos")
+                    p.empty()
                 
-            }
+                }
            }); 
          
     }); 
@@ -72,27 +73,65 @@ function choiceMap (myArray){
     jQuery('#getvalue').on('click', function(e) {  
         selValue = document.querySelector('input[name = "mapas"]:checked').value;
         mapa = myArray[selValue]
-        //console.log(mapa);
+        
         inventario = mapa.inventario.split(",")
         
         panel.empty()
-        load()
+        sqlRooms(selValue)
     });
 }
-function loadRooms(){ 
-    $(function(){ 
 
-          $.ajax({ 
+function sqlRooms(selValueMap){ 
+    $(document).ready(function() {
+        
+         $.ajax({ 
 
             method: "GET", 
             
             url: "zork/javascript/getrecord2.php",
 
-          }).done(function(data) { 
-              alert( "Data Saved: " + data);
-           }); 
-         
-    }); 
+            success: function(msg){
+                var result= $.parseJSON(msg); 
+
+
+                //var string= [];
+                var myArray = [];
+                
+                if(result.length !== 0){
+                   /* from result create a string of data and append to the div */
+                    $.each( result, function( key, value ) {
+                        if( value.nivel === selValueMap){
+                            myArray.push(value);
+                        }
+                        
+    
+                    }); 
+                    console.log(myArray); 
+                    console.log(myArray.length); 
+                    //console.log("tipo dato " + typeof rooms)
+
+                    loadRoom(myArray);
+                }
+                else{
+                    //panel.empty()
+                    alert("Error al cargar la base de datos")
+                    p.empty()
+                
+                }
+            }
+        });
+    
+    });
+}
+function loadRoom(myArray){
+    pruebaRooms[myArray[0].nameRoom] = {};
+    pruebaRooms[myArray[0].nameRoom].description = "algoma"
+  
+   for(i=0; i<myArray.length; i++){
+        
+   }
+   console.log(pruebaRooms)
+
 }
 
 
