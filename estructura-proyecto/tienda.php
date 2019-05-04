@@ -15,105 +15,130 @@
 		<?php
 			$app->doInclude('comun/cabecera.php');
 			$app->doInclude('comun/sidebarIzq.php');
+			$conn = $app->conexionBd();
 		?>
 		<div id="contenido">
 			<div id="mapas">
 				<h1>Mapas</h1>
 				<ul class=listObj id="listaMapas">
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/desierto.jpg"/>
-							</div>
-							<p>Desierto <em>~ 20 zorkians</em></p>
-						</li>
-					</a>
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/fondo.jpg"/>
-							</div>
-							<p>Cueva <em>~ 50 zorkians</em></p>
-						</li>
-					</a>
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/mapa.jpg"/>
-							</div>
-							<p>Bosque <em>~ 5 zorkians</em></p>
-						</li>
-					</a>
+					<?php
+						$query = "SELECT * FROM mapas";
+						$consulta = $conn->query($query);
+						$res = $consulta->num_rows;
+						if($res > 0){
+							while ($fila = $consulta->fetch_assoc()){
+								$iden = $fila['id'];
+								$nombre = $fila['nombre'];
+								$precio = $fila['precio'];
+								$imagen = RUTA_IMGS.$fila['rutaImagen'];
+								echo "<a href='objetoTienda.php?id=$iden&type=mapas'>
+									<li class='item'>
+										<div class='imgen'>
+											<img class='imgObj' src='$imagen'/>
+										</div>
+										<p>$nombre<em>~$precio zorkians</em></p>
+									</li>
+								</a>";
+							}
+							$consulta->free();
+						}else{
+							echo "No hay mapas disponibles";
+						}
+					?>
+				</ul>
+			</div>
+			<div id="enemigos">
+				<h1>Enemigos</h1>
+				<ul class=listObj id="listaEnemigos">
+					<?php
+						$query = "SELECT * FROM enemigo";
+						$consulta = $conn->query($query);
+						$res = $consulta->num_rows;
+						if($res > 0){
+							while ($fila = $consulta->fetch_assoc()){
+								$iden = $fila['id'];
+								$nombre = $fila['nombre'];
+								$precio = $fila['precio'];
+								$imagen = RUTA_IMGS.$fila['rutaImagen'];
+								echo "<a href='objetoTienda.php?id=$iden&type=enemigo'>
+									<li class='item'>
+										<div class='imgen'>
+											<img class='imgObj' src='$imagen'/>
+										</div>
+										<p>$nombre<em>~$precio zorkians</em></p>
+									</li>
+								</a>";
+							}
+							$consulta->free();
+						}else{
+							echo "No hay enemigos disponibles";
+						}
+					?>
 				</ul>
 			</div>
 			<div id="personajes">
 				<h1>Personajes</h1>
 				<ul class=listObj id="listaPersonajes">
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/bea.png"/>
-							</div>
-							<p>Chica <em>~ 8 zorkians</em></p>
-						</li>
-					</a>
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/geo.png"/>
-							</div>
-							<p>Chico <em>~ 5 zorkians</em></p>
-						</li>
-					</a>
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/troll.jpg"/>
-							</div>
-							<p>Troll <em>~ 10 zorkians</em></p>
-						</li> 
-					</a>
+					<?php
+						$query = "SELECT * FROM personaje";
+						$consulta = $conn->query($query);
+						$res = $consulta->num_rows;
+						if($res > 0){
+							while ($fila = $consulta->fetch_assoc()){
+								$iden = $fila['id'];
+								$nombre = $fila['nombre'];
+								$precio = $fila['precio'];
+								$imagen = RUTA_IMGS.$fila['rutaImagen'];
+								echo "<a href='objetoTienda.php?id=$iden&type=personaje'>
+									<li class='item'>
+										<div class='imgen'>
+											<img class='imgObj' src='$imagen'/>
+										</div>
+										<p>$nombre<em>~$precio zorkians</em></p>
+									</li>
+								</a>";
+							}
+							$consulta->free();
+						}else{
+							echo "No hay personajes disponibles";
+						}
+					?>
 				</ul>
 			</div>
 			<div id="objetos">
 				<h1>Objetos</h1>
 				<ul class=listObj id="listaObjetos">
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/knive.png"/>
-							</div>
-							<p>Cuchillo <em>~35 zorkians</em></p>
-						</li>
-					</a>
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/axe.png"/>
-							</div>
-							<p>Hacha <em>~ 30 zorkians</em></p>
-						</li>
-					</a>
-					<a href="tienda.php">
-						<li class="item">
-							<div class="imgen">
-								<img class="imgObj" src="img/sword.png"/>
-							</div>
-							<p>Espada<em>~ 15 zorkians</em></p>
-						</li>
-					</a>
+					<?php
+						$query = "SELECT * FROM consumibles";
+						$consulta = $conn->query($query);
+						$res = $consulta->num_rows;
+						if($res > 0){
+							while ($fila = $consulta->fetch_assoc()){
+								$iden = $fila['id'];
+								$nombre = $fila['nombre'];
+								$precio = $fila['precio'];
+								$imagen = RUTA_IMGS.$fila['rutaImagen'];
+								echo "<a href='objetoTienda.php?id=$iden&type=consumibles'>
+									<li class='item'>
+										<div class='imgen'>
+											<img class='imgObj' src='$imagen'/>
+										</div>
+										<p>$nombre<em>~$precio zorkians</em></p>
+									</li>
+								</a>";
+							}
+							$consulta->free();
+						}else{
+							echo "No hay consumibles disponibles";
+						}
+					?>
 				</ul>
-			</div>
-
-			<div id="contenidoboton">
-				<form action="tienda.php" method="POST">
-					<p><input type="submit" value="Comprar" ></p>
-				</form>
 			</div>
 		</div>
 
 
 		<?php
+			$conn->close();
 			$app->doInclude('comun/pie.php');
 		?>
 	</div>
