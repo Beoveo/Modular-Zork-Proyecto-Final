@@ -14,37 +14,34 @@
 		<?php
 			$app->doInclude('comun/cabecera.php');
 			$app->doInclude('comun/sidebarIzq.php');
+			$conn = $app->conexionBd();
 		?>
 		<div id="contenido">
 			<div id="mapas">
 				<h1>Mapas</h1>
 				<ul class=listObj id="listaMapas">
 					<?php
-						/*Connectar con la base de datos $conn
-        				$conn = $app->conexionBd();
-						*/
-						$conn = new mysqli('localhost','root', '','sw');
 						$query = "SELECT * FROM mapas";
 						$consulta = $conn->query($query);
-						if($consulta)
-						{
+						$res = $consulta->num_rows;
+						if($res > 0){
 							while ($fila = $consulta->fetch_assoc()){
-								$iden = $fila['idMapa'];
+								$iden = $fila['id'];
 								$nombre = $fila['nombre'];
 								$precio = $fila['precio'];
-								$imagen = $fila['rutaImagen'];
-								//Form get
-								echo "<a href='objetoTienda.php?id=$iden&type=mapa'>
+								$imagen = RUTA_IMGS.$fila['rutaImagen'];
+								echo "<a href='objetoTienda.php?id=$iden&type=mapas'>
 									<li class='item'>
 										<div class='imgen'>
-											<img class='imgObj' src=$imagen/>
+											<img class='imgObj' src='$imagen'/>
 										</div>
 										<p>$nombre<em>~$precio zorkians</em></p>
 									</li>
 								</a>";
 							}
-							
 							$consulta->free();
+						}else{
+							echo "No hay mapas disponibles";
 						}
 					?>
 				</ul>
@@ -53,22 +50,19 @@
 				<h1>Enemigos</h1>
 				<ul class=listObj id="listaEnemigos">
 					<?php
-						/*Connectar con la base de datos $conn
-        				$conn = $app->conexionBd();
-						*/
-						$conn = new mysqli('localhost','root', '','sw');
-						$query = "SELECT * FROM enemigos";
+						$query = "SELECT * FROM enemigo";
 						$consulta = $conn->query($query);
-						if($consulta){
+						$res = $consulta->num_rows;
+						if($res > 0){
 							while ($fila = $consulta->fetch_assoc()){
 								$iden = $fila['id'];
 								$nombre = $fila['nombre'];
 								$precio = $fila['precio'];
-								$imagen = $fila['rutaImagen'];
+								$imagen = RUTA_IMGS.$fila['rutaImagen'];
 								echo "<a href='objetoTienda.php?id=$iden&type=enemigo'>
 									<li class='item'>
 										<div class='imgen'>
-											<img class='imgObj' src=$imagen/>
+											<img class='imgObj' src='$imagen'/>
 										</div>
 										<p>$nombre<em>~$precio zorkians</em></p>
 									</li>
@@ -76,7 +70,7 @@
 							}
 							$consulta->free();
 						}else{
-							echo "No hay enemigos";
+							echo "No hay enemigos disponibles";
 						}
 					?>
 				</ul>
@@ -86,22 +80,19 @@
 				<ul class=listObj id="listaPersonajes">
 					<!--Listar 4 objetos-->
 					<?php
-						/*Connectar con la base de datos $conn
-        				$conn = $app->conexionBd();
-						*/
-						$conn = new mysqli('localhost','root', '','sw');
 						$query = "SELECT * FROM personaje";
 						$consulta = $conn->query($query);
-						if($consulta){
+						$res = $consulta->num_rows;
+						if($res > 0){
 							while ($fila = $consulta->fetch_assoc()){
 								$iden = $fila['id'];
 								$nombre = $fila['nombre'];
 								$precio = $fila['precio'];
-								$imagen = $fila['rutaImagen'];
+								$imagen = RUTA_IMGS.$fila['rutaImagen'];
 								echo "<a href='objetoTienda.php?id=$iden&type=personaje'>
 									<li class='item'>
 										<div class='imgen'>
-											<img class='imgObj' src=$imagen/>
+											<img class='imgObj' src='$imagen'/>
 										</div>
 										<p>$nombre<em>~$precio zorkians</em></p>
 									</li>
@@ -109,7 +100,7 @@
 							}
 							$consulta->free();
 						}else{
-							echo "No hay consumibles";
+							echo "No hay personajes disponibles";
 						}
 					?>
 					
@@ -120,22 +111,19 @@
 				<ul class=listObj id="listaObjetos">
 					<!--Listar 4 objetos-->
 					<?php
-						/*Connectar con la base de datos $conn
-        				$conn = $app->conexionBd();
-						*/
-						$conn = new mysqli('localhost','root', '','sw');
 						$query = "SELECT * FROM consumibles";
 						$consulta = $conn->query($query);
-						if($consulta){
+						$res = $consulta->num_rows;
+						if($res > 0){
 							while ($fila = $consulta->fetch_assoc()){
 								$iden = $fila['id'];
 								$nombre = $fila['nombre'];
 								$precio = $fila['precio'];
-								$imagen = $fila['rutaImagen'];
-								echo "<a href='objetoTienda.php?id=$iden&type=consumible'>
+								$imagen = RUTA_IMGS.$fila['rutaImagen'];
+								echo "<a href='objetoTienda.php?id=$iden&type=consumibles'>
 									<li class='item'>
 										<div class='imgen'>
-											<img class='imgObj' src=$imagen/>
+											<img class='imgObj' src='$imagen'/>
 										</div>
 										<p>$nombre<em>~$precio zorkians</em></p>
 									</li>
@@ -143,7 +131,7 @@
 							}
 							$consulta->free();
 						}else{
-							echo "No hay consumibles";
+							echo "No hay consumibles disponibles";
 						}
 					?>
 					
@@ -151,6 +139,7 @@
 			</div>
 		</div>
 		<?php
+			$conn->close();
 			$app->doInclude('comun/pie.php');
 		?>
 	</div>

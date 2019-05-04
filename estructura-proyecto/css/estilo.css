@@ -527,6 +527,10 @@ ul a {
 	text-decoration: none;
 }
 
+img.imgCompra{
+	height: 250px;
+	max-width: 400px;
+}
 
 /************************** AQUI TERMINAN LAS MODIFICACIONES DE LIDIA **************************************/
 /****************************************************ALBERTO CAMBIOS CSS*************************************/

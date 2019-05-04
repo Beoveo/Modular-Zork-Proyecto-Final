@@ -127,7 +127,7 @@ CREATE TABLE `mapacontiene` (
 --
 
 CREATE TABLE `mapas` (
-  `idMapa` int(11) UNSIGNED NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `nombre` varchar(30) COLLATE utf8mb4_spanish_ci NOT NULL,
   `dificultad` int(11) NOT NULL,
   `precio` int(11) UNSIGNED NOT NULL,
@@ -365,7 +365,7 @@ ALTER TABLE `mapacontiene`
 -- Indices de la tabla `mapas`
 --
 ALTER TABLE `mapas`
-  ADD PRIMARY KEY (`idMapa`),
+  ADD PRIMARY KEY (`id`),
   ADD KEY `propietario` (`propietario`);
 ALTER TABLE `mapas` ADD FULLTEXT KEY `nombre` (`nombre`);
 
@@ -485,7 +485,7 @@ ALTER TABLE `inventariopartida`
 -- AUTO_INCREMENT de la tabla `mapas`
 --
 ALTER TABLE `mapas`
-  MODIFY `idMapa` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `mazmorras`
@@ -549,7 +549,7 @@ ALTER TABLE `inventariopartida`
 --
 ALTER TABLE `mapacontiene`
   ADD CONSTRAINT `idMazmorra` FOREIGN KEY (`idMazmorra`) REFERENCES `mazmorras` (`id`),
-  ADD CONSTRAINT `mapacontiene_ibfk_1` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`idMapa`),
+  ADD CONSTRAINT `mapacontiene_ibfk_1` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`id`),
   ADD CONSTRAINT `mapacontiene_ibfk_2` FOREIGN KEY (`mazmorraNorte`) REFERENCES `mazmorras` (`id`),
   ADD CONSTRAINT `mapacontiene_ibfk_3` FOREIGN KEY (`mazmorraEste`) REFERENCES `mazmorras` (`id`),
   ADD CONSTRAINT `mapacontiene_ibfk_4` FOREIGN KEY (`mazmorraSur`) REFERENCES `mazmorras` (`id`),
@@ -580,7 +580,7 @@ ALTER TABLE `mazmorraenemigo`
 --
 ALTER TABLE `mazmorrassuperadas`
   ADD CONSTRAINT `idenMazmorras` FOREIGN KEY (`idMazmorra`) REFERENCES `mazmorras` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `mazmorrassuperadas_ibfk_1` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`idMapa`);
+  ADD CONSTRAINT `mazmorrassuperadas_ibfk_1` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`id`);
 
 --
 -- Filtros para la tabla `mensajes`
@@ -594,7 +594,7 @@ ALTER TABLE `mensajes`
 --
 ALTER TABLE `partida`
   ADD CONSTRAINT `partida_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`),
-  ADD CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`idMapa`),
+  ADD CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`id`),
   ADD CONSTRAINT `partida_ibfk_3` FOREIGN KEY (`idPersonaje`) REFERENCES `personaje` (`id`),
   ADD CONSTRAINT `partida_ibfk_5` FOREIGN KEY (`IdUltimaMazSuperada`) REFERENCES `mazmorras` (`id`),
   ADD CONSTRAINT `partida_ibfk_6` FOREIGN KEY (`IdSiguienteMazmorra`) REFERENCES `mazmorras` (`id`),

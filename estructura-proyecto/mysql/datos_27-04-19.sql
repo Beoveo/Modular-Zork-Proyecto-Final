@@ -38,10 +38,10 @@ COMMIT;
 -- Volcado de datos para la tabla `mapas`
 --
 
-INSERT INTO `mapas` (`idMapa`, `nombre`, `dificultad`, `precio`, `numMazmorras`, `recompensa`, `mazmorrasSuperadas`, `propietario`, `rutaImagen`, `descripcion`, `valoracion`, `numJugado`, `terminadoCreado`) VALUES
-(1, 'Castillo', 3, 15, 5, 0, '', 1, 'img/castillo.jpg', NULL, 5, 1, 1),
-(2, 'Cuevas', 4, 16, 4, 0, '', 1, 'img/fondo.jpg', NULL, 3, 2, 1),
-(3, 'Bosque Oscuro', 5, 30, 6, 0, '', 1, 'img/mapa.jpg', NULL, 0, 0, 1);
+INSERT INTO `mapas` (`id`, `nombre`, `dificultad`, `precio`, `numMazmorras`, `recompensa`, `mazmorrasSuperadas`, `propietario`, `rutaImagen`, `descripcion`, `valoracion`, `numJugado`, `terminadoCreado`) VALUES
+(1, 'Castillo', 3, 15, 5, 0, '', 1, 'castillo.jpg', NULL, 5, 1, 1),
+(2, 'Cuevas', 4, 16, 4, 0, '', 1, 'fondo.jpg', NULL, 3, 2, 1),
+(3, 'Bosque Oscuro', 5, 30, 6, 0, '', 1, 'bosque.png', NULL, 0, 0, 1);
 
 --
 -- Volcado de datos para la tabla `roles`
@@ -61,7 +61,21 @@ INSERT INTO `rolesusuario` (`usuario`, `rol`) VALUES
 (2, 2),
 (3, 1);
 
+--
+-- Volcado de datos para la tabla `consumibles`
+--
 
+INSERT INTO `consumibles` (`id`, `nombre`, `categoria`, `fuerza`, `habilidad`, `vida`, `precio`, `rutaImagen`) VALUES
+(1, 'Hacha', 'Armas', 70, 40, 0, 60, 'axe.png');
+
+
+--
+-- Volcado de datos para la tabla `enemigo`
+--
+
+INSERT INTO `enemigo` (`id`, `nombre`, `fuerza`, `habilidad`, `vida`, `precio`, `rutaImagen`) VALUES
+(1, 'Pringoso', 50, 20, 80, 40, 'monstruo.jpg'),
+(2, 'Volador', 20, 80, 40, 30, 'monstruo2.png');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
