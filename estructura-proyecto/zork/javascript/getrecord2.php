@@ -18,13 +18,13 @@
     }
     /* SQL query to get results from database */
     
-    $sql = "SELECT idRoom, nameRoom, description, direccion, destino, consumibles FROM rooms ";
+    $sql = "SELECT idRoom, nivel, nameRoom, description, direccion, destino, imagen FROM rooms2 ";
     
-    $result = $conn->query($sql);
+    $result2 = $conn->query($sql);
     /* If there are results from database push to result array */
     
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
+    if ($result2->num_rows > 0) {
+        while($row = $result2->fetch_assoc()) {
             array_push($result_array, $row);
         }
     }

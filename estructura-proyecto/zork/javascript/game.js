@@ -9,7 +9,7 @@ var pruebaRooms = [];
 
 
 $(document).on('click', '#start', function(e) {
-    var p = $('#subwrapper').prepend('<h2>Comenzamos!! (teclea ayuda para mas info)</h2>');
+    var p = $('#subwrapper').prepend('<h2>Comenzamos! (teclea ayuda para mas info)</h2>');
     $(function(){ 
 
           $.ajax({ 
@@ -88,33 +88,8 @@ function loadRooms(){
             
             url: "zork/javascript/getrecord2.php",
 
-          }).done(function( data ) { 
-
-                var result= $.parseJSON(data); 
-
-            
-                var myArray = [];
-            
-
-                console.log (result.length)
-                if(result.length !== 0){
-                   /* from result create a string of data and append to the div */
-                    $.each( result, function( key, value ) { 
-                        myArray.push(value);
-                    }); 
-                    console.log(myArray[0]); 
-                    console.log(myArray.length); 
-
-                    panel.empty()
-                    //console.log(myArray);
-                    
-                }
-            else{
-                //panel.empty()
-                alert("Error al cargar la base de datos")
-                p.empty()
-                
-            }
+          }).done(function(data) { 
+              alert( "Data Saved: " + data);
            }); 
          
     }); 
