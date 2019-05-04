@@ -1,11 +1,12 @@
 <?php
 	require_once __DIR__.'/includes/config.php';
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estilo.css') ?>" />
+  <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estiloSidebarIz.css') ?>" />
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
   	<title>Objeto</title>
 </head>
@@ -78,7 +79,6 @@
 			<div id="personajes">
 				<h1>Personajes</h1>
 				<ul class=listObj id="listaPersonajes">
-					<!--Listar 4 objetos-->
 					<?php
 						$query = "SELECT * FROM personaje";
 						$consulta = $conn->query($query);
@@ -103,13 +103,11 @@
 							echo "No hay personajes disponibles";
 						}
 					?>
-					
 				</ul>
 			</div>
 			<div id="objetos">
-				<h1>Consumibles</h1>
+				<h1>Objetos</h1>
 				<ul class=listObj id="listaObjetos">
-					<!--Listar 4 objetos-->
 					<?php
 						$query = "SELECT * FROM consumibles";
 						$consulta = $conn->query($query);
@@ -134,10 +132,11 @@
 							echo "No hay consumibles disponibles";
 						}
 					?>
-					
 				</ul>
 			</div>
 		</div>
+
+
 		<?php
 			$conn->close();
 			$app->doInclude('comun/pie.php');

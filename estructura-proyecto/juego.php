@@ -8,7 +8,7 @@ require_once __DIR__.'/includes/config.php';
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
       <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estilo.css') ?>" />
          <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/game.css') ?>" />
-     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
       <title>Portada</title>
     </head>
     <body>
@@ -20,6 +20,7 @@ require_once __DIR__.'/includes/config.php';
         $app->doInclude('comun/pie.php');
         ?>
             <script type="text/javascript" src="zork/javascript/game.js"></script>
+            <script type="text/javascript" src="zork/javascript/rooms.js"></script>
         </div>
     </body>
 </html>
