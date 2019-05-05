@@ -19,8 +19,9 @@ require_once __DIR__.'/includes/config.php';
         $app->doInclude('contenidos/contenidoJuego.php');
         $app->doInclude('comun/pie.php');
         ?>
+            <script type="text/javascript" src="zork/javascript/loadGame.js"></script>
             <script type="text/javascript" src="zork/javascript/game.js"></script>
-            <script type="text/javascript" src="zork/javascript/rooms.js"></script>
+            
         </div>
     </body>
 </html>

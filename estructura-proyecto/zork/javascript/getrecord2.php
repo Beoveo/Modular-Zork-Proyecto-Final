@@ -18,7 +18,7 @@
     }
     /* SQL query to get results from database */
     
-    $sql = "SELECT idRoom,nivel,nameRoom, description, direccion , destino, imagen FROM rooms2 ";
+    $sql = "SELECT idRoom,nivel,nameRoom, description, direccion , destino, imagen, pickUp FROM rooms2 ";
     
     $result = $conn->query($sql);
     /* If there are results from database push to result array */

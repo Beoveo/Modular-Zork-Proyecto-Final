@@ -1,4 +1,4 @@
-var rooms = {
+var roomsVieja = {
     "inicio": {
         description: "Esta oscuro , hace frio y ves una luz al <b>north</b>\
      se oye el sonido del agua al <b>west</b>",
@@ -6,7 +6,8 @@ var rooms = {
             "north": "room1",
             "west": "room2"
         },
-        image:"zork/juegoimg/p1/calabozoOscuro.png"
+        image:"zork/juegoimg/p1/calabozoOscuro.png",
+        
     },
     "room1": {
         description: "Estas en una habitacion con mas luz , ves una gran sala <b>north</b>\
