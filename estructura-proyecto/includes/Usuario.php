@@ -57,13 +57,11 @@ class Usuario
           $app = App::getSingleton();
           $conn = $app->conexionBd();
           //Actualizar el usuario logeado. Acceder al identificador de Usuario
-          echo "Nombre ".$_SESSION['nombre'];
           $user = self::buscaUsuario($_SESSION['nombre']);
           $ident = $user->id();
           $nombre = $conn->real_escape_string($name);
           $query = sprintf("UPDATE usuarios SET nombre = '%s' WHERE id = %s" ,$nombre,$ident);
           $rs = $conn->query($query);
-          echo "ERROR2: ".$conn->error;
           if($rs){
               echo"Tu nombre de usuario se ha cambiado a $name";
               return true;
