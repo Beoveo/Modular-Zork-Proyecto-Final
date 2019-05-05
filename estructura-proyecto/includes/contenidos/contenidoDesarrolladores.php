@@ -17,7 +17,7 @@
 				<em>Aptitudes transcendentes:</em>
 				Miembro mas perspicaz del grupo, se mesa la barba con destreza (El que pone la pasta..)
 			</p>
-			<p> <em> Contacto:</em> <a href="mailto:miguep06@ucm">miguep06@ucm</a></p>
+			<p> <em> Contacto:</em> <a href="mailto:miguep06@ucm.es">miguep06@ucm.es</a></p>
 
 			<h3 id="agustin">Agustin Jofre Millet  
 				<img id ="imgMiembro3" src="img/agu.png" alt=""/>

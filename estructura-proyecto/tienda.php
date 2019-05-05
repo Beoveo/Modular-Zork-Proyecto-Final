@@ -38,7 +38,7 @@
   <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estiloSidebarIz.css') ?>" />
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
-  	<title>Objeto</title>
+  	<title>Tienda</title>
 </head>
 <body>
 	<div id="contenedor">
@@ -49,7 +49,7 @@
 		?>
 		<div id="contenido">
 			<div id="mapas">
-				<h1>Mapas</h1>
+				<a href="seccionTienda.php?type=mapas"><h1>Mapas</h1></a>
 				<ul class=listObj id="listaMapas">
 					<?php
 					$type = "mapas";
@@ -58,7 +58,7 @@
 				</ul>
 			</div>
 			<div id="enemigos">
-				<h1>Enemigos</h1>
+				<a href="seccionTienda.php?type=enemigo"><h1>Enemigos</h1></a>
 				<ul class=listObj id="listaEnemigos">
 					<?php
 					$type = "enemigo";
@@ -67,7 +67,7 @@
 				</ul>
 			</div>
 			<div id="personajes">
-				<h1>Personajes</h1>
+				<a href="seccionTienda.php?type=personaje"><h1>Personajes</h1></a>
 				<ul class=listObj id="listaPersonajes">
 					<?php
 					$type = "personaje";
@@ -76,7 +76,7 @@
 				</ul>
 			</div>
 			<div id="objetos">
-				<h1>Objetos</h1>
+				<a href="seccionTienda.php?type=consumibles"><h1>Objetos</h1></a>
 				<ul class=listObj id="listaObjetos">
 					<?php
 					$type = "consumibles";
