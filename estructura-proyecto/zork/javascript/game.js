@@ -1,102 +1,5 @@
-var panel = $('#zork-area');
-
 var currentRoom = "inicio";
 var commands = ["Ir", "Recoger", "Inventario"];
-
-var inventario = [];
-var pruebaRooms = [];
-
-
-
-$(document).on('click', '#start', function(e) {
-    var p = $('#subwrapper').prepend('<h2>Comenzamos! (teclea ayuda para mas info)</h2>');
-    $(function(){ 
-
-          $.ajax({ 
-
-            method: "GET", 
-            
-            url: "zork/javascript/getrecord.php",
-
-          }).done(function( data ) { 
-
-                var result= $.parseJSON(data); 
-
-                //var string= [];
-                var myArray = [];
-               
-
-                console.log (result.length)
-                if(result.length !== 0){
-                   /* from result create a string of data and append to the div */
-                    $.each( result, function( key, value ) { 
-                      
-                      //string[i] = value['idMap'] + value['idRoom'] + value['inventario']; 
-                      myArray.push(value);
-    
-                          }); 
-                      console.log(myArray[0]); 
-                      console.log(myArray.length); 
-
-                      //for(i=0; i<string.length; i++) alert(i + ': ' + string[i]); 
-                    panel.empty()
-                    choiceMap(myArray);
-                    //load();
-                }
-            else{
-                //panel.empty()
-                alert("Error al cargar la base de datos")
-                p.empty()
-                
-            }
-           }); 
-         
-    }); 
-
-    
-
-})
-
-function choiceMap (myArray){
-
-    
-    panel.append("Selecciona el mapa que quieras jugar")
-
-    for(i=0; i<myArray.length; i++){
-        panel.append("<form name=fmap>")
-        panel.append('<input type="Radio" name="mapas" value="'+ i +'">Mapa: '+ i +'<br>')
-    }
-    panel.append('<br><button id="getvalue">Siguiente</button>') 
-    panel.append("</form>")
-
-    jQuery('#getvalue').on('click', function(e) {  
-        selValue = document.querySelector('input[name = "mapas"]:checked').value;
-        mapa = myArray[selValue]
-        //console.log(mapa);
-        inventario = mapa.inventario.split(",")
-        
-        panel.empty()
-        load()
-    });
-}
-function loadRooms(){ 
-    $(function(){ 
-
-          $.ajax({ 
-
-            method: "GET", 
-            
-            url: "zork/javascript/getrecord2.php",
-
-          }).done(function(data) { 
-              alert( "Data Saved: " + data);
-           }); 
-         
-    }); 
-}
-
-
-
 
 function changeRoom(dir) {
     panel.empty()
@@ -141,6 +44,26 @@ function showinventario() {
    
 }
 
+function pickUpThings(things){
+    
+    panel.empty()
+    console.log(rooms[currentRoom].pickUp[0])
+    if (rooms[currentRoom].pickUp[0] === things) {
+        inventario.push(rooms[currentRoom].pickUp[0])
+        //delete rooms[currentRoom].pickUp[things];
+         rooms[currentRoom].pickUp.pop();
+
+        panel.append('<div id="target">' + rooms[currentRoom].description + "</div>");
+    } else {
+        panel.append('<div id="target">Ese objeto no esta en esta habitacion!</div>');
+    }
+
+    panel.append('<input id="user-input" placeholder="inserta tu comando.."></input>');
+    panel.append('<img src="' + rooms[currentRoom].image + '" />');
+
+
+}
+
 function playerInput(input) {
     var command = input.split(" ")[0];
     switch (command) {
@@ -154,12 +77,17 @@ function playerInput(input) {
         case "inventario":
             showinventario();
             break;
+        case "recoger":
+            var things = input.split(" ")[1];
+            pickUpThings(things);
+            break;
         default:
             panel.append('<div id="target">Comando invalido!</div>');
+
     }
 }
 
-function load(){
+function startGame(){
 
         
         panel.append('<div id="target">' + rooms.inicio.description + '</div>');
