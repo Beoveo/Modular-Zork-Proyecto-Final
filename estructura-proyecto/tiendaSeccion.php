@@ -1,11 +1,7 @@
-
 <?php
-	function mostrarElementos($type){
-
-	}
-
 
 	require_once __DIR__.'/includes/config.php';
+	require_once __DIR__.'/includes/tiendaMostrarElemento.php';
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +36,9 @@
 							echo "<h1>Consumibles</h1>";
 							break;
 					}
-					mostrarElementos($type);
+					$conn = $app->conexionBd();
+					mostrarElemento($conn, $type);
+					$conn->close();
 				}else
 					echo "<h1>Página no disponible</h1>";
 			?>

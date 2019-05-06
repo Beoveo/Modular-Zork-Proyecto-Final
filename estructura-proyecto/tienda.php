@@ -1,35 +1,7 @@
-<?php
-	function mostrarElemento($conn, $type){
-		$query = "SELECT * FROM $type";
-		$consulta = $conn->query($query);
-		$res = $consulta->num_rows;
-		if($res > 0){
-			while ($fila = $consulta->fetch_assoc()){
-				$iden = $fila['id'];
-				$nombre = $fila['nombre'];
-				$precio = $fila['precio'];
-				$imagen = RUTA_IMGS.$fila['rutaImagen'];
-				echo "<a href='objetoTienda.php?id=$iden&type=$type'>
-					<li class='item'>
-						<div class='imgen'>
-							<img class='imgObj' src='$imagen'/>
-						</div>
-						<div class='info'>
-							<p>$nombre<em></p>
-							<p>$precio zorkians</em></p>
-						</div>
-					</li>
-				</a>";
-			}
-			$consulta->free();
-		}else{
-			echo "No hay $type disponibles";
-		}
-	}
 
-?>
 <?php
 	require_once __DIR__.'/includes/config.php';
+	require_once __DIR__.'/includes/tiendaMostrarElemento.php';
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -49,7 +21,7 @@
 		?>
 		<div id="contenido">
 			<div id="mapas">
-				<a href="seccionTienda.php?type=mapas"><h1>Mapas</h1></a>
+				<a href="tiendaSeccion.php?type=mapas"><h1>Mapas</h1></a>
 				<ul class=listObj id="listaMapas">
 					<?php
 					$type = "mapas";
@@ -58,7 +30,7 @@
 				</ul>
 			</div>
 			<div id="enemigos">
-				<a href="seccionTienda.php?type=enemigo"><h1>Enemigos</h1></a>
+				<a href="tiendaSeccion.php?type=enemigo"><h1>Enemigos</h1></a>
 				<ul class=listObj id="listaEnemigos">
 					<?php
 					$type = "enemigo";
@@ -67,7 +39,7 @@
 				</ul>
 			</div>
 			<div id="personajes">
-				<a href="seccionTienda.php?type=personaje"><h1>Personajes</h1></a>
+				<a href="tiendaSeccion.php?type=personaje"><h1>Personajes</h1></a>
 				<ul class=listObj id="listaPersonajes">
 					<?php
 					$type = "personaje";
@@ -76,7 +48,7 @@
 				</ul>
 			</div>
 			<div id="objetos">
-				<a href="seccionTienda.php?type=consumibles"><h1>Objetos</h1></a>
+				<a href="tiendaSeccion.php?type=consumibles"><h1>Objetos</h1></a>
 				<ul class=listObj id="listaObjetos">
 					<?php
 					$type = "consumibles";
