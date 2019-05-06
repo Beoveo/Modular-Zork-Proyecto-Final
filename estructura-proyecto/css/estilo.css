@@ -496,8 +496,9 @@ div.Cell
 /************************** AQUI EMPIEZAN LAS MODIFICACIONES DE LIDIA **************************************/
 
 ul.listObj{
+	max-height: 200px;
 	overflow: auto;
-	border: 1px solid black ;
+	border: 1px solid black;
 	display: inline-block;
 	padding: 2%;
 	box-shadow: 2px 2px 2px #303030;

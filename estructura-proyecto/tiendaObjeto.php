@@ -76,6 +76,7 @@
 		?>
 		<div id="contenido">
 			<?php
+			if(isset($_GET["id"]) && isset($_GET["type"])){
 				$iden = $_GET["id"];
 				$type = $_GET["type"];
 
@@ -123,10 +124,10 @@
 
 					$consulta->free();
 					$conn->close();
-				}else{
+				}else
 					echo "Error en la consulta";
-				}
-				
+			}else
+				echo "<h1>Página no disponible</h1>";
 			?>
 
 		</div>

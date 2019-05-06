@@ -1,5 +1,7 @@
+
 <?php
 	require_once __DIR__.'/includes/config.php';
+	require_once __DIR__.'/includes/tiendaMostrarElemento.php';
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +10,7 @@
   <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estiloSidebarIz.css') ?>" />
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
-  	<title>Objeto</title>
+  	<title>Tienda</title>
 </head>
 <body>
 	<div id="contenedor">
@@ -19,124 +21,42 @@
 		?>
 		<div id="contenido">
 			<div id="mapas">
-				<h1>Mapas</h1>
+				<a href="tiendaSeccion.php?type=mapas"><h1>Mapas</h1></a>
 				<ul class=listObj id="listaMapas">
 					<?php
-						$query = "SELECT * FROM mapas";
-						$consulta = $conn->query($query);
-						$res = $consulta->num_rows;
-						if($res > 0){
-							while ($fila = $consulta->fetch_assoc()){
-								$iden = $fila['id'];
-								$nombre = $fila['nombre'];
-								$precio = $fila['precio'];
-								$imagen = RUTA_IMGS.$fila['rutaImagen'];
-								echo "<a href='objetoTienda.php?id=$iden&type=mapas'>
-									<li class='item'>
-										<div class='imgen'>
-											<img class='imgObj' src='$imagen'/>
-										</div>
-										<p>$nombre<em>~$precio zorkians</em></p>
-									</li>
-								</a>";
-							}
-							$consulta->free();
-						}else{
-							echo "No hay mapas disponibles";
-						}
+					$type = "mapas";
+					mostrarElemento($conn, $type);
 					?>
 				</ul>
 			</div>
 			<div id="enemigos">
-				<h1>Enemigos</h1>
+				<a href="tiendaSeccion.php?type=enemigo"><h1>Enemigos</h1></a>
 				<ul class=listObj id="listaEnemigos">
 					<?php
-						$query = "SELECT * FROM enemigo";
-						$consulta = $conn->query($query);
-						$res = $consulta->num_rows;
-						if($res > 0){
-							while ($fila = $consulta->fetch_assoc()){
-								$iden = $fila['id'];
-								$nombre = $fila['nombre'];
-								$precio = $fila['precio'];
-								$imagen = RUTA_IMGS.$fila['rutaImagen'];
-								echo "<a href='objetoTienda.php?id=$iden&type=enemigo'>
-									<li class='item'>
-										<div class='imgen'>
-											<img class='imgObj' src='$imagen'/>
-										</div>
-										<p>$nombre<em>~$precio zorkians</em></p>
-									</li>
-								</a>";
-							}
-							$consulta->free();
-						}else{
-							echo "No hay enemigos disponibles";
-						}
+					$type = "enemigo";
+					mostrarElemento($conn, $type);
 					?>
 				</ul>
 			</div>
 			<div id="personajes">
-				<h1>Personajes</h1>
+				<a href="tiendaSeccion.php?type=personaje"><h1>Personajes</h1></a>
 				<ul class=listObj id="listaPersonajes">
 					<?php
-						$query = "SELECT * FROM personaje";
-						$consulta = $conn->query($query);
-						$res = $consulta->num_rows;
-						if($res > 0){
-							while ($fila = $consulta->fetch_assoc()){
-								$iden = $fila['id'];
-								$nombre = $fila['nombre'];
-								$precio = $fila['precio'];
-								$imagen = RUTA_IMGS.$fila['rutaImagen'];
-								echo "<a href='objetoTienda.php?id=$iden&type=personaje'>
-									<li class='item'>
-										<div class='imgen'>
-											<img class='imgObj' src='$imagen'/>
-										</div>
-										<p>$nombre<em>~$precio zorkians</em></p>
-									</li>
-								</a>";
-							}
-							$consulta->free();
-						}else{
-							echo "No hay personajes disponibles";
-						}
+					$type = "personaje";
+					mostrarElemento($conn, $type);
 					?>
 				</ul>
 			</div>
 			<div id="objetos">
-				<h1>Objetos</h1>
+				<a href="tiendaSeccion.php?type=consumibles"><h1>Objetos</h1></a>
 				<ul class=listObj id="listaObjetos">
 					<?php
-						$query = "SELECT * FROM consumibles";
-						$consulta = $conn->query($query);
-						$res = $consulta->num_rows;
-						if($res > 0){
-							while ($fila = $consulta->fetch_assoc()){
-								$iden = $fila['id'];
-								$nombre = $fila['nombre'];
-								$precio = $fila['precio'];
-								$imagen = RUTA_IMGS.$fila['rutaImagen'];
-								echo "<a href='objetoTienda.php?id=$iden&type=consumibles'>
-									<li class='item'>
-										<div class='imgen'>
-											<img class='imgObj' src='$imagen'/>
-										</div>
-										<p>$nombre<em>~$precio zorkians</em></p>
-									</li>
-								</a>";
-							}
-							$consulta->free();
-						}else{
-							echo "No hay consumibles disponibles";
-						}
+					$type = "consumibles";
+					mostrarElemento($conn, $type);
 					?>
 				</ul>
 			</div>
 		</div>
-
-
 		<?php
 			$conn->close();
 			$app->doInclude('comun/pie.php');
