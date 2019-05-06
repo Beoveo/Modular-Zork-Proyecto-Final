@@ -21,6 +21,8 @@ require_once __DIR__.'/includes/config.php';
         ?>
             <script type="text/javascript" src="zork/javascript/loadGame.js"></script>
             <script type="text/javascript" src="zork/javascript/game.js"></script>
+            <script type="text/javascript" src="zork/javascript/canvas.js"></script>
+            
             
         </div>
     </body>
