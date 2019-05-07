@@ -33,7 +33,7 @@ $(document).on('click', '#start', function(e) {
                       myArrayMap.push(value);
     
                           }); 
-                      //console.log(myArrayMap[0]); 
+                      console.log(myArrayMap[0]); 
                       //console.log(myArrayMap.length); 
 
                       //for(i=0; i<string.length; i++) alert(i + ': ' + string[i]); 
