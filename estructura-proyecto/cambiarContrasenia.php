@@ -1,7 +1,5 @@
 <?php
-
 require_once __DIR__.'/includes/config.php';
-
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +15,7 @@ $app->doInclude('comun/cabecera.php');
 $app->doInclude('comun/sidebarIzq.php');
 ?>
 	<div id="contenido">
-        <?php $changeName= new \es\ucm\fdi\aw\FormularioCambiarNombre(); echo $changeName->gestiona() ?>
+        <?php $changePass= new \es\ucm\fdi\aw\FormularioCambiarContrasenia(); echo $changePass->gestiona() ?>
 	</div>
 <?php
 $app->doInclude('comun/pie.php');
