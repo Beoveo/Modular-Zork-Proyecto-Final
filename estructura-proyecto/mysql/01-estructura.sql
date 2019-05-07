@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 30-04-2019 a las 18:36:30
+-- Tiempo de generación: 07-05-2019 a las 17:51:23
 -- Versión del servidor: 10.1.37-MariaDB
 -- Versión de PHP: 7.3.1
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `aw`
+-- Base de datos: `sw`
 --
 
 -- --------------------------------------------------------
@@ -31,6 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `comprados` (
   `idUsuario` int(11) UNSIGNED NOT NULL,
   `idObjeto` int(11) UNSIGNED NOT NULL,
+  `tipo` varchar(20) COLLATE utf8mb4_spanish_ci NOT NULL,
   `precio` int(11) UNSIGNED NOT NULL,
   `unidades` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
@@ -250,8 +251,8 @@ CREATE TABLE `personaje` (
 CREATE TABLE `preguntas` (
   `id` int(11) NOT NULL,
   `idObjeto` int(11) NOT NULL,
-  `tipo` varchar(30) NOT NULL,
-  `pregunta` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL
+  `tipo` varchar(30) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `pregunta` varchar(30) COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -526,7 +527,7 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `comprados`
   ADD CONSTRAINT `comprados_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`),
-  ADD CONSTRAINT `comprados_ibfk_2` FOREIGN KEY (`idObjeto`) REFERENCES `mapas` (`id`),
+  ADD CONSTRAINT `comprados_ibfk_2` FOREIGN KEY (`idObjeto`) REFERENCES `mazmorras` (`id`),
   ADD CONSTRAINT `comprados_ibfk_3` FOREIGN KEY (`idObjeto`) REFERENCES `enemigo` (`id`),
   ADD CONSTRAINT `comprados_ibfk_4` FOREIGN KEY (`idObjeto`) REFERENCES `consumibles` (`id`),
   ADD CONSTRAINT `comprados_ibfk_5` FOREIGN KEY (`idObjeto`) REFERENCES `personaje` (`id`);
