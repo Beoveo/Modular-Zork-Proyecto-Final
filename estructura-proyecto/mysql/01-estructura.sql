@@ -526,7 +526,7 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `comprados`
   ADD CONSTRAINT `comprados_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`),
-  ADD CONSTRAINT `comprados_ibfk_2` FOREIGN KEY (`idObjeto`) REFERENCES `mazmorras` (`id`),
+  ADD CONSTRAINT `comprados_ibfk_2` FOREIGN KEY (`idObjeto`) REFERENCES `mapas` (`id`),
   ADD CONSTRAINT `comprados_ibfk_3` FOREIGN KEY (`idObjeto`) REFERENCES `enemigo` (`id`),
   ADD CONSTRAINT `comprados_ibfk_4` FOREIGN KEY (`idObjeto`) REFERENCES `consumibles` (`id`),
   ADD CONSTRAINT `comprados_ibfk_5` FOREIGN KEY (`idObjeto`) REFERENCES `personaje` (`id`);
