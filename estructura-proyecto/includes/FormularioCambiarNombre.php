@@ -45,7 +45,7 @@ EOF;
       if ( $user ) {
         $result = \es\ucm\fdi\aw\Aplicacion::getSingleton()->resuelve('/miPerfil.php');
       }else {
-        $result[] = 'El usuario o la contraseña es incorrecta';
+        $result[] = 'El nombre de usuario es incorrecta';
       }
     }
     return $result;
