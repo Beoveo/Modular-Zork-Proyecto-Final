@@ -2,10 +2,11 @@
 // Varios defines para los parámetros de configuración de acceso a la BD y la URL desde la que se sirve la aplicación
 define('BD_HOST', 'localhost');
 define('BD_NAME', 'sw');
-define('BD_USER', 'alberto');
+define('BD_USER', 'root');
 define('BD_PASS', '2208');
 define('RAIZ_APP', __DIR__);
-define('RUTA_APP', '/VM-0007/');
+//define('RUTA_APP', '/VM-0007/');
+define('RUTA_APP', '/estructura-proyecto/');
 define('RUTA_IMGS', RUTA_APP.'img/');
 define('RUTA_CSS', RUTA_APP.'css/');
 define('RUTA_JS', RUTA_APP.'js/');

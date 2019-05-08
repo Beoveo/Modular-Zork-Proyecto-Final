@@ -8,48 +8,63 @@ class Usuario
 {
 //-------------------------------------------------------------------------------------------------------------------------------------------
 //Alberto Caballero Es un boceto no terminada consulta.
-  public static function changeEmail($correo)
+   public static function changeEmail($correo)
   {
-            if(!self::buscaUsuarioPorNombre($correo)){
+      $app = App::getSingleton();
+      $conn = $app->conexionBd();
+      $name = $app->nombreUsuario();
+      $user = self::buscaUsuarioPorNombre($name);
+     $existe =self::buscaUsuario($correo);
+     if($user && !$existe){
           $app = App::getSingleton();
           $conn = $app->conexionBd();
-          $query = sprintf("UPDATE usuarios(nombre) SET correo = '%s' WHERE usuarios.id = %s)"
-                    ,$conn->real_escape_string($name),self::id());
+          $query = sprintf("UPDATE usuarios SET correo = '%s' WHERE usuarios.id = %s"
+                    ,$conn->real_escape_string($correo),$user->id());
           $rs = $conn->query($query);
           if($rs){
-              echo"ok";
-              return true;
+              $user->setUsermail($correo);
+              return $user;
           }
-          else{
-            echo"$conn->error";
-            return false;
-          }
-      }
-      else{
-        
-          return false;
+          else echo $conn->error;
 
       }
+      return false;
   }    
     
  //Alberto Caballero Es un boceto no terminada consulta.   
-  public static function changePass($password)
+    public static function changePass($password)
   {
           $app = App::getSingleton();
           $conn = $app->conexionBd();
-          $query = sprintf("UPDATE usuarios(nombre) SET contraseña = '%s' WHERE usuarios.id = %s)"
-                    ,$conn->real_escape_string($name),self::id());
-          $rs = $conn->query($query);
-          if($rs){
-             echo"ok";
-          }
-          else{
-            echo"$conn->error";
-            return false;
-          }
-  
+      $name = $app->nombreUsuario();
+      $user = self::buscaUsuarioPorNombre($name);
+      if($user){
+          $contraseñaIgual=$user->compruebaPassword($password);
+      if(! $contraseñaIgual){
+              
+        $auxpass=password_hash($password,PASSWORD_DEFAULT);
+              
+        $query = sprintf("UPDATE usuarios SET contraseña = '%s' WHERE usuarios.id = %s"
+            ,$conn->real_escape_string($auxpass), $user->id());
+        $rs = $conn->query($query);
+        if($rs){
+         echo"La contraseña se ha cambiado correctamente";
+                  return true;
+        }
+        else{
+        echo"$conn->error";
+        return false;
+        }
+      }
+      }
+      else {
+          
+          echo "Algo ha ido mal...";
+          return false;
+      }
   }
-   //Modificado por Lidia
+
+   //Modificado por Lidia y Alberto
   public static function changeName($name)
   {
     //Si el nuevo nombre no existe en la base de datos
@@ -64,10 +79,11 @@ class Usuario
           $rs = $conn->query($query);
           if($rs){
               echo"Tu nombre de usuario se ha cambiado a $name";
-              return true;
+              $user->setNombre($name);
+              return $user;
           }
           else{
-            echo "Error de conexión con la base de datos";
+            echo "Error de conexión con la base de datos: ".$conn->error;
             return false;
           }
       }
@@ -77,17 +93,25 @@ class Usuario
       }
   }
 //Alberto Caballero Es un boceto no terminada consulta.
-  public static function signin($name,$username, $password)
+  public static function signin($name,$usermail, $password)
   {
-
-    if(!self::buscaUsuario($username)){
+    if(!self::buscaUsuario($usermail) && !self::buscaUsuarioPorNombre($name)){
             $app = App::getSingleton();
             $conn = $app->conexionBd();
             $auxpass=password_hash($password,PASSWORD_DEFAULT);
-            $query = sprintf("INSERT INTO usuarios (nombre,correo, contraseña) VALUES ('%s','%s' , '%s')",$conn->real_escape_string($name),$conn->real_escape_string($username),$conn->real_escape_string($auxpass));
+            $query = sprintf("INSERT INTO usuarios (nombre,correo, contraseña) VALUES ('%s','%s' , '%s')",$conn->real_escape_string($name),$conn->real_escape_string($usermail),$conn->real_escape_string($auxpass));
             $rs = $conn->query($query);
-            if ($rs) {
-                $user= new Usuario($conn->id,$username, $auxpass); 
+            $user= self::buscaUsuario($usermail);
+            if ($rs && $user) {
+                echo $user->id();
+                $query = sprintf("INSERT INTO rolesusuario (usuario,rol) VALUES ('%s',%s)",$user->id(),1);
+                $rs = $conn->query($query);
+                if($rs)
+                $user->addRol("user");
+                else{
+                    echo $conn->error;
+                    return false;
+                }
                 return $user;
             }
             else{
@@ -103,9 +127,9 @@ class Usuario
     
   }
 //-------------------------------------------------------------------------------------------------------------------------------------------
-  public static function login($username, $password)
+  public static function login($usermail, $password)
   {
-    $user = self::buscaUsuario($username);
+    $user = self::buscaUsuario($usermail);
     if ($user && $user->compruebaPassword($password)) {
       $app = App::getSingleton();
       $conn = $app->conexionBd();
@@ -122,11 +146,11 @@ class Usuario
     return false;
   }
 
-  public static function buscaUsuario($username)
+  public static function buscaUsuario($usermail)
   {
     $app = App::getSingleton();
     $conn = $app->conexionBd();
-    $query = sprintf("SELECT * FROM usuarios WHERE correo='%s'", $conn->real_escape_string($username));
+    $query = sprintf("SELECT * FROM usuarios WHERE correo='%s'", $conn->real_escape_string($usermail));
     $rs = $conn->query($query);
     if ($rs && $rs->num_rows == 1) {
       $fila = $rs->fetch_assoc();
@@ -156,16 +180,19 @@ class Usuario
 
   private $id;
 
-  private $username;
+  private $usermail;
 
   private $password;
 
   private $roles;
-
-  private function __construct($id, $username, $password)
+  
+  private $name;
+  
+  private function __construct($id, $name, $usermail, $password)
   {
     $this->id = $id;
-    $this->username = $username;
+    $this->name = $name;
+    $this->usermail = $usermail;
     $this->password = $password;
     $this->roles = [];
   }
@@ -173,6 +200,16 @@ class Usuario
   public function id()
   {
     return $this->id;
+  }
+
+  public function nombre()
+  {
+    return $this->name;
+  }
+
+  public function setNombre($newName)
+  {
+    $this->name=$newName;
   }
 
   public function addRol($role)
@@ -185,18 +222,25 @@ class Usuario
     return $this->roles;
   }
 
-  public function username()
+  public function usermail()
   {
-    return $this->username;
+    return $this->usermail;
+  }
+
+  public function setUsermail($correo)
+  {
+    return $this->usermail=$correo;
   }
 
   public function compruebaPassword($password)
   {
     return password_verify($password, $this->password);
   }
-
+  
+  /*
   public function cambiaPassword($nuevoPassword)
   {
     $this->password = password_hash($nuevoPassword, PASSWORD_DEFAULT);
   }
+  */
 }

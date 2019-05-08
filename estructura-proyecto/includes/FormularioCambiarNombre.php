@@ -42,10 +42,11 @@ EOF;
     }  
     if ( $ok ) {
       $user = Usuario::changeName($name);
-      if ( $user ) {
-        $result = \es\ucm\fdi\aw\Aplicacion::getSingleton()->resuelve('/miPerfil.php');
+      if ( $user) {
+           Aplicacion::getSingleton()->cambiarNombreSesion($user);
+           $result = \es\ucm\fdi\aw\Aplicacion::getSingleton()->resuelve('/miPerfil.php');
       }else {
-        $result[] = 'El nombre de usuario es incorrecta';
+        $result[] = 'No se ha podido cambiar el nombre de usuario.';
       }
     }
     return $result;

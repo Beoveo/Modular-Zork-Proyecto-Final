@@ -14,16 +14,15 @@ class FormularioCambiarCorreo extends Form
   
   protected function generaCamposFormulario ($datos)
   {
-    $nombre = 'Manolito@example.org';
-    $password = '12345';
+    $correo = 'Manolito@example.org';
     if ($datos) {
-      $username = isset($datos['nombre']) ? $datos['nombre'] : $nombre;
+      $correo = isset($datos['correo']) ? $datos['correo'] : $correo;
     }
 
     $camposFormulario=<<<EOF
 		<fieldset>
 		  <legend>Cambiar Correo de Usuario</legend>
-		  <p><label>Correo:</label> <input type="text" name="nombre" placeholder="$nombre"/></p>
+		  <p><label>Correo:</label> <input type="text" name="correo" placeholder="$correo"/></p>
           <button type="submit">Confirmar</button>
 		</fieldset>
 EOF;
@@ -37,27 +36,21 @@ EOF;
   {
     $result = array();
     $ok = true;
-    $username = $datos['username'] ?? '' ;
-    if ( !$username || ! mb_ereg_match(self::HTML5_EMAIL_REGEXP, $username) ) {
-      $result[] = 'El nombre de usuario no es válido';
-      $ok = false;
-    }
-    $password = $datos['password'] ?? '' ;
-    if ( ! $password ||  mb_strlen($password) < 4 ) {
-      $result[] = 'La contraseña no es válida';
+    $correo = $datos['correo'] ?? '' ;
+    echo $correo;
+    if ( !$correo || ! mb_ereg_match(self::HTML5_EMAIL_REGEXP, $correo) ) {
+      $result[] = 'El formato de correo no es valido';
       $ok = false;
     }
 
-      
     if ( $ok ) {
-      $user = Usuario::login($username, $password);
+      $user = Usuario::changeEmail($correo);
       if ( $user ) {
-        // SEGURIDAD: Forzamos que se genere una nueva cookie de sesión por si la han capturado antes de hacer login
-        session_regenerate_id(true);
-        Aplicacion::getSingleton()->login($user);
-        $result = \es\ucm\fdi\aw\Aplicacion::getSingleton()->resuelve('/index.php');
+
+        Aplicacion::getSingleton()->cambiarCorreoSesion($user);
+        $result = \es\ucm\fdi\aw\Aplicacion::getSingleton()->resuelve('/miPerfil.php');
       }else {
-        $result[] = 'El usuario o la contraseña es incorrecta';
+        $result[] = 'No se puede cambiar el correo de usuario';
       }
     }
     return $result;

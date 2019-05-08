@@ -4,15 +4,10 @@ namespace es\ucm\fdi\aw;
 
 class Aplicacion
 {
-
   private static $instancia;
-
   private $bdDatosConexion;
-
   private $rutaRaizApp;
-
   private $dirInstalacion;
-  
   private $conn;
 
   public static function getSingleton()
@@ -26,6 +21,7 @@ class Aplicacion
   private function __construct()
   {
   }
+
   /**
    * Evita que se pueda utilizar el operador clone.
    */
@@ -33,7 +29,6 @@ class Aplicacion
   {
     throw new \Exception('No tiene sentido el clonado');
   }
-
     
   /**
    * Evita que se pueda utilizar serialize().
@@ -54,19 +49,16 @@ class Aplicacion
   public function init($bdDatosConexion, $rutaRaizApp, $dirInstalacion)
   {
     $this->bdDatosConexion = $bdDatosConexion;
-
     $this->rutaRaizApp = $rutaRaizApp;
     $tamRutaRaizApp = mb_strlen($this->rutaRaizApp);
     if ($tamRutaRaizApp > 0 && $this->rutaRaizApp[$tamRutaRaizApp-1] !== '/') {
       $this->rutaRaizApp .= '/';
     }
-
     $this->dirInstalacion = $dirInstalacion;
     $tamDirInstalacion = mb_strlen($this->dirInstalacion);
     if ($tamDirInstalacion > 0 && $this->dirInstalacion[$tamDirInstalacion-1] !== '/') {
       $this->dirInstalacion .= '/';
     }
-
     $this->conn = null;
     session_start();
   }
@@ -90,22 +82,38 @@ class Aplicacion
     }
     include($this->dirInstalacion . '/'.$path);
   }
+
   //para saber en que pagina actual estas
   public function getPagAct()
   {
       return $_SESSION['pagina'] ?? '';
         
   }
+
   //para cambiar la pagina actual y actualizar el contenido en funcion de la misma
   public function setPagAct($paginanueva)
   {
       $_SESSION['pagina']=$paginanueva;   
   }
+
   public function login(Usuario $user)
   {
     $_SESSION['login'] = true;
-    $_SESSION['nombre'] = $user->username();
+    $_SESSION['nombre'] = $user->nombre();
+    $_SESSION['correo'] = $user->usermail();
     $_SESSION['roles'] = $user->roles();
+  }
+
+  public function cambiarNombreSesion(Usuario $user)
+  {
+    $_SESSION['nombre'] = $user->nombre();
+
+  }
+
+  public function cambiarCorreoSesion(Usuario $user)
+  {
+    $_SESSION['correo'] = $user->usermail();
+
   }
 
   public function logout()
@@ -114,8 +122,6 @@ class Aplicacion
     unset($_SESSION['login']);
     unset($_SESSION['nombre']);
     unset($_SESSION['roles']);
-
-
     session_destroy();
     session_start();
   }
@@ -137,7 +143,6 @@ class Aplicacion
       $bdUser = $this->bdDatosConexion['user'];
       $bdPass = $this->bdDatosConexion['pass'];
       $bd = $this->bdDatosConexion['bd'];
-
       $this->conn = new \mysqli($bdHost, $bdUser, $bdPass, $bd);
       if ( $this->conn->connect_errno ) {
         echo "Error de conexión a la BD: (" . $this->conn->connect_errno . ") " . utf8_encode($this->conn->connect_error);
@@ -150,7 +155,7 @@ class Aplicacion
     }
     return $this->conn;
   }
-
+  
   public function tieneRol($rol, $cabeceraError=NULL, $mensajeError=NULL)
   {
     $roles = $_SESSION['roles'] ?? array();
@@ -162,10 +167,8 @@ class Aplicacion
 EOF;
         echo $bloqueContenido;
       }
-
       return false;
     }
-
     return true;
   }
 }
