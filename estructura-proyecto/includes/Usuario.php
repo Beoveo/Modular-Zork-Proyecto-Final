@@ -8,7 +8,7 @@ class Usuario
 {
 //-------------------------------------------------------------------------------------------------------------------------------------------
 //Alberto Caballero Es un boceto no terminada consulta.
-   public static function changeEmail($correo)
+   public function changeEmail($correo)
   {
       $app = App::getSingleton();
       $conn = $app->conexionBd();
@@ -32,7 +32,7 @@ class Usuario
   }    
     
  //Alberto Caballero Es un boceto no terminada consulta.   
-    public static function changePass($password)
+    public function changePass($password)
   {
           $app = App::getSingleton();
           $conn = $app->conexionBd();
@@ -65,14 +65,14 @@ class Usuario
   }
 
    //Modificado por Lidia y Alberto
-  public static function changeName($name)
+  public function changeName($name)
   {
     //Si el nuevo nombre no existe en la base de datos
       if(!self::buscaUsuarioPorNombre($name)){
           $app = App::getSingleton();
           $conn = $app->conexionBd();
           //Actualizar el usuario logeado. Acceder al identificador de Usuario
-          $user = self::buscaUsuario($_SESSION['nombre']);
+          $user = self::buscaUsuarioPorNombre($_SESSION['nombre']);
           $ident = $user->id();
           $nombre = $conn->real_escape_string($name);
           $query = sprintf("UPDATE usuarios SET nombre = '%s' WHERE id = %s" ,$nombre,$ident);
@@ -154,7 +154,7 @@ class Usuario
     $rs = $conn->query($query);
     if ($rs && $rs->num_rows == 1) {
       $fila = $rs->fetch_assoc();
-      $user = new Usuario($fila['id'], $fila['correo'], $fila['contraseña']);
+      $user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña']);
       $rs->free();
       return $user;
     }
@@ -170,7 +170,7 @@ class Usuario
     $rs = $conn->query($query);
     if ($rs && $rs->num_rows == 1) {
       $fila = $rs->fetch_assoc();
-      $user = new Usuario($fila['id'], $fila['correo'], $fila['contraseña']);
+      $user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña']);
       $rs->free();
       return $user;
     }
