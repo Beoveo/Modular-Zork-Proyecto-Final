@@ -63,7 +63,7 @@ function pickUpThings(things){
 
 
 }
-
+/*
 function playerInput(input) {
     var command = input.split(" ")[0];
     switch (command) {
@@ -86,14 +86,54 @@ function playerInput(input) {
 
     }
 }
-
-function startGame(){
-
+*/
+function rellenaMazmorraAct(mapa,listaOpciones){
+    var mazmorra=mapa.mazmorraActual;
+        console.log("mazmorraAct",mazmorra);
+        var listaEnemigos;
+        var listaConsumibles;
+        listaEnemigos=mazmorra.listaMonstruos;
+        listaConsumibles=mazmorra.listaConsumibles;
+        if(mazmorra.getNorte()!=null){
+            
+            listaOpciones.push(mazmorra.mazmorraNorte);
+            
+        }
+        if(mazmorra.getSur()!=null){
+            
+            listaOpciones.push(mazmorra.mazmorraSur);
+            
+        }
+        if(mazmorra.getEste()!=null){
+            
+            listaOpciones.push(mazmorra.mazmorraEste);
+            
+        }
+        if(mazmorra.getOeste()!=null){
+            
+            listaOpciones.push(mazmorra.mazmorraOeste);
+            
+        }
+        if(listaConsumibles.length!=0){
+            for(i=0;i<listaConsumibles.length;i++)
+                listaOpciones.push(listaConsumibles.pop());
+        }
+        if(listaEnemigos.length!=0){
+            for(i=0;i<listaEnemigos.length;i++)
+                listaOpciones.push(listaEnemigos.pop());
+        }
+    
+        return mazmorra;
+}
+function startGame(mapa){
+        var listaOpciones=[];
+        var mazmorraAct=rellenaMazmorraAct(mapa,listaOpciones);
+        console.log("opciones",listaOpciones);
         
-        panel.append('<div id="target">' + rooms.inicio.description + '</div>');
-        panel.append('<input id="user-input" placeholder="inserta tu comando.."></input>');
+        //panel.append('<div id="target">' + rooms.inicio.description + '</div>');
+       // panel.append('<input id="user-input" placeholder="inserta tu comando.."></input>');
 
-        panel.append('<img src="' + rooms[currentRoom].image + '" />');
+        panel.append('<img src=" ' + mazmorraAct.getImagen() + ' " />');
         
         /*for (let elem in rooms[currentRoom].directions) {
             panel.append(elem) 

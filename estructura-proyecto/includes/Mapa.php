@@ -4,22 +4,26 @@ use es\ucm\fdi\aw\Aplicacion as App;
 class Mapa
 {
   
-   public static function cargaMapas()
+   public static function cargaMazmorras($idMapa)
   {
       $result_array=array();
-      $app = App::getSingleton();
+      $app = App::getSingleton(); 
       $conn = $app->conexionBd();
-      $query = sprintf("SELECT * FROM mapas");
+      $query = sprintf("SELECT * FROM mapacontiene , mazmorras  WHERE mapacontiene.idMapa=%s AND mapacontiene.idMazmorra=mazmorras.id",$idMapa);
       $rs = $conn->query($query);
       if ($rs) {
         if ($rs->num_rows > 0) {
-            while($row = $rs->fetch_assoc()) {
-            array_push($result_array, $row);
+                while($row = $rs->fetch_assoc()) {
+                array_push($result_array, $row);
         }
-          $rs->free();
+
+                $rs->free();
+        }
+        return $resultArray;
+
       }
-        echo json_encode($result_array, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK); 
-      }
+      
+      echo $conn->error;
       return false;
   } 
     public static function buscaMapaPorId($id)
@@ -39,65 +43,40 @@ class Mapa
       return false;
   }  
     
-  private $id;
-  private $nombre;
-  private $dificultad;
-  private $precio;
-  private $numMazmorras;
-  private $recompensa;
-  private $mazmorrasSuperadas;
-  private $propietario;
-  private $rutaImagen;
+    private $tamanio;
+    private $mazmorras;
+    private $mazmorraAct;
+    private $mazmorraFinal;
     
-  private function __construct($id, $nombre, $precio, $numMazmorras,$recompensa,$mazmorrasSuperadas,$propietario,$rutaImagen )
-  {
-    $this->id = $id;
-	$this->nombre = $nombre;
-    $this->precio = $precio;
-    $this->numMazmorras = $numMazmorras;
-    $this->recompensa = $recompensa;
-    $this->mazmorrasSuperadas = $mazmorrasSuperadas;
-    $this->propietario = $propietario;
-    $this->rutaImagen = $rutaImagen;
-  }
-    private function id(){
-        return $this->id;
+    private function __construct(tamanio,mazmorras,mazmorraAct,mazmorraFinal )
+    {
+   
+        $this->tamanio;
+        $this->mazmorras=mazmorras;
+        $this->mazmorraActual=;
+        $this->mazmorraFinal=
+    }
+    private function size(){
+        
+    }
+    private function getMazmorras(){
         
         
     }
-    private function nombre(){
+    private function setMazmorras(){
         
-        return $this->nombre;
         
     }
-    private function precio(){
-        
-       return $this->precio;
+    private function getMazmorraAct(){
         
     }
-    private function numMazmorras(){
-    
-        return $this->numMazmorras;
+    private function setMazmorraAct(){
         
     }
-    private function mazmorrasSuperadas(){
-        
-        
-         return $this->mazmorrasSuperadas;
-    }
-    private function propietario(){
-        
-        
-       return $this->precio;
-    }
-    private function rutaImagen(){
-        
-       return $this->rutaImagen;
+    private function getMazmorraFinal(){
         
     }
-    private function recompensa(){
-        
-        return $this->recompensa;
+    private function setMazmorraFinal(){
         
     }
 
