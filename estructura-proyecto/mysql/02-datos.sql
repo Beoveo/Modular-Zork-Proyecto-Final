@@ -57,15 +57,16 @@ INSERT INTO `inventario` (`id`, `tamaño`) VALUES
 (2, 5);
 
 --
--- Volcado de datos para la tabla `usuarios`
+-- Volcado de datos para la tabla `mapacontiene`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `contraseña`, `monedas`, `puntos`, `rutaFoto`, `bloqueado`) VALUES
-(1, 'user', 'user@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
-(2, 'admin', 'admin@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
-(3, 'prueba', 'prueba@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
-(4, '1234', '1234@example.org', '$2y$10$crE/87D6eqLr6A6/Vmt4zuDS7/igGThgX6t.ZWwvtyatT4E5gDqgm', 100, 0, NULL, b'0'),
-(5, 'prueba', 'prueba@example.com', '$2y$10$6o18GzEFiT53FYy8sYM19.Nb2/hyVPQkPYeaSfnUndLNPBwsFYs8.', 100, 0, NULL, b'0');
+INSERT INTO `mapacontiene` (`idMapa`, `idMazmorra`, `mazmorraNorte`, `mazmorraEste`, `mazmorraSur`, `mazmorraOeste`, `mazmorraInicial`, `mazmorraFinal`) VALUES
+(1, 1, 2, NULL, NULL, 5, 1, 6),
+(1, 2, 3, 4, 1, NULL, 1, 6),
+(1, 3, NULL, NULL, 2, NULL, 1, 6),
+(1, 4, NULL, NULL, NULL, 2, 1, 6),
+(1, 5, NULL, 1, NULL, 6, 1, 6),
+(1, 6, NULL, 5, NULL, NULL, 1, 6);
 
 --
 -- Volcado de datos para la tabla `mapas`
@@ -85,18 +86,6 @@ INSERT INTO `mazmorras` (`id`, `nombre`, `numSalidas`, `numEnemigos`, `recompens
 (4, 'trolls', 1, 2, 3, 'rooms/mazmorra.png', 'Llegas a otra habitacion, algunos trolls estan asando comida, no te han visto todavia, Que haces?'),
 (5, 'room2', 2, 0, 2, 'rooms/mazmorra.png', 'Por la ventana al <b>west</b> se ve un puente que parece que da a la salida de esto.'),
 (6, 'room3', 1, 1, 5, 'rooms/mazmorra.png', 'Al intentar cruzar la habitacion, un troll escondido salta y te ataca, Que haces?');
-
---
--- Volcado de datos para la tabla `mapacontiene`
---
-
-INSERT INTO `mapacontiene` (`idMapa`, `idMazmorra`, `mazmorraNorte`, `mazmorraEste`, `mazmorraSur`, `mazmorraOeste`, `mazmorraInicial`, `mazmorraFinal`) VALUES
-(1, 1, 2, NULL, NULL, 5, 1, 6),
-(1, 2, 3, 4, 1, NULL, 1, 6),
-(1, 3, NULL, NULL, 2, NULL, 1, 6),
-(1, 4, NULL, NULL, NULL, 2, 1, 6),
-(1, 5, NULL, 1, NULL, 6, 1, 6),
-(1, 6, NULL, 5, NULL, NULL, 1, 6);
 
 --
 -- Volcado de datos para la tabla `personaje`
@@ -124,6 +113,17 @@ INSERT INTO `rolesusuario` (`usuario`, `rol`) VALUES
 (3, 1),
 (4, 1),
 (5, 1);
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `contraseña`, `monedas`, `puntos`, `rutaFoto`, `bloqueado`) VALUES
+(1, 'user', 'user@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
+(2, 'admin', 'admin@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
+(3, 'prueba', 'prueba@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
+(4, '1234', '1234@example.org', '$2y$10$crE/87D6eqLr6A6/Vmt4zuDS7/igGThgX6t.ZWwvtyatT4E5gDqgm', 100, 0, NULL, b'0'),
+(5, 'prueba', 'prueba@example.com', '$2y$10$6o18GzEFiT53FYy8sYM19.Nb2/hyVPQkPYeaSfnUndLNPBwsFYs8.', 100, 0, NULL, b'0');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
