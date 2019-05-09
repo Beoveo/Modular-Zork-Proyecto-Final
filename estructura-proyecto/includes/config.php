@@ -7,7 +7,7 @@ define('BD_PASS', '2208');
 define('RAIZ_APP', __DIR__);
 //define('RUTA_APP', '/VM-0007/');
 define('RUTA_APP', '/estructura-proyecto/');
-define('RUTA_IMGS', RUTA_APP.'img/');
+define('RUTA_IMGS', RUTA_APP.'/zork/juegoimg/');
 define('RUTA_CSS', RUTA_APP.'css/');
 define('RUTA_JS', RUTA_APP.'js/');
 define('INSTALADA', true );

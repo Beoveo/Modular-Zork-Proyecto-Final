@@ -11,7 +11,7 @@ class Compra
 	public static function crea($type, $id ){
 		//Buscar id usuario
 		$userNombre = App::getSingleton()->nombreUsuario();
-		$user=Usuario::buscaUsuario($userNombre);
+		$user=Usuario::buscaUsuarioPorNombre($userNombre);
 		if ($user) {
 			$IDUser = $user->id();
 			$app = App::getSingleton();
@@ -37,24 +37,30 @@ class Compra
     	
     	$idUser = $this->IDUser;
     	$idObjeto = $this->idObjeto;
-    	$type = $this->type;
+    	$tipo = $this->type;
     	$precio = $this->precio;
 
-    	$query = "SELECT * FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto";
+    	$query = "SELECT * FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto and tipo = '$tipo'";
     	$rs = $conn->query($query);
     	if($rs && $rs->num_rows == 0){
     		$query = "INSERT INTO comprados(idUsuario,idObjeto,tipo,precio)
-    				VALUES($idUser,$idObjeto,$type,$precio)";
+    				VALUES($idUser,$idObjeto,'$tipo',$precio)";
     	}else{
     		return false;
     	}
-    	$res = $conn->query($query);
+    	$res = $conn->query($query);echo $conn->error;
+    	echo "2";
 		if($res){
 			//Restar el dinero al usuario
 			$queryUser = "UPDATE usuarios SET monedas=monedas-$precio WHERE id = $idUser";
+			echo "3";
 			$rsUser = $conn->query($queryUser);
 			if($rsUser){
 				return true;
+			}else{
+				//Si falla el restar las monedas del user, eliminar la compra
+				$queryD = "DELETE FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto";
+				$conn->query($queryD);
 			}
 		}
 		return false;

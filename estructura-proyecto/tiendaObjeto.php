@@ -27,7 +27,7 @@
 			<p><strong>Recompensa: </strong>$recompensa</p>
 			<p><strong>Propietario: </strong>$nombPropietario</p>
 			<p><strong>Descripción: </strong>$descripcion</p>
-			<p><strong>Valoración: </strong>$descripcion</p>";
+			<p><strong>Valoración: </strong>$valoracion</p>";
 	}
 
 	function detallesConsumibles($fila){
