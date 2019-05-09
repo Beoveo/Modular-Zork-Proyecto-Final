@@ -9,6 +9,7 @@ use es\ucm\fdi\aw\Aplicacion as App;
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estilo.css') ?>" />
+		<link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estiloSidebarIz.css') ?>" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Portada</title>
 	</head>
