@@ -96,9 +96,9 @@
 								</div>
 								<div class='infoCompra'>
 									<h1>$nombre</h1>
-									<h2 class='precio'>$precio zorkians</h2>";
+									<h2 class='precio'>$precio zorkians</h2><p id='errorTienda'>";
 									$formBotCompra = new \es\ucm\fdi\aw\FormularioBotonComprar(); echo $formBotCompra->gestiona();
-						echo "		</div>
+						echo "</p></div>
 							</div>
 							<div class='infTienda'>
 								<h2>Detalles</h2>";

@@ -39,7 +39,7 @@ class Compra
     	$idObjeto = $this->idObjeto;
     	$tipo = $this->type;
     	$precio = $this->precio;
-
+    	//Comprobar antes si ya ha comprado el objeto
     	/*$query = "SELECT * FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto and tipo = '$tipo'";
     	$rs = $conn->query($query);*/
     	//if($rs && $rs->num_rows == 0){

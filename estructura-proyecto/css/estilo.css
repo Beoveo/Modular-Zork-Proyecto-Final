@@ -533,6 +533,11 @@ img.imgCompra{
 	max-width: 400px;
 }
 
+p#errorTienda{
+	color:red;
+	font-weight: bold;
+}
+
 /************************** AQUI TERMINAN LAS MODIFICACIONES DE LIDIA **************************************/
 /****************************************************ALBERTO CAMBIOS CSS*************************************/
 div#imagenFromulario
