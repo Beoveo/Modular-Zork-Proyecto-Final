@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-05-2019 a las 12:27:23
+-- Tiempo de generación: 09-05-2019 a las 13:15:59
 -- Versión del servidor: 10.1.37-MariaDB
 -- Versión de PHP: 7.3.1
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `comprados` (
+  `id` int(11) UNSIGNED NOT NULL,
   `idUsuario` int(11) UNSIGNED NOT NULL,
   `idObjeto` int(11) UNSIGNED NOT NULL,
   `tipo` varchar(20) COLLATE utf8mb4_spanish_ci NOT NULL,
@@ -298,8 +299,9 @@ CREATE TABLE `usuarios` (
 -- Indices de la tabla `comprados`
 --
 ALTER TABLE `comprados`
-  ADD PRIMARY KEY (`idUsuario`,`idObjeto`,`tipo`),
-  ADD KEY `comprados_ibfk_5` (`idObjeto`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `comprados_ibfk_5` (`idObjeto`),
+  ADD KEY `comprados_ibfk_1` (`idUsuario`);
 
 --
 -- Indices de la tabla `consumibles`
@@ -437,6 +439,12 @@ ALTER TABLE `usuarios`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `comprados`
+--
+ALTER TABLE `comprados`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `consumibles`

@@ -40,14 +40,14 @@ class Compra
     	$tipo = $this->type;
     	$precio = $this->precio;
 
-    	$query = "SELECT * FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto and tipo = '$tipo'";
-    	$rs = $conn->query($query);
-    	if($rs && $rs->num_rows == 0){
+    	/*$query = "SELECT * FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto and tipo = '$tipo'";
+    	$rs = $conn->query($query);*/
+    	//if($rs && $rs->num_rows == 0){
     		$query = "INSERT INTO comprados(idUsuario,idObjeto,tipo,precio)
     				VALUES($idUser,$idObjeto,'$tipo',$precio)";
-    	}else{
+    	/*}else{
     		return false;
-    	}
+    	}*/
     	$res = $conn->query($query);echo $conn->error;
     	echo "2";
 		if($res){
