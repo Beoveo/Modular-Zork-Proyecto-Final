@@ -496,8 +496,9 @@ div.Cell
 /************************** AQUI EMPIEZAN LAS MODIFICACIONES DE LIDIA **************************************/
 
 ul.listObj{
+	max-height: 200px;
 	overflow: auto;
-	border: 1px solid black ;
+	border: 1px solid black;
 	display: inline-block;
 	padding: 2%;
 	box-shadow: 2px 2px 2px #303030;
@@ -523,13 +524,18 @@ img.imgObj {
 	max-width: 148px;
 }
 
+ul a {
+	text-decoration: none;
+}
+
 img.imgCompra{
 	height: 250px;
 	max-width: 400px;
 }
 
-ul a {
-	text-decoration: none;
+p#errorTienda{
+	color:red;
+	font-weight: bold;
 }
 
 
