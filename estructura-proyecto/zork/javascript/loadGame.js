@@ -79,128 +79,90 @@ function choiceMap (myArray){
         
         //inventario = mapa.inventario.split(",")
         
-        panel.empty()
-        rellenaMapa(selValue)
+        panel.empty();
+        rellenaMapa(selValue);
     });
 }
 
-function loadConsumibles(idMazmorra){
-	
-
- 	
-	 var myArray = [];
-
-         $.ajax({ 
-
-            method: "GET", 
-            
-            url: "loadConsumibles.php?idMazmorra=" + idMazmorra
-
-            }).done(function(msg){
-                var result= $.parseJSON(msg); 
-                //var arstring= [];
-               
-     
-                   /* from result create a string of data and append to the div */
-                    $.each( result, function( key, value ) {
- 
-                            myArray.push(value);  
-                    });	
-			 var consumibles=[];
-				for(i=0;i<myArray.length;i++){
-					var consumible=new Consumible(myArray[i].id,myArray[i].categoria,myArray[i].nombre,myArray[i].fuerza,myArray[i].habilidad,myArray[i].vida,myArray[i].rutaImagen);
-					consumible.inicializa();
-					consumibles.push(consumible);
-				}
-			 	setConsumibles(consumibles);
-			});
+function loadConsumibles(consum){
+var consumibles=[];
+	for(j=0;j<consum.length;j++){
+		var consumible=new Consumible(consum[j].id,consum[j].categoria,consum[j].nombre,consum[j].fuerza,consum[j].habilidad,consum[j].vida,consum[j].rutaImagen);
+		consumible.inicializa();
+		consumibles.push(consumible);
+	}
+	return consumibles;
 			
 
 }
 
-
-
-
-function loadEnemigos(idMazmorra){
-         $.ajax({ 
-
-            method: "GET", 
-            
-            url: "loadEnemigos.php?idMazmorra=" + idMazmorra
-		 	}).done (function(msg){
-                var result= $.parseJSON(msg); 
-                //var arstring= [];
-                var myArray = [];
-     
-                   /* from result create a string of data and append to the div */
-                    $.each( result, function( key, value ) {
- 
-                            myArray.push(value);  
-                    });
-				var monstruos=[];
-				for(i=0;i<myArray.length;i++){
-					var monstruo=new Monstruo(myArray[i].vida, myArray[i].fuerza,myArray[i].rutaImagen,myArray[i].nombre);
-					monstruo.inicializa();
-					monstruos.push(monstruo);
-				}
-				setMonstuos(monstruos);
-			});
-			
+function loadEnemigos(enem){
+	var monstruos=[];
+	for(z=0;z<enem.length;z++){
+		var monstruo=new Monstruo(enem[z].vida, enem[z].fuerza,enem[z].rutaImagen,enem[z].nombre);
+		monstruo.inicializa();
+		monstruos.push(monstruo);
+	}
+	return monstruos;
 }
+
 
 function rellenaMapa(selValueMap){ 
 	var mazmorra;
 	var mapa;
 
          $.ajax({ 
+			 method: "GET", 
+			 url: "loadMapa.php?idMapa=" + selValueMap ,
+			 success: function (msg){
 
-            method: "GET", 
-            
-            url: "loadMazmorras.php?idMapa=" + selValueMap 
-		 }).done (function(msg){
-                var result= $.parseJSON(msg); 
-                //var arstring= [];
-                var myArray = [];
-                if(result.length !== 0){
-                   /* from result create a string of data and append to the div */
-                    $.each( result, function( key, value ) {
- 
-                            myArray.push(value);  
-                    }); 
-					mapa= new Mapa(myArray.length);
-					mapa.inicializa();
-					for(i=0;i<myArray.length;i++){
-						var enemigos;
-						var consumibles;
-						loadConsumibles(myArray[i].idMazmorra);
-						loadEnemigos(myArray[i].idMazmorra);
-						console.log(monstruosGlobal);
-						console.log(consumiblesGlobal);
-						mazmorra=new 
-						Mazmorra(myArray[i].idMazmorra,monstruosGlobal,consumiblesGlobal,myArray[i].historia,myArray[i].numSalidas,myArray[i].recompensa,myArray[i].mazmorraNorte,myArray[i].mazmorraSur,myArray[i].mazmorraEste,myArray[i].mazmorraOeste,myArray[i].rutaImagen);
-						mazmorra.inicializa();
-						if(myArray[i].mazmorraInicial==1){
-							mapa.setMazmorraAct(mazmorra);//inicial al inicio del juego
-						}
-						else if(myArray[i].mazmorraFinal==1){
-							mapa.setMazmorraFinal(mazmorra);
+					var result= $.parseJSON(msg); 
+					//var arstring= [];
+					var myArray = [];
+					if(result.length !== 0){
+					   /* from result create a string of data and append to the div */
+						$.each( result, function( key, value ) {
+
+								myArray.push(value);  
+						}); 
+						// en la posicion 0 del myArray llega el tamaño del mapa
+						// en la posicion 1 del myArray llega el array de mazmorras
+						// en la posicion 2 del myArray llega el array de enemigos
+						// en la posicion 3 del myArray llega el array de consumibles
+						var tamanioMapa= myArray[0];
+						mapa= new Mapa(tamanioMapa);
+						mapa.inicializa();
+						var monstruos=[];
+						var consumibles=[];
+						for(i=0;i<tamanioMapa;i++){
+							enemigos=loadEnemigos(myArray[2][i]);
+							consumibles=loadConsumibles(myArray[3][i]);
 							
-						}
-						mapa.insertaMazmorra(mazmorra);
-					}
+							mazmorra=new Mazmorra(myArray[1][i].idMazmorra,monstruos,consumibles,myArray[1][i].historia,myArray[1][i].numSalidas,myArray[1][i].recompensa,myArray[1][i].mazmorraNorte,myArray[1][i].mazmorraSur,myArray[1][i].mazmorraEste,myArray[1][i].mazmorraOeste,myArray[1][i].rutaImagen);
+							mazmorra.inicializa();
+							if(myArray[1][i].mazmorraInicial==1){
+								mapa.setMazmorraAct(mazmorra);//inicial al inicio del juego
+							}
+							else if(myArray[1][i].mazmorraFinal==1){
+								mapa.setMazmorraFinal(mazmorra);
 
-					startGame(mapa);
-                    //loadRoom(myArray);
-                }
-                else{
-                    //panel.empty()
-                    alert("Error al cargar la base de datos")
-                    p.empty()
-                
-                }
-				//si queremos ir al norte por ejemplo,para moverse por el mapa
-				//mazmorraActual= mapa.getMazmorra(mazmorra.getIdNorte());
-				//mapa.setMazmorraActual(mazmorraActual);
+							}
+							mapa.insertaMazmorra(mazmorra);
+						}
+
+						startGame(mapa);
+						//loadRoom(myArray);
+					}
+					else{
+						//panel.empty()
+						alert("Error al cargar la base de datos")
+						p.empty()
+
+					}
+					//si queremos ir al norte por ejemplo,para moverse por el mapa
+					//mazmorraActual= mapa.getMazmorra(mazmorra.getIdNorte());
+					//mapa.setMazmorraActual(mazmorraActual);
+			 }
             });
       
     

@@ -3,35 +3,41 @@ namespace es\ucm\fdi\aw;
 use es\ucm\fdi\aw\Aplicacion as App;
 class Mapa
 {
-  
-   public static function cargaMazmorras($idMapa)
-  {
-      $result_array=array();
-      $app = App::getSingleton(); 
-      $conn = $app->conexionBd();
-      $query = sprintf("SELECT * FROM mapacontiene , mazmorras  WHERE mapacontiene.idMapa=%s AND mapacontiene.idMazmorra=mazmorras.id",$idMapa);
-      $rs = $conn->query($query);
-      if ($rs) {
-        if ($rs->num_rows > 0) {
-                while($row = $rs->fetch_assoc()) {
-                array_push($result_array, $row);
-        }
 
-                $rs->free();
-        }
-        return $resultArray;
-
-      }
-      
-      echo $conn->error;
-      return false;
-  } 
-    public static function buscaMapaPorId($id)
+    //Carga las mazmorras en un determinado mapa pasado por parametro, el seleccionado.
+   public static function construyeMapa($idMapa){
+       $mazmorras= Mazmorras::cargaMazmorras($idMapa);
+       $array=json_decode(json_encode($mazmorras));
+       if(sizeof($array)>0){
+           $i=0;
+           $objetos= array();
+           $enemigos=array();
+            while($i<sizeof($mazmorras)){
+                $objeto=ObjetoConsumible::cargaObjetosMazmorra($array[$i]->idMazmorra);
+                if($objeto!=null){
+                    $objetos[$i]=$objeto;
+                }
+                
+                $enemigo=Enemigos::cargaEnemigos($array[$i]->idMazmorra);
+                if($objeto!=null){
+                    $enemigos[$i]=$enemigo;
+                }
+               
+                $i++;
+            }
+            $tamanio=sizeof($mazmorras);
+            $mapa = array('tamanio'=>$tamanio,'mazmorras' => $mazmorras, 'enemigos' => $enemigos, 'objetos' => $objetos);
+            return $mapa;
+       }
+       else echo "no es posible construir el mapa";
+ 
+   } 
+    public static function buscaMapaPorId($idMapa)
   {
       $result_array=array();
       $app = App::getSingleton();
       $conn = $app->conexionBd();
-      $query = sprintf("SELECT * FROM mapas WHERE mapas.id =%s",$id);
+      $query = sprintf("SELECT * FROM mapas WHERE mapas.id =%s",$idMapa);
       $rs = $conn->query($query);
       if ($rs && $rs->num_rows == 1) {
 		  $fila = $rs->fetch_assoc(); 
@@ -45,40 +51,36 @@ class Mapa
     
     private $tamanio;
     private $mazmorras;
-    private $mazmorraAct;
-    private $mazmorraFinal;
+    private $consumibles;
+    private $enemigos;
+
     
-    private function __construct(tamanio,mazmorras,mazmorraAct,mazmorraFinal )
+    private function __construct($tamanio,$mazmorras,$consumibles,$enemigos )
     {
    
-        $this->tamanio;
-        $this->mazmorras=mazmorras;
-        $this->mazmorraActual=;
-        $this->mazmorraFinal=
+        $this->tamanio=$tamanio;
+        $this->mazmorras=$mazmorras;
+        $this->consumibles=$consumibles;
+        $this->enemigos=$enemigos;
     }
     private function size(){
-        
+        return  $this->tamanio;
     }
     private function getMazmorras(){
         
+        return  $this->mazmorras;
+    }
+    private function setMazmorras($mazmorras){
+        $this->mazmorras=$mazmorras;
         
     }
-    private function setMazmorras(){
-        
-        
+    private function getConsumibles(){
+        return $this->consumibles;
     }
-    private function getMazmorraAct(){
-        
+    private function getEnemigos(){
+        return $this->enemigos;
     }
-    private function setMazmorraAct(){
-        
-    }
-    private function getMazmorraFinal(){
-        
-    }
-    private function setMazmorraFinal(){
-        
-    }
+
 
     
     

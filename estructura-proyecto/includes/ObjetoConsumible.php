@@ -37,7 +37,27 @@ class ObjetoConsumible
         }
     $rs->free();
   }
+  //carga objetos de una determinada mazmorra
+  public static function cargaObjetosMazmorra($idMazmorra){
+     $consulta = array();
+      $consumibles=array();
+      $app = App::getSingleton(); 
+      $conn = $app->conexionBd();
+      $query = sprintf("SELECT * FROM consumibles,mazmorraconsumibles WHERE mazmorraconsumibles.idMazmorra=%s AND consumibles.id=mazmorraconsumibles.idConsumible",$idMazmorra);
+      $rs = $conn->query($query);
+      if ($rs) {
+            if ($rs->num_rows > 0) {
 
+                while($row = $rs->fetch_assoc()) {
+                    array_push($consumibles, new ObjetoConsumible($row['id'],$row['nombre'],$row['categoria'],$row['fuerza'],$row['habilidad'],$row['vida'],$row['precio'],$row['rutaImagen']));
+                   array_push($consulta,$row);
+                }
+
+                $rs->free();
+                return $consulta;
+            }
+        }
+  }
 
   public static function insertaObjeto($objeto){
     $app = App::getSingleton();

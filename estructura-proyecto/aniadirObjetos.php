@@ -17,7 +17,7 @@ $app->doInclude('comun/sidebarIzq.php');
 ?>
 	<div id="contenido">
 		<h1>Añade Objetos Como Administrador.</h1>
-    <?php $formObj= new \es\ucm\fdi\aw\FormularioObjetosConsumibles(); echo $formObj->gestiona() ?>
+    <?php $formObj= new \es\ucm\fdi\aw\FormularioObjetos(); echo $formObj->gestiona() ?>
 	</div>
 <?php
 $app->doInclude('comun/sidebarDer.php');
