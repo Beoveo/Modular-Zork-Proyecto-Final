@@ -3,10 +3,7 @@ namespace es\ucm\fdi\aw;
 use es\ucm\fdi\aw\Aplicacion as App;
 class Partida
 {
-    public static function cargarMapa($idMapa){
-
-        
-    }
+    
     //devuelve una lista con todos los mapas existentes
     public static function cargaMapas(){
       $result_array=array();
