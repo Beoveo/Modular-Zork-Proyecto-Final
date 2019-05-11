@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-05-2019 a las 17:18:35
+-- Tiempo de generación: 11-05-2019 a las 12:11:41
 -- Versión del servidor: 10.1.37-MariaDB
 -- Versión de PHP: 7.3.1
 
@@ -215,6 +215,7 @@ CREATE TABLE `mensajes` (
 --
 
 CREATE TABLE `partida` (
+  `idPartida` int(11) UNSIGNED NOT NULL,
   `idUsuario` int(11) UNSIGNED NOT NULL,
   `idMapa` int(11) UNSIGNED NOT NULL,
   `idPersonaje` int(11) UNSIGNED NOT NULL,
@@ -389,13 +390,14 @@ ALTER TABLE `mensajes`
 -- Indices de la tabla `partida`
 --
 ALTER TABLE `partida`
-  ADD PRIMARY KEY (`idUsuario`,`idMapa`,`idPersonaje`),
+  ADD PRIMARY KEY (`idPartida`),
   ADD KEY `idMapa` (`idMapa`),
   ADD KEY `idPersonaje` (`idPersonaje`),
   ADD KEY `idInventario` (`idInventarioMapa`),
   ADD KEY `IdUltimaMazSuperada` (`IdUltimaMazSuperada`),
   ADD KEY `IdMazmorraSig` (`IdSiguienteMazmorra`),
-  ADD KEY `IdinventarioUsados` (`IdinventarioUsados`);
+  ADD KEY `IdinventarioUsados` (`IdinventarioUsados`),
+  ADD KEY `idUsuario` (`idUsuario`) USING BTREE;
 
 --
 -- Indices de la tabla `personaje`
