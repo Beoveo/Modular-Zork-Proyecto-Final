@@ -1,14 +1,11 @@
 <?php
-
 namespace es\ucm\fdi\aw;
-
 use es\ucm\fdi\aw\Aplicacion as App;
-
 class Usuario
 {
 //-------------------------------------------------------------------------------------------------------------------------------------------
 //Alberto Caballero Es un boceto no terminada consulta.
-   public function changeEmail($correo)
+  public static function changeEmail($correo)
   {
       $app = App::getSingleton();
       $conn = $app->conexionBd();
@@ -31,68 +28,63 @@ class Usuario
       return false;
   }    
     
- //Alberto Caballero Es un boceto no terminada consulta.   
-    public function changePass($password)
+    
+  public static function changePass($password)
   {
           $app = App::getSingleton();
           $conn = $app->conexionBd();
-      $name = $app->nombreUsuario();
-      $user = self::buscaUsuarioPorNombre($name);
+		  $name = $app->nombreUsuario();
+		  $user = self::buscaUsuarioPorNombre($name);
       if($user){
           $contraseñaIgual=$user->compruebaPassword($password);
-      if(! $contraseñaIgual){
+		  if(! $contraseñaIgual){
               
-        $auxpass=password_hash($password,PASSWORD_DEFAULT);
+			  $auxpass=password_hash($password,PASSWORD_DEFAULT);
               
-        $query = sprintf("UPDATE usuarios SET contraseña = '%s' WHERE usuarios.id = %s"
-            ,$conn->real_escape_string($auxpass), $user->id());
-        $rs = $conn->query($query);
-        if($rs){
-         echo"La contraseña se ha cambiado correctamente";
+			  $query = sprintf("UPDATE usuarios SET contraseña = '%s' WHERE usuarios.id = %s"
+						,$conn->real_escape_string($auxpass), $user->id());
+			  $rs = $conn->query($query);
+			  if($rs){
+				 echo"La contraseña se ha cambiado correctamente";
                   return true;
-        }
-        else{
-        echo"$conn->error";
-        return false;
-        }
-      }
+			  }
+			  else{
+				echo"$conn->error";
+				return false;
+			  }
+		  }
       }
       else {
           
           echo "Algo ha ido mal...";
           return false;
       }
+  
   }
-
-   //Modificado por Lidia y Alberto
-  public function changeName($name)
+   //Alberto Caballero Es un boceto no terminada consulta. 
+  public static function changeName($name)
   {
-    //Si el nuevo nombre no existe en la base de datos
-      if(!self::buscaUsuarioPorNombre($name)){
+      $app = App::getSingleton();
+      $conn = $app->conexionBd();
+	  $firstname = $app->nombreUsuario();
+      $user = self::buscaUsuarioPorNombre($firstname);
+      $exist = self::buscaUsuarioPorNombre($name);
+      if($user && !$exist){
           $app = App::getSingleton();
           $conn = $app->conexionBd();
-          //Actualizar el usuario logeado. Acceder al identificador de Usuario
-          $user = self::buscaUsuarioPorNombre($_SESSION['nombre']);
-          $ident = $user->id();
-          $nombre = $conn->real_escape_string($name);
-          $query = sprintf("UPDATE usuarios SET nombre = '%s' WHERE id = %s" ,$nombre,$ident);
+          $query = sprintf("UPDATE usuarios SET nombre = '%s' WHERE usuarios.id = %s"
+                    ,$conn->real_escape_string($name),$user->id());
           $rs = $conn->query($query);
           if($rs){
-              echo"Tu nombre de usuario se ha cambiado a $name";
               $user->setNombre($name);
               return $user;
           }
-          else{
-            echo "Error de conexión con la base de datos: ".$conn->error;
-            return false;
-          }
+          else echo $conn->error;
       }
-      else{
-        echo "El nombre de usuario ya existe. Vuelve a intentarlo";
-        return false;
-      }
+      return false;
+      
   }
-//Alberto Caballero Es un boceto no terminada consulta.
+//Cambiar a signup
   public static function signin($name,$usermail, $password)
   {
     if(!self::buscaUsuario($usermail) && !self::buscaUsuarioPorNombre($name)){
@@ -104,10 +96,10 @@ class Usuario
             $user= self::buscaUsuario($usermail);
             if ($rs && $user) {
                 echo $user->id();
-                $query = sprintf("INSERT INTO rolesusuario (usuario,rol) VALUES ('%s',%s)",$user->id(),1);
+                $query = sprintf("INSERT INTO rolesusuario (usuario,rol) VALUES ('%s',%s)",$user->id(),2);
                 $rs = $conn->query($query);
                 if($rs)
-                $user->addRol("user");
+                $user->addRol("admin"); //user: 1, admin:2
                 else{
                     echo $conn->error;
                     return false;
@@ -145,7 +137,6 @@ class Usuario
     }    
     return false;
   }
-
   public static function buscaUsuario($usermail)
   {
     $app = App::getSingleton();
@@ -153,10 +144,10 @@ class Usuario
     $query = sprintf("SELECT * FROM usuarios WHERE correo='%s'", $conn->real_escape_string($usermail));
     $rs = $conn->query($query);
     if ($rs && $rs->num_rows == 1) {
-      $fila = $rs->fetch_assoc();
-      $user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña']);
-      $rs->free();
-      return $user;
+		$fila = $rs->fetch_assoc(); 
+		$user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña']);
+		$rs->free();
+		return $user;
     }
     return false;
   }
@@ -170,20 +161,16 @@ class Usuario
     $rs = $conn->query($query);
     if ($rs && $rs->num_rows == 1) {
       $fila = $rs->fetch_assoc();
-      $user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña']);
+		$user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña']);
       $rs->free();
       return $user;
     }
       echo"$conn->error";
     return false;
   }
-
   private $id;
-
   private $usermail;
-
   private $password;
-
   private $roles;
   
   private $name;
@@ -191,52 +178,43 @@ class Usuario
   private function __construct($id, $name, $usermail, $password)
   {
     $this->id = $id;
-    $this->name = $name;
+	$this->name = $name;
     $this->usermail = $usermail;
     $this->password = $password;
     $this->roles = [];
   }
-
   public function id()
   {
     return $this->id;
   }
-
-  public function nombre()
+   public function nombre()
   {
     return $this->name;
   }
-
   public function setNombre($newName)
   {
     $this->name=$newName;
   }
-
   public function addRol($role)
   {
     $this->roles[] = $role;
   }
-
   public function roles()
   {
     return $this->roles;
   }
-
   public function usermail()
   {
     return $this->usermail;
   }
-
-  public function setUsermail($correo)
+    public function setUsermail($correo)
   {
     return $this->usermail=$correo;
   }
-
   public function compruebaPassword($password)
   {
     return password_verify($password, $this->password);
   }
-  
   /*
   public function cambiaPassword($nuevoPassword)
   {

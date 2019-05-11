@@ -9,8 +9,6 @@ $app->logout();
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estilo.css') ?>" />
-  <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estiloSidebarIz.css') ?>" />
-
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
   <title>Logout</title>
 </head>

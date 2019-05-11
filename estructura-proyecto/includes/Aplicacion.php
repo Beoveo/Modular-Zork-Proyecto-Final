@@ -1,15 +1,13 @@
 <?php
-
 namespace es\ucm\fdi\aw;
-
 class Aplicacion
 {
   private static $instancia;
   private $bdDatosConexion;
   private $rutaRaizApp;
   private $dirInstalacion;
+  
   private $conn;
-
   public static function getSingleton()
   {
       if (  !self::$instancia instanceof self) {
@@ -17,11 +15,9 @@ class Aplicacion
       }
       return self::$instancia;
   }
-
   private function __construct()
   {
   }
-
   /**
    * Evita que se pueda utilizar el operador clone.
    */
@@ -45,7 +41,6 @@ class Aplicacion
   {
     throw new \Exception('No tiene sentido el deserializar el objeto');
   }
-
   public function init($bdDatosConexion, $rutaRaizApp, $dirInstalacion)
   {
     $this->bdDatosConexion = $bdDatosConexion;
@@ -62,7 +57,6 @@ class Aplicacion
     $this->conn = null;
     session_start();
   }
-
   public function resuelve($path = '')
   {
     $rutaRaizAppLongitudPrefijo = mb_strlen($this->rutaRaizApp);
@@ -74,7 +68,6 @@ class Aplicacion
     }
     return $this->rutaRaizApp . $path;
   }
-
   public function doInclude($path = '')
   {
      if (mb_strlen($path) > 0 && $path[0] == '/') {
@@ -82,20 +75,17 @@ class Aplicacion
     }
     include($this->dirInstalacion . '/'.$path);
   }
-
   //para saber en que pagina actual estas
   public function getPagAct()
   {
       return $_SESSION['pagina'] ?? '';
         
   }
-
   //para cambiar la pagina actual y actualizar el contenido en funcion de la misma
   public function setPagAct($paginanueva)
   {
       $_SESSION['pagina']=$paginanueva;   
   }
-
   public function login(Usuario $user)
   {
     $_SESSION['login'] = true;
@@ -103,19 +93,16 @@ class Aplicacion
     $_SESSION['correo'] = $user->usermail();
     $_SESSION['roles'] = $user->roles();
   }
-
   public function cambiarNombreSesion(Usuario $user)
   {
     $_SESSION['nombre'] = $user->nombre();
 
   }
-
   public function cambiarCorreoSesion(Usuario $user)
   {
     $_SESSION['correo'] = $user->usermail();
 
   }
-
   public function logout()
   {
     //Doble seguridad: unset + destroy
@@ -125,17 +112,14 @@ class Aplicacion
     session_destroy();
     session_start();
   }
-
   public function usuarioLogueado()
   {
     return ($_SESSION['login'] ?? false) === true;
   }
-
   public function nombreUsuario()
   {
     return $_SESSION['nombre'] ?? '';
   }
-
   public function conexionBd()
   {
     if (! $this->conn ) {
@@ -155,7 +139,6 @@ class Aplicacion
     }
     return $this->conn;
   }
-  
   public function tieneRol($rol, $cabeceraError=NULL, $mensajeError=NULL)
   {
     $roles = $_SESSION['roles'] ?? array();

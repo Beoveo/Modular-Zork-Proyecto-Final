@@ -1,14 +1,14 @@
+<!DOCTYPE html>
 <?php
 
 require_once __DIR__.'/includes/config.php';
 
-?><!DOCTYPE html>
+?>
+
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estilo.css') ?>" />
-  <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estiloSidebarIz.css') ?>" />
-
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
   <title>Admin</title>
 </head>
