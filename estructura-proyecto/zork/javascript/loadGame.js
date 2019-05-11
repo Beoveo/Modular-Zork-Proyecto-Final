@@ -135,8 +135,10 @@ function rellenaMapa(selValueMap){
 						var monstruos=[];
 						var consumibles=[];
 						for(i=0;i<tamanioMapa;i++){
-							enemigos=loadEnemigos(myArray[2][i]);
-							consumibles=loadConsumibles(myArray[3][i]);
+							if(myArray[2].length != 0)
+								monstruos=loadEnemigos(myArray[2][i]);
+							if(myArray[3].length != 0)
+								consumibles=loadConsumibles(myArray[3][i]);
 							
 							mazmorra=new Mazmorra(myArray[1][i].idMazmorra,monstruos,consumibles,myArray[1][i].historia,myArray[1][i].numSalidas,myArray[1][i].recompensa,myArray[1][i].mazmorraNorte,myArray[1][i].mazmorraSur,myArray[1][i].mazmorraEste,myArray[1][i].mazmorraOeste,myArray[1][i].rutaImagen);
 							mazmorra.inicializa();
