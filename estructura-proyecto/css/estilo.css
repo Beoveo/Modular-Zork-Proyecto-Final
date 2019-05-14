@@ -533,7 +533,7 @@ img.imgCompra{
 	max-width: 400px;
 }
 
-p#errorTienda{
+div#errorTienda{
 	color:red;
 	font-weight: bold;
 }

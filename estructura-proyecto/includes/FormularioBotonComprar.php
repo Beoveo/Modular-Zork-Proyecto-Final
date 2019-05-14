@@ -33,34 +33,34 @@ EOF;
 	/**
    * Procesa los datos del formulario.
    */
-  protected function procesaFormulario($datos)
-  {
-    $result = array();
-    $ok = true;
-    $type = $datos['type'] ?? '' ;
-    if ( !$type || !($type=='mapas'||$type=='enemigo'||$type=='consumibles'||$type=='personaje')) {
-      $result[] = 'Error al acceder a los datos de tipo';
-      $ok = false;
+    protected function procesaFormulario($datos)
+    {
+        $result = array();
+        $ok = true;
+        $type = $datos['type'] ?? '' ;
+        if ( !$type || !($type=='mapas'||$type=='enemigo'||$type=='consumibles'||$type=='personaje')) {
+          $result[] = 'Error al acceder a los datos de tipo';
+          $ok = false;
+        }
+        $id = $datos['id'] ?? '' ;
+        if ( ! $id ||  !is_numeric($id) ) {
+          $result[] = 'Error al acceder a los datos de id';
+          $ok = false;
+        }
+          
+        if ( $ok ) {
+        	if(Aplicacion::getSingleton()->usuarioLogueado()){
+        		$compra = Compra::crea($type, $id);
+    		    $res = $compra->realizarCompra();
+    		    if ( $res ) {
+    		      $result = \es\ucm\fdi\aw\Aplicacion::getSingleton()->resuelve('/misCompras.php');
+    		    }else {
+    		      $result[] = 'No se ha podido realizar la compra';
+    		    }
+    		}else{
+    			$result[] = "Necesitas Iniciar sesión para poder comprar";
+    		}
+        }
+        return $result;
     }
-    $id = $datos['id'] ?? '' ;
-    if ( ! $id ||  !is_numeric($id) ) {
-      $result[] = 'Error al acceder a los datos de id';
-      $ok = false;
-    }
-      
-    if ( $ok ) {
-    	if(Aplicacion::getSingleton()->usuarioLogueado()){
-    		$compra = Compra::crea($type, $id);
-		    $res = $compra->realizarCompra();
-		    if ( $res ) {
-		      $result = \es\ucm\fdi\aw\Aplicacion::getSingleton()->resuelve('/index.php');
-		    }else {
-		      $result[] = 'No se ha podido realizar la compra';
-		    }
-		}else{
-			echo "Necesitas Iniciar sesión para poder comprar";
-		}
-    }
-    return $result;
-  }
 }

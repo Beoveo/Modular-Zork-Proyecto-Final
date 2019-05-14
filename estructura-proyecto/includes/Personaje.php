@@ -6,20 +6,20 @@ class Personaje
     public static function getPersonaje($idPersonaje){
 
         $result_array=array();
-          $app = App::getSingleton();
-          $conn = $app->conexionBd();
-          $query = sprintf("SELECT * FROM personaje WHERE personaje.id =%s",$idPersonaje);
-          $rs = $conn->query($query);
-          if ($rs && $rs->num_rows == 1) {
-              $fila = $rs->fetch_assoc(); 
-              $personaje= new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['precio'],);
-              $rs->free();
-              return $fila;
-            }
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
+        $query = sprintf("SELECT * FROM personaje WHERE personaje.id =%s",$idPersonaje);
+        $rs = $conn->query($query);
+        if ($rs && $rs->num_rows == 1) {
+            $fila = $rs->fetch_assoc(); 
+            $personaje= new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['precio'],);
+            $rs->free();
+            return $fila;
+        }
 
-          return false;
-
+      return false;
     }
+    
     private $id;
     private $fuerza;
     private $nombre;

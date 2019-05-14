@@ -77,6 +77,7 @@
 		?>
 		<div id="contenido">
 			<?php
+			$app->doInclude('/infoTienda.php');
 			if(isset($_GET["id"]) && isset($_GET["type"])){
 				$iden = $_GET["id"];
 				$type = $_GET["type"];
@@ -97,9 +98,9 @@
 								</div>
 								<div class='infoCompra'>
 									<h1>$nombre</h1>
-									<h2 class='precio'>$precio zorkians</h2><p id='errorTienda'>";
+									<h2 class='precio'>$precio zorkians</h2><div id='errorTienda'>";
 									$formBotCompra = new \es\ucm\fdi\aw\FormularioBotonComprar(); echo $formBotCompra->gestiona();
-						echo "</p></div>
+						echo "</div></div>
 							</div>
 							<div class='infTienda'>
 								<h2>Detalles</h2>";

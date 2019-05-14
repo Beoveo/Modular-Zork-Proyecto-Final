@@ -1,6 +1,11 @@
 <?php
-	function mostrarElemento($conn, $type){
-		$query = "SELECT * FROM $type";
+	require_once __DIR__.'/config.php';
+	use es\ucm\fdi\aw\Aplicacion as App;
+
+	function mostrarElemento($type){
+		$app = App::getSingleton();
+		$conn = $app->conexionBd();
+		$query = "SELECT * FROM $type ORDER BY id";
 		$consulta = $conn->query($query);
 		$res = $consulta->num_rows;
 		if($res > 0){

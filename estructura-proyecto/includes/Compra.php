@@ -8,7 +8,8 @@ use es\ucm\fdi\aw\Usuario as Usuario;
 class Compra
 {
 
-	public static function crea($type, $id ){
+	public static function crea($type, $id )
+	{
 		//Buscar id usuario
 		$userNombre = App::getSingleton()->nombreUsuario();
 		$user=Usuario::buscaUsuarioPorNombre($userNombre);
@@ -29,71 +30,103 @@ class Compra
         return false;
 	}
 
-	public function realizarCompra(){
-		$ok = false;
-		//Añadir la compra a la tabla comprado
+	//Si el usuario ya ha comprado el objeto
+	private function objetoNoComprado($conn){
+		$idUser = self::IDUser();
+		$idObjeto = self::idObjeto();
+		$tipo = self::type();
+		$query = "SELECT * FROM comprados WHERE idObjeto = $idObjeto AND tipo = '$tipo' and idUsuario = $idUser";
+		$consulta = $conn->query($query);
+		return ($consulta && $consulta->num_rows == 0);
+	}
+
+	//Si el usuario tiene suficientes monedas
+	private function monedasSuficientes($conn){
+		$idUser = self::IDUser();
+    	$precio = self::precio();
+    	$queryMonedas = "SELECT monedas FROM usuarios WHERE id = $idUser";
+    	$rsMonedas = $conn->query($queryMonedas);echo $conn->error;
+    	if($rsMonedas && $rsMonedas->num_rows == 1){
+    		$filaMonedas = $rsMonedas->fetch_assoc();
+    		if($filaMonedas['monedas'] > $precio){
+    			return true;
+    		}
+    	}
+    	return false;
+	}
+
+	public function realizarCompra()
+	{
 		$app = App::getSingleton();
     	$conn = $app->conexionBd();
     	
-    	$idUser = $this->IDUser;
-    	$idObjeto = $this->idObjeto;
-    	$tipo = $this->type;
-    	$precio = $this->precio;
-    	//Comprobar antes si ya ha comprado el objeto
-    	/*$query = "SELECT * FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto and tipo = '$tipo'";
-    	$rs = $conn->query($query);*/
-    	//if($rs && $rs->num_rows == 0){
-    		$query = "INSERT INTO comprados(idUsuario,idObjeto,tipo,precio)
-    				VALUES($idUser,$idObjeto,'$tipo',$precio)";
-    	/*}else{
-    		return false;
-    	}*/
-    	$res = $conn->query($query);echo $conn->error;
-    	echo "2";
-		if($res){
-			//Restar el dinero al usuario
-			$queryUser = "UPDATE usuarios SET monedas=monedas-$precio WHERE id = $idUser";
-			echo "3";
-			$rsUser = $conn->query($queryUser);
-			if($rsUser){
-				return true;
-			}else{
-				//Si falla el restar las monedas del user, eliminar la compra
-				$queryD = "DELETE FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto";
-				$conn->query($queryD);
-			}
-		}
+    	if(self::objetoNoComprado($conn)){
+    		if(self::monedasSuficientes($conn)){
+    			$idUser = self::IDUser();
+		    	$precio = self::precio();
+				$idObjeto = self::idObjeto();
+		    	$tipo = self::type();
+		    	//Inserta la compra en la tabla comprados
+		    	$query = "INSERT INTO comprados(idUsuario,idObjeto,tipo,precio)
+		    			  VALUES($idUser,$idObjeto,'$tipo',$precio)";
+		    	$res = $conn->query($query);echo $conn->error;
+				if($res){
+					//Restar el dinero al usuario
+					$queryUser = "UPDATE usuarios SET monedas=monedas-$precio WHERE id = $idUser";
+					$rsUser = $conn->query($queryUser);
+					if($rsUser){
+						return true;
+					}else{
+						//Si falla el restar las monedas del user, eliminar la compra
+						$queryD = "DELETE FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto";
+						$conn->query($queryD);
+					}
+				}else{
+					echo "<p>Error en la base de datos</p>";
+				}
+    		}else{
+    			echo "<p>No tienes monedas suficientes para comprar este objeto</p>";
+    		}
+    	}else{
+    		echo "<p>Ya tienes este objeto</p>";
+    	}
+		
 		return false;
 	}
 
-private $IDUser;
+	private $IDUser;
 
-private $type;
+	private $type;
 
-private $idObjeto;
+	private $idObjeto;
 
-private $precio;
+	private $precio;
 
-private function __construct($user, $tipo, $idObjeto,$precio){
-	$this->IDUser = $user;
-	$this->type = $tipo;
-	$this->idObjeto = $idObjeto;
-	$this->precio = $precio;
-}
+	private function __construct($user, $tipo, $idObjeto,$precio)
+	{
+		$this->IDUser = $user;
+		$this->type = $tipo;
+		$this->idObjeto = $idObjeto;
+		$this->precio = $precio;
+	}
 
-public function IDUser(){
-	return $this->IDUser;
-}
+	public function IDUser()
+	{
+		return $this->IDUser;
+	}
 
-public function type(){
-	return $this->type;
-}
+	public function type()
+	{
+		return $this->type;
+	}
 
-public function idObjeto(){
-	return $this->idObjeto;
-}
+	public function idObjeto()
+	{
+		return $this->idObjeto;
+	}
 
-public function precio(){
-	return $this->precio;
-}
+	public function precio()
+	{
+		return $this->precio;
+	}
 }

@@ -1,5 +1,4 @@
 <?php
-
 	require_once __DIR__.'/includes/config.php';
 	require_once __DIR__.'/includes/tiendaMostrarElemento.php';
 ?><!DOCTYPE html>
@@ -7,9 +6,9 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estilo.css') ?>" />
-  <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estiloSidebarIz.css') ?>" />
+  	<link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estiloSidebarIz.css') ?>" />
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
   	<title>Tienda</title>
 </head>
 <body>
@@ -20,6 +19,7 @@
 		?>
 		<div id="contenido">
 			<?php
+			$app->doInclude('/infoTienda.php');
 				if(isset($_GET['type'])){
 					$type = $_GET['type'];
 					switch ($type) {
@@ -36,12 +36,12 @@
 							echo "<h1>Consumibles</h1>";
 							break;
 					}
-					$conn = $app->conexionBd();
-					mostrarElemento($conn, $type);
-					$conn->close();
+					mostrarElemento($type);
+
 				}else
 					echo "<h1>Página no disponible</h1>";
 			?>
+			
 		</div>
 		<?php
 			$app->doInclude('comun/pie.php');
