@@ -1,6 +1,5 @@
 <?php
 	require_once __DIR__.'/includes/config.php';
-	require_once __DIR__.'/includes/tiendaMostrarElemento.php';
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -19,25 +18,38 @@
 		?>
 		<div id="contenido">
 			<?php
-			$app->doInclude('/infoTienda.php');
+			//$app->doInclude('/infoTienda.php');
 				if(isset($_GET['type'])){
 					$type = $_GET['type'];
 					switch ($type) {
 						case 'mapas':
 							echo "<h1>Mapas</h1>";
+							$mapas = es\ucm\fdi\aw\Mapa::getMapasTerminados();
+							foreach ($mapas as $mapa) {
+								$mapa->mostrarSimpleInfo('mapas');
+							}
 							break;
 						case 'enemigo':
 							echo "<h1>Enemigos</h1>";
+							$enemigos = es\ucm\fdi\aw\Enemigos::getEnemigosTienda();
+							foreach ($enemigos as $enemigo) {
+								$enemigo->mostrarSimpleInfo('enemigos');
+							}
 							break;
 						case 'personaje':
 							echo "<h1>Personajes</h1>";
+							$personajes = es\ucm\fdi\aw\Personaje::getPersonajesTienda();
+							foreach ($personajes as $personaje) {
+								$personaje->mostrarSimpleInfo('personajes');
+							}
 							break;
 						case 'consumibles':
-							echo "<h1>Consumibles</h1>";
+							echo "<h1>Consumibles</h1>";$objetos = es\ucm\fdi\aw\ObjetoConsumible::getConsumibleTienda();
+							foreach ($objetos as $objeto) {
+								$objeto->mostrarSimpleInfo('consumibles');
+							}
 							break;
 					}
-					mostrarElemento($type);
-
 				}else
 					echo "<h1>Página no disponible</h1>";
 			?>

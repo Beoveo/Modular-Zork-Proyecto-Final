@@ -1,9 +1,12 @@
 <?php
 namespace es\ucm\fdi\aw;
+
 use es\ucm\fdi\aw\Aplicacion as App;
-class Personaje
+use es\ucm\fdi\aw\ObjetoTienda as Objeto;
+
+class Personaje extends Objeto
 {
-    public static function getPersonaje($idPersonaje){
+    public static function getPersonaje($idPersonaje) {
 
         $result_array=array();
         $app = App::getSingleton();
@@ -12,55 +15,80 @@ class Personaje
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             $fila = $rs->fetch_assoc(); 
-            $personaje= new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['precio'],);
+            $personaje = new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['habilidad']);
             $rs->free();
-            return $fila;
+            return $personaje;
         }
 
       return false;
     }
+
+    //Devuelve un array con todos los personajes que se venden
+    public static function getPersonajesTienda(){
+        $personajes = array();
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
+        $query = "SELECT * FROM personaje";
+        $rs = $conn->query($query);
+        if($rs && $rs->num_rows > 0){
+            while($fila = $rs->fetch_assoc()){ 
+                $personaje = new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['habilidad']);
+                array_push($personajes, $personaje);
+            }
+            $rs->free();
+        }
+        else{
+            echo "<p>No hay personajes disponibles</p>";
+        }
+        return $personajes;
+    }
+
+     public function infoObjetoTienda(){
+        parent::mostrarSupTienda();
+        $fuerza = self::getFuerza();
+        $vida = self::getVida();
+        $habilidad = self::getHabilidad();
+        echo "<p><strong>Fuerza: </strong>$fuerza</p>
+            <p><strong>Vida: </strong>$vida</p>
+            <p><strong>Habilidad: </strong>$habilidad</p>";
+    }
     
-    private $id;
     private $fuerza;
-    private $nombre;
     private $vida;
-    private $precio;
     private $idInventario;
-    private $rutaImagen;
+    private $habilidad;
 
-    private function __construct($id,$fuerza,$nombre,$vida,$precio,$idInventario,$rutaImagen)
+    private function __construct($id,$fuerza,$nombre,$vida,$precio,$idInventario,$rutaImagen,$habilidad)
     {
-        $this->id=$id;
+        parent::__construct($id,$nombre,$precio,$rutaImagen);
         $this->fuerza=$fuerza;
-        $this->nombre=$nombre;
         $this->vida=$vida;
-        $this->precio=$precio;
         $this->idInventario=$idInventario;
-        $this->rutaImagen=$rutaImagen;
+        $this->habilidad = $habilidad;
+    }
+    
+    public function getFuerza(){
+        return $this->fuerza;    
+    }
 
-    }
-    public function getId(){
-        return $this->id;
-    }
-    public function gerFuerza(){
-        return $this->fuerza;
-        
-    }
     public function setFuerza($fuerza){
-        $this->fuerza=$fuerza;
-        
+        $this->fuerza=$fuerza;    
     }
+
     public function getVida(){
-        return $this->vida;
-        
+        return $this->vida;    
     }
+
     public function setVida($vida){ 
         $this->vida=$vida;
     }
     public function getIdInventario(){
         return $this->idInventario;
     }
-    public function getRutaImagen(){
-        return $this->rutaImagen;
-    }   
+
+    public function getHabilidad(){
+        return $this->habilidad;
+    }
+
+    
 }

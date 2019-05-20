@@ -1,7 +1,10 @@
 <?php
 namespace es\ucm\fdi\aw;
+
 use es\ucm\fdi\aw\Aplicacion as App;
-class Mapa
+use es\ucm\fdi\aw\ObjetoTienda as Objeto;
+
+class Mapa extends Objeto
 {
 
     //Carga las mazmorras en un determinado mapa pasado por parametro, el seleccionado.
@@ -48,24 +51,28 @@ class Mapa
     	return false;
     }
 
+    //Devuelve un array con todos los mapas que ya estan terminados
     public static function getMapasTerminados()
     {
+        $mapas = array();
     	$app = App::getSingleton();
     	$conn = $app->conexionBd();
     	$query = "SELECT * FROM mapas WHERE terminadoCreado = 1";
     	$rs = $conn->query($query);
-    	if($rs){
-    		$mapas = array();
+    	if($rs && $rs->num_rows > 0){
     		while($fila = $rs->fetch_assoc()){ 
 				$mapa = new Mapa($fila['id'], $fila['nombre'], $fila['dificultad'], $fila['precio'], $fila['numMazmorras'],$fila['recompensa'],$fila['propietario'], $fila['rutaImagen'], $fila['descripcion'], $fila['valoracion'], $fila['numJugado'], $fila['terminadoCreado']);
 	    		array_push($mapas, $mapa);
 	    	}
     		$rs->free();
-	    	return $mapas;
     	}
-    	return false;
+        else{
+            echo "<p>No hay mapas disponibles</p>";
+        }
+        return $mapas;
     }
 
+    //Devuelve un array de los mapas comprados por un usuario $idUser que ya estan terminados
     public static function getMapasCompradosTerminados($idUser)
     {
     	$app = App::getSingleton();
@@ -86,41 +93,44 @@ class Mapa
     	return false;
     }
 
-    public function mostrarDetalles()
-    {
-    	$app = App::getSingleton();
-    	$conn = $app->conexionBd();
-		//Busca el numbre del propietario
-		$IDpropietario = self::getPropietario();
-		$query = "SELECT nombre FROM usuarios WHERE id = $IDpropietario";
-		$consulta = $conn->query($query);
-		if($consulta->num_rows > 0){
-			$fila = $consulta->fetch_assoc();
-			$nombPropietario = $fila['nombre'];
-		}else{
-			$nombPropietario = "Anonimo";
-		}
-		$dificultad = self::getDificultad();
-		$numMazmorras = self::getNumMazmorras();
-		$recompensa = self::getRecompensa();
-		$descripcion = self::getDescripcion();
-		$valoracion = self::getValoracion();
-		echo "<p><strong>Dificultad: </strong>$dificultad</p>
-			<p><strong>Número de mazmorras: </strong>$numMazmorras</p>
-			<p><strong>Recompensa: </strong>$recompensa</p>
-			<p><strong>Propietario: </strong>$nombPropietario</p>
-			<p><strong>Descripción: </strong>$descripcion</p>
-			<p><strong>Valoración: </strong>$valoracion</p>";
+    //Devuelve el nombre del propietario del mapa
+    public function getNombPropietario(){
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
+        $IDpropietario = self::getPropietario();
+        $query = "SELECT nombre FROM usuarios WHERE id = $IDpropietario";
+        $consulta = $conn->query($query);
+        if($consulta->num_rows > 0){
+            $fila = $consulta->fetch_assoc();
+            $nombPropietario = $fila['nombre'];
+        }else{
+            $nombPropietario = "Anonimo";
+        }
+        return $nombPropietario;
+    }
+
+    //Muestra la información del mapa en la tienda
+    public function infoObjetoTienda(){
+        parent::mostrarSupTienda();
+        $dificultad = self::getDificultad();
+        $numMazmorras = self::getNumMazmorras();
+        $recompensa = self::getRecompensa();
+        $nombPropietario = self::getNombPropietario();
+        $descripcion = self::getDescripcion();
+        $valoracion = self::getValoracion();
+        echo "<p><strong>Dificultad: </strong>$dificultad</p>
+            <p><strong>Número de mazmorras: </strong>$numMazmorras</p>
+            <p><strong>Recompensa: </strong>$recompensa</p>
+            <p><strong>Propietario: </strong>$nombPropietario</p>
+            <p><strong>Descripción: </strong>$descripcion</p>
+            <p><strong>Valoración: </strong>$valoracion</p>";
     }
     
-    private $id;
-    private $nombre;
+
     private $dificultad;
-    private $precio;
     private $numMazmorras;
     private $recompensa;
     private $propietario;
-    private $rutaImagen;
     private $descripcion;
     private $valoracion;
     private $numJugado;
@@ -128,38 +138,20 @@ class Mapa
     
     private function __construct(int $id,string $nombre,int $dificultad,float $precio,int $numMazmorras,int $recompensa,int $propietario, string $rutaImagen,$descripcion,int $valoracion,int $numJugado,int $terminadoCreado)
     {
-     	$this->id = $id;
-     	$this->nombre = $nombre;
+     	parent::__construct($id,$nombre,$precio,$rutaImagen);
      	$this->dificultad = $dificultad;
-     	$this->precio = $precio;
      	$this->numMazmorras = $numMazmorras;
      	$this->recompensa = $recompensa;
      	$this->propietario = $propietario;
-     	$this->rutaImagen = $rutaImagen;
      	$this->descripcion = $descripcion;
      	$this->valoracion = $valoracion;
      	$this->numJugado = $numJugado;
 
     }
-  
-    private function getId()
-    {
-    	return $this->id;
-    }
-
-    private function getNombre()
-    {
-    	return $this->nombre;
-    }
 
     private function getDificultad()
     {
     	return $this->dificultad;
-    }
-    
-    private function getPrecio()
-    {
-    	return $this->precio;
     }
 
     private function getNumMazmorras()
@@ -175,11 +167,6 @@ class Mapa
    	private function getPropietario()
    	{
     	return $this->propietario;
-    }
-
-    private function getRutaImagen()
-    {
-    	return $this->rutaImagen;
     }
 
     private function getDescripcion()
@@ -201,23 +188,4 @@ class Mapa
     {
     	return $this->terminadoCreado;
     }
-
-    
-      /*private function size(){
-        return  $this->tamanio;
-    }
-    private function getMazmorras(){
-        
-        return  $this->mazmorras;
-    }
-    private function setMazmorras($mazmorras){
-        $this->mazmorras=$mazmorras;
-        
-    }
-    private function getConsumibles(){
-        return $this->consumibles;
-    }
-    private function getEnemigos(){
-        return $this->enemigos;
-    }*/
 }

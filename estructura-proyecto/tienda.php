@@ -1,8 +1,8 @@
 
 <?php
 	require_once __DIR__.'/includes/config.php';
-	require_once __DIR__.'/includes/tiendaMostrarElemento.php';
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -18,13 +18,15 @@
 			$app->doInclude('comun/sidebarIzq.php');
 		?>
 		<div id="contenido">
-			<?php $app->doInclude('/infoTienda.php'); ?>
+			<?php // $app->doInclude('/infoTienda.php'); ?>
 			<div id="mapas">
 				<a href="tiendaSeccion.php?type=mapas"><h1>Mapas</h1></a>
 				<ul class=listObj id="listaMapas">
 					<?php
-					$type = "mapas";
-					mostrarElemento($type);
+					$mapas = es\ucm\fdi\aw\Mapa::getMapasTerminados();
+					foreach ($mapas as $mapa) {
+						$mapa->mostrarSimpleInfo('mapas');
+					}
 					?>
 				</ul>
 			</div>
@@ -32,8 +34,10 @@
 				<a href="tiendaSeccion.php?type=enemigo"><h1>Enemigos</h1></a>
 				<ul class=listObj id="listaEnemigos">
 					<?php
-					$type = "enemigo";
-					mostrarElemento($type);
+					$enemigos = es\ucm\fdi\aw\Enemigos::getEnemigosTienda();
+					foreach ($enemigos as $enemigo) {
+						$enemigo->mostrarSimpleInfo('enemigo');
+					}
 					?>
 				</ul>
 			</div>
@@ -41,8 +45,10 @@
 				<a href="tiendaSeccion.php?type=personaje"><h1>Personajes</h1></a>
 				<ul class=listObj id="listaPersonajes">
 					<?php
-					$type = "personaje";
-					mostrarElemento($type);
+					$personajes = es\ucm\fdi\aw\Personaje::getPersonajesTienda();
+					foreach ($personajes as $personaje) {
+						$personaje->mostrarSimpleInfo('personajes');
+					}
 					?>
 				</ul>
 			</div>
@@ -50,8 +56,10 @@
 				<a href="tiendaSeccion.php?type=consumibles"><h1>Objetos</h1></a>
 				<ul class=listObj id="listaObjetos">
 					<?php
-					$type = "consumibles";
-					mostrarElemento($type);
+					$objetos = es\ucm\fdi\aw\ObjetoConsumible::getConsumibleTienda();
+					foreach ($objetos as $objeto) {
+						$objeto->mostrarSimpleInfo('consumibles');
+					}
 					?>
 				</ul>
 			</div>
