@@ -129,6 +129,10 @@ function startGame(mapa){
         var listaOpciones=[];
         var mazmorraAct=rellenaMazmorraAct(mapa,listaOpciones);
         console.log("opciones",listaOpciones);
+
+        //si queremos ir al norte por ejemplo,para moverse por el mapa
+        var maz = mapa.getMazmorra(mazmorraAct.getNorte());
+        mapa.setMazmorraAct(maz);
         
         //panel.append('<div id="target">' + rooms.inicio.description + '</div>');
        // panel.append('<input id="user-input" placeholder="inserta tu comando.."></input>');

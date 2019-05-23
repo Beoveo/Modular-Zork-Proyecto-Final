@@ -31,7 +31,7 @@
 							break;
 						case 'enemigo':
 							echo "<h1>Enemigos</h1>";
-							$enemigos = es\ucm\fdi\aw\Enemigos::getEnemigosTienda();
+							$enemigos = es\ucm\fdi\aw\EnemigoContiene::getEnemigosTienda();
 							foreach ($enemigos as $enemigo) {
 								$enemigo->mostrarSimpleInfo('enemigos');
 							}

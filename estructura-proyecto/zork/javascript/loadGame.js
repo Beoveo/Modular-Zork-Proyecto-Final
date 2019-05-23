@@ -18,7 +18,6 @@ $(document).on('click', '#start', function(e) {
             method: "GET", 
             
             url: "loadMapa.php",
-            data: JSON.stringify(e),
             success: function( data ) { 
                
                 var result= $.parseJSON(data); 
@@ -75,10 +74,7 @@ function choiceMap (myArray){
 
     jQuery('#getvalue').on('click', function(e) {  
         selValue = document.querySelector('input[name = "mapas"]:checked').value;
-        mapa = myArray[selValue]
-        
-        //inventario = mapa.inventario.split(",")
-        
+        mapa = myArray[selValue];        
         panel.empty();
         rellenaMapa(selValue);
     });
@@ -130,16 +126,22 @@ function rellenaMapa(selValueMap){
 						// en la posicion 2 del myArray llega el array de enemigos
 						// en la posicion 3 del myArray llega el array de consumibles
 						var tamanioMapa= myArray[0];
+
+						//Falta guardar otros datos de mapa como x,y,w,h
 						mapa= new Mapa(tamanioMapa);
 						mapa.inicializa();
+
 						var monstruos=[];
 						var consumibles=[];
 						for(i=0;i<tamanioMapa;i++){
-							if(myArray[2].length != 0)
+							if(myArray[2][i] != null){
 								monstruos=loadEnemigos(myArray[2][i]);
-							if(myArray[3].length != 0)
+							}
+
+							if(myArray[3][i] != null){
 								consumibles=loadConsumibles(myArray[3][i]);
-							
+							}
+
 							mazmorra=new Mazmorra(myArray[1][i].idMazmorra,monstruos,consumibles,myArray[1][i].historia,myArray[1][i].numSalidas,myArray[1][i].recompensa,myArray[1][i].mazmorraNorte,myArray[1][i].mazmorraSur,myArray[1][i].mazmorraEste,myArray[1][i].mazmorraOeste,myArray[1][i].rutaImagen);
 							mazmorra.inicializa();
 							if(myArray[1][i].mazmorraInicial==1){
@@ -176,6 +178,7 @@ var Mapa=function(tamMazmorras){
 	var mazmorras;
 	var mazmorraAct;
 	var mazmorraFinal;
+
 	this.size=function(){
 		return this.tamanio;
 	}
@@ -201,11 +204,21 @@ var Mapa=function(tamMazmorras){
 		this.mazmorras.push(mazmorra);
 	}
 	this.getMazmorra=function(idMazmorra){
-		for(i=0;i<mazmorras.length;i++){
-			if(mazmorras[i]==idMazmorra)return mazmorras[i];
+		var encontrado = false;
+		var i = 0;
+		var ret = -1;
+
+		while(i<this.mazmorras.length && !encontrado){
+			if(this.mazmorras[i].getId() == idMazmorra){
+				encontrado = true;
+				ret = this.mazmorras[i];
+			}
+			
+			i++;
 		}
-		
+		return ret;	
 	}
+
 	this.isInserted=function(idMazmorra){
 		for(i=0;i<mazmorras.length;i++){
 			if(mazmorras[i]==idMazmorra)return true;
@@ -222,7 +235,7 @@ var Mapa=function(tamMazmorras){
 }
 //ALBERTO JS
 //--------------------------------------------------------clase mazmorra----------------------------------------------------------
-var Mazmorra= function(idMazmorra,monstruos, consumibles,historia,numSalidas,recompensa,mazmorraNorte,mazmorraSur,mazmorraEste,mazmorraOeste,rutaImagen){
+var Mazmorra= function(idMazmorra,monstruos, consumibles,historia,numSalidas,recompensa,mazmorraNorte,mazmorraSur,mazmorraEste,mazmorraOeste,rutaImagen,x,y,w,h){
 	var listaConsumibles=new Array();
 	var listaMonstruos=new Array();
 	var listaRespuestas=new Array();
@@ -237,6 +250,10 @@ var Mazmorra= function(idMazmorra,monstruos, consumibles,historia,numSalidas,rec
 	var mazmorraEste;
 	var mazmorraOeste;
 	var rutaImagen;
+	var x;
+	var y;
+	var w;
+	var h;
 	
 	this.inicializa= function(){
 		this.listaConsumibles=consumibles;
@@ -249,9 +266,12 @@ var Mazmorra= function(idMazmorra,monstruos, consumibles,historia,numSalidas,rec
 		this.mazmorraOeste=mazmorraOeste;
 		this.mazmorraEste=mazmorraEste;
 		this.rutaImagen=rutaImagen;
-
-
+		this.x=x;
+		this.y=y;
+		this.w=w;
+		this.h=h;
 	}
+
 	this.getImagen=function(){
 		return this.rutaImagen;
 		
@@ -315,7 +335,10 @@ var Consumible= function(id,categoria,nombre,fuerza,habilidad,vida,imagenConsumi
 	var vida;
 	var imagen;
 	var id;
-
+	var x;
+	var y;
+	var w;
+	var h;
 
 	this.inicializa= function(){
 		this.categoria=categoria;
@@ -324,7 +347,10 @@ var Consumible= function(id,categoria,nombre,fuerza,habilidad,vida,imagenConsumi
 		this.habilidad=habilidad;
 		this.vida=vida;
 		this.imagen=imagenConsumible;
-
+		this.x=x;
+		this.y=y;
+		this.w=w;
+		this.h=h;
 	}
 	//por defecto los efetos que no esten contemplados segun la categoria valdran 0 y no NULL.
 	this.getFuerza=function(){
@@ -362,11 +388,20 @@ var ataque;
 var imagenMonstruo;
 var listaRespuestas;
 var nombre;
+var x;
+var y;
+var w;
+var h;
+
 this.inicializa=function(){
 	this.vida=vida;
 	this.ataque=ataque;
 	this.imagenMonstruo=imagenMonstruo;
 	this.nombre=nombre;
+	this.x=x;
+	this.y=y;
+	this.w=w;
+	this.h=h;
 	//this.listaRespuestas=respuestas;
 }
 this.getNombre=function(){
@@ -388,7 +423,7 @@ this.getListaRespuestas= function(){
 };
 //ALBERTO JS
 //--------------------------------------------------------clase Personaje----------------------------------------------------------
-var Personaje= function(vida,nombre,fuerza,inventario,imagen){
+var Personaje= function(vida,nombre,fuerza,inventario,imagen,x,y,w,h){
 
 	var vidaAct;
 	var vidaMax;
@@ -398,6 +433,10 @@ var Personaje= function(vida,nombre,fuerza,inventario,imagen){
 	var nombre;
 	var fuerza;
 	var mazMorraActual;
+	var x;
+	var y;
+	var w;
+	var h;
 
 	this.inicializa=function(){
 		this.vidaMax=vida;
@@ -405,6 +444,10 @@ var Personaje= function(vida,nombre,fuerza,inventario,imagen){
 		this.nombre=nombre;
 		this.fuerza=fuerza;
 		this.imagen=imagen;
+		this.x=x;
+		this.y=y;
+		this.w=w;
+		this.h=h;
 		this.cargaInv(inventario);
 	}
 	this.cargaInv=function(inventario){

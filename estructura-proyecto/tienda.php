@@ -34,7 +34,7 @@
 				<a href="tiendaSeccion.php?type=enemigo"><h1>Enemigos</h1></a>
 				<ul class=listObj id="listaEnemigos">
 					<?php
-					$enemigos = es\ucm\fdi\aw\Enemigos::getEnemigosTienda();
+					$enemigos = es\ucm\fdi\aw\EnemigoContiene::getEnemigosTienda();
 					foreach ($enemigos as $enemigo) {
 						$enemigo->mostrarSimpleInfo('enemigo');
 					}
@@ -47,7 +47,7 @@
 					<?php
 					$personajes = es\ucm\fdi\aw\Personaje::getPersonajesTienda();
 					foreach ($personajes as $personaje) {
-						$personaje->mostrarSimpleInfo('personajes');
+						$personaje->mostrarSimpleInfo('personaje');
 					}
 					?>
 				</ul>

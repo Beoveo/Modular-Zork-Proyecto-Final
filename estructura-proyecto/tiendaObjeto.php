@@ -1,7 +1,7 @@
 <?php
 	require_once __DIR__.'/includes/config.php';
 
-	use es\ucm\fdi\aw\Enemigos as Enemigos;
+	use es\ucm\fdi\aw\EnemigoContiene as Enemigos;
 	use es\ucm\fdi\aw\ObjetoConsumible as ObjetoConsumible;
 	use es\ucm\fdi\aw\Personaje as Personaje;
 	use es\ucm\fdi\aw\Mapa as Mapa;
@@ -18,7 +18,7 @@
 				$objeto = ObjetoConsumible::buscaObjetoPorId($iden);
 				break;
 			case 'personaje':
-				$objeto = Personaje::getPersonaje($iden);
+				$objeto = Personaje::getPersonajeT($iden);
 				break;
 			case 'mapas':
 				$objeto = Mapa::buscaMapaPorId($iden);

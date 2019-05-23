@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-05-2019 a las 12:11:41
+-- Tiempo de generación: 18-05-2019 a las 16:50:44
 -- Versión del servidor: 10.1.37-MariaDB
--- Versión de PHP: 7.3.1
+-- Versión de PHP: 7.2.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `sw`
+-- Base de datos: `ejercicio3`
 --
 
 -- --------------------------------------------------------
@@ -50,8 +50,24 @@ CREATE TABLE `consumibles` (
   `habilidad` int(11) UNSIGNED NOT NULL,
   `vida` int(11) UNSIGNED NOT NULL,
   `precio` int(11) UNSIGNED NOT NULL,
-  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL
+  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `w` int(10) DEFAULT NULL,
+  `h` int(10) DEFAULT NULL,
+  `tipo` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `consumibles`
+--
+
+INSERT INTO `consumibles` (`id`, `nombre`, `categoria`, `fuerza`, `habilidad`, `vida`, `precio`, `rutaImagen`, `w`, `h`, `tipo`) VALUES
+(1, 'Poción 1', 'salud', 20, 10, 0, 10, 'img/pngZork/pocion1.png', 80, 120, 'consumible'),
+(2, 'Poción 2', 'salud', 20, 10, 15, 15, 'img/pngZork/pocion2.png', 80, 120, 'consumible'),
+(3, 'Escudo azul', 'defensa', 20, 40, 70, 50, 'img/pngZork/Recurso2.png', 80, 120, 'consumible'),
+(4, 'Escudo rojo', 'defensa', 40, 30, 50, 60, 'img/pngZork/Recurso4.png', 80, 120, 'consumible'),
+(5, 'Hacha', 'ataque', 80, 20, 10, 40, 'img/pngZork/Recurso3.png', 80, 120, 'consumible'),
+(6, 'Espada Oro', 'ataque', 50, 40, 20, 50, 'img/pngZork/Recurso5.png', 80, 120, 'consumible'),
+(7, 'Espada Plata', 'ataque', 40, 30, 30, 60, 'img/pngZork/Recurso6.png', 80, 120, 'consumible');
 
 -- --------------------------------------------------------
 
@@ -66,8 +82,25 @@ CREATE TABLE `enemigo` (
   `habilidad` int(11) UNSIGNED NOT NULL,
   `vida` int(11) UNSIGNED NOT NULL,
   `precio` int(11) UNSIGNED NOT NULL,
-  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL
+  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `w` int(10) DEFAULT NULL,
+  `h` int(10) DEFAULT NULL,
+  `tipo` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `enemigo`
+--
+
+INSERT INTO `enemigo` (`id`, `nombre`, `fuerza`, `habilidad`, `vida`, `precio`, `rutaImagen`, `w`, `h`, `tipo`) VALUES
+(1, 'Esqueleto', 20, 30, 100, 30, 'img/pngZork/cala.png', 123, 220, 'enemigo'),
+(2, 'Dragón', 100, 70, 100, 60, 'img/pngZork/dragon.png', 123, 220, 'enemigo'),
+(3, 'Fantasma', 10, 60, 100, 50, 'img/pngZork/fantasma.png', 123, 220, 'enemigo'),
+(4, 'Zombie', 40, 20, 100, 60, 'img/pngZork/fran.png', 123, 220, 'enemigo'),
+(5, 'Momia', 40, 30, 100, 40, 'img/pngZork/momia.png', 123, 220, 'enemigo'),
+(6, 'Muerte', 80, 60, 100, 80, 'img/pngZork/muerte.png', 123, 220, 'enemigo'),
+(7, 'Vampiro', 80, 70, 100, 80, 'img/pngZork/vamp.png', 123, 220, 'enemigo'),
+(8, 'Anciana', 0, 0, 100, 20, 'img/pngZork/anciana.png', 123, 220, 'ayuda');
 
 -- --------------------------------------------------------
 
@@ -79,6 +112,14 @@ CREATE TABLE `inventario` (
   `id` int(11) UNSIGNED NOT NULL,
   `tamaño` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `inventario`
+--
+
+INSERT INTO `inventario` (`id`, `tamaño`) VALUES
+(1, 10),
+(2, 5);
 
 -- --------------------------------------------------------
 
@@ -121,6 +162,18 @@ CREATE TABLE `mapacontiene` (
   `mazmorraFinal` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `mapacontiene`
+--
+
+INSERT INTO `mapacontiene` (`idMapa`, `idMazmorra`, `mazmorraNorte`, `mazmorraEste`, `mazmorraSur`, `mazmorraOeste`, `mazmorraInicial`, `mazmorraFinal`) VALUES
+(1, 1, 2, NULL, NULL, 5, 1, 0),
+(1, 2, 3, 4, 1, NULL, 0, 0),
+(1, 3, NULL, NULL, 2, NULL, 0, 0),
+(1, 4, NULL, NULL, NULL, 2, 0, 0),
+(1, 5, NULL, 1, NULL, 6, 0, 0),
+(1, 6, NULL, 5, NULL, NULL, 0, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -142,6 +195,13 @@ CREATE TABLE `mapas` (
   `terminadoCreado` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `mapas`
+--
+
+INSERT INTO `mapas` (`id`, `nombre`, `dificultad`, `precio`, `numMazmorras`, `recompensa`, `propietario`, `rutaImagen`, `descripcion`, `valoracion`, `numJugado`, `terminadoCreado`) VALUES
+(1, 'Calabozo', 3, 20, 6, 20, 1, 'img/calabozo.png', 'Muy guay', 0, 0, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -154,6 +214,14 @@ CREATE TABLE `mazmorraconsumibles` (
   `x` int(2) UNSIGNED NOT NULL,
   `y` int(2) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `mazmorraconsumibles`
+--
+
+INSERT INTO `mazmorraconsumibles` (`idMazmorra`, `idConsumible`, `x`, `y`) VALUES
+(1, 5, 350, 250),
+(3, 1, 350, 250);
 
 -- --------------------------------------------------------
 
@@ -168,6 +236,16 @@ CREATE TABLE `mazmorraenemigo` (
   `y` int(2) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `mazmorraenemigo`
+--
+
+INSERT INTO `mazmorraenemigo` (`idMazmorra`, `idEnemigo`, `x`, `y`) VALUES
+(2, 1, 440, 150),
+(3, 8, 440, 150),
+(4, 4, 440, 150),
+(6, 6, 440, 150);
+
 -- --------------------------------------------------------
 
 --
@@ -181,8 +259,24 @@ CREATE TABLE `mazmorras` (
   `numEnemigos` int(11) UNSIGNED NOT NULL,
   `recompensa` int(11) UNSIGNED NOT NULL,
   `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `historia` varchar(1000) COLLATE utf8mb4_spanish_ci NOT NULL
+  `historia` varchar(1000) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `x` int(10) NOT NULL,
+  `y` int(10) NOT NULL,
+  `w` int(10) NOT NULL,
+  `h` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `mazmorras`
+--
+
+INSERT INTO `mazmorras` (`id`, `nombre`, `numSalidas`, `numEnemigos`, `recompensa`, `rutaImagen`, `historia`, `x`, `y`, `w`, `h`) VALUES
+(1, 'inicio', 2, 0, 2, 'img/mazmorras/calabozo.png', 'Esta oscuro, hace frio y ves una luz al <b>norte</b> se oye el sonido del agua al <b>oeste</b>', 0, 0, 600, 400),
+(2, 'room1', 3, 0, 3, 'img/mazmorras/lab.png', 'Estas en una habitacion con mas luz, ves una gran sala al <b>norte</b> y un extrano olor proviene del <b>este</b>', 0, 0, 600, 400),
+(3, 'gransala', 2, 0, 2, 'img/mazmorras/sala.png', 'Estas en una gran sala, al fondo una anciana abre una puerta . Que haces?', 0, 0, 600, 400),
+(4, 'trolls', 1, 2, 3, 'img/mazmorras/comedor.png', 'Llegas a otra habitacion, algunos trolls estan asando comida, no te han visto todavia, Que haces?', 0, 0, 600, 400),
+(5, 'room2', 2, 0, 2, 'img/mazmorras/pasilloArmadura.png', 'Por la ventana al <b>oeste</b> se ve un puente que parece que da a la salida de esto.', 0, 0, 600, 400),
+(6, 'room3', 1, 1, 5, 'img/mazmorras/salaDestruida.png', 'Al intentar cruzar la habitacion, la muerte salta y te ataca, Que haces?', 0, 0, 600, 400);
 
 -- --------------------------------------------------------
 
@@ -226,7 +320,9 @@ CREATE TABLE `partida` (
   `IdSiguienteMazmorra` int(11) UNSIGNED NOT NULL,
   `superado` tinyint(1) NOT NULL,
   `fechaComienzo` date NOT NULL,
-  `fechaUltimoAcceso` date NOT NULL
+  `fechaUltimoAcceso` date NOT NULL,
+  `posX` int(10) DEFAULT NULL,
+  `posY` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
 -- --------------------------------------------------------
@@ -243,8 +339,18 @@ CREATE TABLE `personaje` (
   `vida` int(11) UNSIGNED NOT NULL,
   `precio` int(11) UNSIGNED NOT NULL,
   `idInventario` int(11) UNSIGNED NOT NULL,
-  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL
+  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `w` int(10) DEFAULT NULL,
+  `h` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `personaje`
+--
+
+INSERT INTO `personaje` (`id`, `nombre`, `fuerza`, `habilidad`, `vida`, `precio`, `idInventario`, `rutaImagen`, `w`, `h`) VALUES
+(1, 'Anciana', 70, 50, 50, 60, 1, 'img/pngZork/anciana.png', NULL, NULL),
+(2, 'Caballero', 80, 70, 100, 60, 2, 'img/pngZork/personaje1.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -257,6 +363,14 @@ CREATE TABLE `roles` (
   `nombre` varchar(15) COLLATE utf8mb4_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `roles`
+--
+
+INSERT INTO `roles` (`id`, `nombre`) VALUES
+(1, 'user'),
+(2, 'admin');
+
 -- --------------------------------------------------------
 
 --
@@ -267,6 +381,17 @@ CREATE TABLE `rolesusuario` (
   `usuario` int(11) UNSIGNED NOT NULL,
   `rol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `rolesusuario`
+--
+
+INSERT INTO `rolesusuario` (`usuario`, `rol`) VALUES
+(1, 1),
+(2, 2),
+(3, 1),
+(4, 1),
+(5, 1);
 
 -- --------------------------------------------------------
 
@@ -281,9 +406,20 @@ CREATE TABLE `usuarios` (
   `contraseña` varchar(70) COLLATE utf8mb4_spanish_ci NOT NULL,
   `monedas` int(11) NOT NULL DEFAULT '100',
   `puntos` int(11) NOT NULL DEFAULT '0',
-  `rutaFoto` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
   `bloqueado` bit(1) NOT NULL DEFAULT b'0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `contraseña`, `monedas`, `puntos`, `rutaImagen`, `bloqueado`) VALUES
+(1, 'user', 'user@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
+(2, 'admin', 'admin@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
+(3, 'prueba', 'prueba@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
+(4, '1234', '1234@example.org', '$2y$10$crE/87D6eqLr6A6/Vmt4zuDS7/igGThgX6t.ZWwvtyatT4E5gDqgm', 100, 0, NULL, b'0'),
+(5, 'prueba', 'prueba@example.com', '$2y$10$6o18GzEFiT53FYy8sYM19.Nb2/hyVPQkPYeaSfnUndLNPBwsFYs8.', 100, 0, NULL, b'0');
 
 --
 -- Índices para tablas volcadas
@@ -397,7 +533,7 @@ ALTER TABLE `partida`
   ADD KEY `IdUltimaMazSuperada` (`IdUltimaMazSuperada`),
   ADD KEY `IdMazmorraSig` (`IdSiguienteMazmorra`),
   ADD KEY `IdinventarioUsados` (`IdinventarioUsados`),
-  ADD KEY `idUsuario` (`idUsuario`) USING BTREE;
+  ADD KEY `idUsuario` (`idUsuario`);
 
 --
 -- Indices de la tabla `personaje`
@@ -443,19 +579,19 @@ ALTER TABLE `comprados`
 -- AUTO_INCREMENT de la tabla `consumibles`
 --
 ALTER TABLE `consumibles`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `enemigo`
 --
 ALTER TABLE `enemigo`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `inventariopartida`
@@ -467,13 +603,13 @@ ALTER TABLE `inventariopartida`
 -- AUTO_INCREMENT de la tabla `mapas`
 --
 ALTER TABLE `mapas`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `mazmorras`
 --
 ALTER TABLE `mazmorras`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `mensajes`
@@ -485,13 +621,13 @@ ALTER TABLE `mensajes`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
