@@ -18,7 +18,7 @@
 			$app->doInclude('comun/sidebarIzq.php');
 		?>
 		<div id="contenido">
-			<?php // $app->doInclude('/infoTienda.php'); ?>
+			<?php $app->doInclude('/infoTienda.php'); ?>
 			<div id="mapas">
 				<a href="tiendaSeccion.php?type=mapas"><h1>Mapas</h1></a>
 				<ul class=listObj id="listaMapas">

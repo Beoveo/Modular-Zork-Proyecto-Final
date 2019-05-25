@@ -14,46 +14,251 @@ button{
   font-size: 30px;;
 }
 /*CSS para botones de direccion*/
+div#mainPanel {
+  position: relative;
+  width: 720px;
+  height: 110px;
+  background:#AAAAAA;
+  margin: 10px 0px;
+  box-shadow: 2px 2px 2px #000000;
+  border-radius: 5px;
+
+}
+
+div#description {
+  width: 690px;
+  height: 50px;
+  background:#AAAAAA;
+  box-shadow: 2px 2px 2px #000000;
+  border-radius: 5px;
+  padding: 15px;
+ 
+}
+
+div#actions {
+  position: absolute;
+  left: 130px;
+  width: 150px;
+  height: 80px;
+  margin: 6px 0px;
+
+  
+}
+
+div#direction  {
+  position:absolute;
+  left: 0px;  
+  width: 130px;
+  height: 90px;
+  margin: 6px 0px;
+  
+  
+}
+
+div#consumido  {
+  position:absolute;
+  left: 310px;  
+  width: 280px;
+  height: 50px;
+  margin: 0px 0px;
+ 
+
+}
+div#valores {
+  position:absolute;
+  left: 310px; 
+  top: 65px; 
+  width: 280px;
+  height: 30px;
+ 
+}
+
+
+
+div#consumibles {
+   position: absolute;
+  display:inline;
+  left: 450px;
+  width: 126px;
+  height: 102px;
+  border: #353535 4px dotted;
+  
+}
+div#armas {
+  position: absolute;
+
+  left: 580px;
+  width: 126px;
+  height: 102px;
+  border: #353535 4px dotted;
+  
+}
+
+button#cosas {
+  display:inline;
+  width: 42px;
+  height: 42px;
+
+}
+button#armasInv {
+  display:inline;
+  width: 50px;
+  height: 50px;
+
+}
+
+
+
 #north {
   display:block;
-  background:url('north.png');
-  width: 36px;
-  height: 22px;
+  background:url('/estructura-proyecto/img/buttons/north.png');
+  width: 35px;
+  height: 24px;
   color: transparent;
-  margin: 0 54px
+  margin: 5px 50px 
+  
 }
 #south {
   display:block;
-  background:url('south.png');
-  width: 36px;
-  height: 22px;
+  background:url('/estructura-proyecto/img/buttons/south.png');
+  width: 35px;
+  height: 24px;
   color: transparent;
-  margin: 0 54px
+  margin: 0px 50px
 }
 #east {
   display:inline;
-  background:url('east.png');
-  width: 23px;
+  background:url('/estructura-proyecto/img/buttons/east.png');
+  width: 25px;
   height: 36px;
   color: transparent;
-  margin: 1px 50px
+  margin: 0px 10px
+  
 }
 #west {
   display:inline;
-  background:url('west.png');
-  width: 23px;
+  background:url('/estructura-proyecto/img/buttons/west.png');
+  width: 25px;
   height: 36px;
   color: transparent;
-  margin: 15px
+  margin: 0px 25px
 }
 #recoger {
-  background:url('recoger.png');
+  background:url('/estructura-proyecto/img/buttons/recoger.png');
   display:inline;
   width: 62px;
   height: 62px;
   color: transparent;
-  margin: 15px 34px
+  margin: 15px 4px
 }
+
+#atacar {
+  background:url('/estructura-proyecto/img/buttons/atacar.png');
+  display:inline;
+  width: 62px;
+  height: 62px;
+  color: transparent;
+  margin: 15px 4px
+}
+
+
+
+.valorArma {
+  position: absolute;
+  top: 3%;
+  left: 5%;
+  color: #C1C1C1;
+  font-size: 23px;
+  
+}
+
+
+.valorLlave {
+  position: absolute;
+  top: 3%;
+  left: 30%;
+  color: #C1C1C1;
+  font-size: 23px;
+  
+}
+img#armasEscudos {
+ 
+  display:inline;
+  width: 50px;
+  height: 50px;
+
+  margin: 5px 5px;
+ 
+}
+
+
+img#llave {
+  
+  display:inline;
+  width: 50px;
+  height: 50px;
+
+  margin: 5px 5px;
+
+  
+  
+}
+
+img#imgInv {
+  margin: 0px 1px;
+}
+
+img#armasInvImg {
+  width: 50px;
+  height: 50px;
+}
+img#VidaInvImg {
+  width: 50px;
+  height: 50px;
+}
+
+img#vida {
+  display:inline;
+  width: 30px;
+  height: 30px;
+  
+}
+
+#barraP, #barraM {
+  display: inline;
+  width: 190px;
+  height: 35px;
+  margin: 10px 130px;
+}
+div#barras {
+  position: relative;
+  width: 720px;
+  height: 35px;
+  background:#AAAAAA;
+  margin: 8px 0px;
+  box-shadow: 2px 2px 2px #000000;
+  border-radius: 5px;
+
+  
+}
+
+
+progress {
+  position: absolute;
+  height:11px;
+  width:150px;
+  border-radius: 15px;
+  margin: 10px 8px;
+  
+}
+progress#barraVida::-webkit-progress-value {
+  background: #D6182F;
+}
+progress#barraMonst::-webkit-progress-value {
+  background: #299C91;
+}
+
+
 
 /*fin botones*/
 
@@ -77,7 +282,6 @@ img{
   border:2px solid black;
   background: grey;
 }
-
 
 
 button:hover {

@@ -44,7 +44,7 @@
 		?>
 		<div id="contenido">
 			<?php
-			//$app->doInclude('/infoTienda.php');
+			$app->doInclude('/infoTienda.php');
 			if(isset($objeto)){
 				$objeto->infoObjetoTienda();
 			}else

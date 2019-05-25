@@ -60,7 +60,7 @@ div#pie a {
 div#contenido {
 	display:inline-block;
 	margin:20px 20px 20px 20px;
-	width:600px;
+	width:720px;
 	min-height:600px;
 	box-shadow: 2px 2px 2px #000000;
 	background:#dddddd;
@@ -579,11 +579,31 @@ input[type="file"] {
 }
 
 div#sidebar-right {
+	margin:20px 0px 0px 0px;
 	padding: 10px;
-    float:right
-	width: 250px;
-	height: 700px;
+	box-shadow: 2px 2px 2px #000000;
+    float:right;
+	width: 200px;
+	max-height:600px;
 	background-color: #dddddd;
+}
+div#consumiblesIn {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: #2196F3;
+	height: 200px;
+}
+.grid-item {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+div#armamento {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  background-color: #2196F3;
 }
 
 div#sidebar-right a, div#sidebar-right a:visited {

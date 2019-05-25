@@ -38,7 +38,7 @@ class EnemigoContiene extends Objeto
         $rs = $conn->query($query);
         if($rs && $rs->num_rows > 0){
             while($fila = $rs->fetch_assoc()){ 
-                $enemigo = new EnemigoContiene($fila['id'], $fila['nombre'], $fila['fuerza'], $fila['habilidad'], $fila['vida'],$fila['precio'], $fila['rutaImagen'],$fila['x'],$fila['y'],$fila['w'],$fila['h'],$fila['tipo']);
+                $enemigo = new EnemigoContiene($fila['id'], $fila['nombre'], $fila['fuerza'], $fila['habilidad'], $fila['vida'],$fila['precio'], $fila['rutaImagen'],0,0,$fila['w'],$fila['h'],$fila['tipo']);
                 array_push($enemigos, $enemigo);
             }
             $rs->free();
@@ -55,7 +55,7 @@ class EnemigoContiene extends Objeto
         $rs = $conn->query($query);
         if($rs && $rs->num_rows == 1){
             while($fila = $rs->fetch_assoc()){ 
-                $enemigo = new EnemigoContiene($fila['id'], $fila['nombre'], $fila['fuerza'], $fila['habilidad'], $fila['vida'],$fila['precio'], $fila['rutaImagen'],$fila['x'],$fila['y'],$fila['w'],$fila['h'],$fila['tipo']);
+                $enemigo = new EnemigoContiene($fila['id'], $fila['nombre'], $fila['fuerza'], $fila['habilidad'], $fila['vida'],$fila['precio'], $fila['rutaImagen'],0,0,$fila['w'],$fila['h'],$fila['tipo']);
             }
             $rs->free();
             return $enemigo;
@@ -84,7 +84,7 @@ class EnemigoContiene extends Objeto
     private $h;
     private $tipo;
 
-    private function __construct($id,$nombre,$fuerza,$habilidad,$vida,$precio,$rutaImagen,$x,$y,$w,$h,$tipo)
+    public function __construct($id,$nombre,$fuerza,$habilidad,$vida,$precio,$rutaImagen,$x,$y,$w,$h,$tipo)
     {
         parent::__construct($id,$nombre,$precio,$rutaImagen);
         $this->fuerza=$fuerza;

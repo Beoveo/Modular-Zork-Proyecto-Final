@@ -106,7 +106,7 @@ class ObjetoConsumible extends Objeto
         $rs = $conn->query($query);
         if($rs && $rs->num_rows > 0){
             while($fila = $rs->fetch_assoc()){ 
-                $objeto = new ObjetoConsumible($fila['id'], $fila['nombre'], $fila['categoria'], $fila['fuerza'], $fila['habilidad'], $fila['vida'], $fila['precio'],$fila['rutaImagen'], $fila['x'],$fila['y'],$fila['w'],$fila['h'],$fila['tipo']);
+                $objeto = new ObjetoConsumible($fila['id'], $fila['nombre'], $fila['categoria'], $fila['fuerza'], $fila['habilidad'], $fila['vida'], $fila['precio'],$fila['rutaImagen'],0,0,$fila['w'],$fila['h'],$fila['tipo']);
                 array_push($objetos, $objeto);
             }
             $rs->free();

@@ -154,7 +154,7 @@ class Usuario
     $rs = $conn->query($query);
     if ($rs && $rs->num_rows == 1) {
       $fila = $rs->fetch_assoc();
-      $user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña']);
+      $user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña'], $fila['monedas'], $fila['puntos'],$fila['rutaImagen'],$fila['bloqueado']);
       $rs->free();
       return $user;
     }
@@ -170,14 +170,14 @@ class Usuario
     $rs = $conn->query($query);
     if ($rs && $rs->num_rows == 1) {
       $fila = $rs->fetch_assoc();
-      $user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña']);
+      $user = new Usuario($fila['id'], $fila['nombre'], $fila['correo'], $fila['contraseña'], $fila['monedas'], $fila['puntos'],$fila['rutaImagen'],$fila['bloqueado']);
       $rs->free();
       return $user;
     }
       echo"$conn->error";
     return false;
   }
-
+  
   private $id;
 
   private $usermail;
@@ -187,14 +187,26 @@ class Usuario
   private $roles;
   
   private $name;
+
+  private $monedas;
+
+  private $puntos;
+
+  private $rutaImagen;
+
+  private $bloqueado;
   
-  private function __construct($id, $name, $usermail, $password)
+  private function __construct($id, $name, $usermail, $password, $monedas, $puntos,$rutaImagen,$bloqueado)
   {
     $this->id = $id;
     $this->name = $name;
     $this->usermail = $usermail;
     $this->password = $password;
     $this->roles = [];
+    $this->monedas = $monedas;
+    $this->puntos = $puntos;
+    $this->rutaImagen = $rutaImagen;
+    $this->bloqueado = $bloqueado;
   }
 
   public function id()
@@ -237,6 +249,11 @@ class Usuario
     return password_verify($password, $this->password);
   }
   
+
+  public function getMonedas()
+  {
+    return $this->monedas;
+  }
   /*
   public function cambiaPassword($nuevoPassword)
   {

@@ -3,7 +3,15 @@ var panel = $('#zork-area');
 var inventario = [];
 var mapaCargado = {};
 
-
+$(document).on('click', '#prueba', function() {
+	$(function(){ 
+        panel.empty();
+        //Descomentar cuando funcione personaje
+        //selPersonaje(selValue, mapa, personajes);
+        CargaPersonaje(1,1)
+         
+    }); 
+})
 $(document).on('click', '#start', function(e) {
     
     $(function(){ 
@@ -57,15 +65,90 @@ function choiceMap (myArray){
     panel.append("</form>");
 
     jQuery('#getvalue').on('click', function(e) {  
-        selValue = document.querySelector('input[name = "mapas"]:checked').value;
-        var mapa = myArray[selValue];
+        mapaSele = document.querySelector('input[name = "mapas"]:checked').value;
+        var mapa = myArray[mapaSele];
         panel.empty();
         //Descomentar cuando funcione personaje
         //selPersonaje(selValue, mapa, personajes);
-        rellenaMapa(selValue);
+		loadPersonajes(mapaSele);
+    });
+}
+function loadPersonajes(mapaSele){
+    $.ajax({ 
+
+            method: "GET", 
+            
+            url: "loadPersonajes.php",
+            success: function( data ) { 
+               
+                var result= $.parseJSON(data); 
+                panel.append('<br><button id="getvalue">Siguiente</button>');
+
+                var myArrayPerson = [];
+               
+                if(result.length !== 0){
+                   /* from result create a string of data and append to the div */
+                    $.each( result, function( key, value ) { 
+                            myArrayPerson.push(value);
+                     }); 
+                      
+                    panel.empty();
+                    choicePersonaje(myArrayPerson,mapaSele);
+                }
+                else{
+                    alert("Error al cargar la base de datos");
+                    p.empty();   
+                }
+            }
+
+          }); 
+}
+function choicePersonaje(myArrayPerson,mapaSele){
+
+    panel.append("Selecciona el personaje con el que piensas jugar.");
+    panel.append("<form name=fmap>");
+
+    for(i=0; i<myArrayPerson.length; i++){     
+        panel.append('<legend><input type="Radio" name="person" value="'
+        	+ myArrayPerson[i].id +'">Personaje: '+myArrayPerson[i].nombre+"</legend>"+"<p>Fuerza:   "
+        		+ myArrayPerson[i].fuerza +"</p>"+"<p>Habilidad:   "
+        		+ myArrayPerson[i].habilidad +"</p>"+"<p>Vida:   "
+        		+ myArrayPerson[i].vida +"</p>");
+    }
+    panel.append('<p></p><button id="getvalue">Siguiente</button>'); 
+    panel.append("</form>");
+
+    jQuery('#getvalue').on('click', function(e) {  
+       var indexPer = document.querySelector('input[name = "person"]:checked').value;
+
+        panel.empty();
+        //var per = new Personaje(100, "Caballero",50,2, "img/pngZork/personaje1.png",50,150,123,220);
+        CargaPersonaje(indexPer,mapaSele);
     });
 }
 
+
+function CargaPersonaje(indexPer,mapaSele){
+    $.ajax({ 
+         method: "GET", 
+         url: "loadPersonajes.php?idPersonaje=" + indexPer ,
+         success: function (msg){
+
+         var result= $.parseJSON(msg); 
+                        //var arstring= [];
+         var myArray = [];
+         if(result.length !== 0){
+            var per = new Personaje(result.vida, result.nombre,result.fuerza,result.fuerza,2, result.rutaImagen,50,150,123,220);
+             per.inicializa();
+             rellenaMapa(per,mapaSele);
+         }
+    }
+
+    });
+      
+        
+
+}
 //Funcionalidad de juego
 
 /*
@@ -95,6 +178,7 @@ function selPersonaje(selValue, mapa, personajes){
         
         console.log(personaje);
         panel.empty();
+        var per = new Personaje(100, "Caballero",50,2, "img/pngZork/personaje1.png",50,150,123,220);
         rellenaMapa(selValue);
         //sqlRooms(selValue);
         
@@ -102,18 +186,7 @@ function selPersonaje(selValue, mapa, personajes){
 }
 */
 
-function loadPersonaje(personaje){
-	//Guardar en partida.idPersonaje
-	/*var p = new Personaje(personaje[i].vida, personaje[i].nombre,
-		 	personaje[i].fuerza, personaje[i].inventario, personaje[i].rutaImagen,
-		 	personaje[i].x, personaje[i].y,personaje[i].w,personaje[i].h);*/
 
-	var p = new Personaje(100, "Caballero",
-		 	50,2, "pngZork/personaje1.png",123,220);
-	p.inicializa();
-	
-	return p;
-}
 
 function loadConsumibles(consum){
 //Guardar en partida.inventario
@@ -140,13 +213,13 @@ function loadEnemigos(enem){
 }
 
 
-function rellenaMapa(selValueMap){ 
+function rellenaMapa(personaje,mapaSele){ 
 	var mazmorra;
 	var mapa;
 
          $.ajax({ 
 			 method: "GET", 
-			 url: "loadMapa.php?idMapa=" + selValueMap ,
+			 url: "loadMapa.php?idMapa=" + mapaSele ,
 			 success: function (msg){
 
 					var result= $.parseJSON(msg); 
@@ -163,8 +236,8 @@ function rellenaMapa(selValueMap){
 						// en la posicion 3 del myArray llega el array de consumibles
 						var tamanioMapa= myArray[0];
 						//var personaje = myArray[4];
-						var per = new Personaje(100, "Caballero",50,2, "img/pngZork/personaje1.png",50,150,123,220);
-						per.inicializa();
+						var per = personaje;
+						
 						mapa= new Mapa(tamanioMapa,per);
 						mapa.inicializa();
 
@@ -214,344 +287,4 @@ function rellenaMapa(selValueMap){
       
     
 }
-
-//--------------------------------------------------------clase mapa----------------------------------------------------------
-var Mapa=function(tamMazmorras,personajeMapa){
-	var tamanio;
-	var mazmorras;
-	var personaje;
-	var mazmorraAct;
-	var mazmorraFinal;
-	this.size=function(){
-		return this.tamanio;
-	}
-	this.inicializa=function(){
-		this.tamanio=tamMazmorras;
-		this.personaje=personajeMapa;
-		this.mazmorras=new Array();
-	}
-	this.setMazmorraAct=function(mazmorra){
-		this.mazmorraActual=mazmorra;
-	}
-	this.getMazmorraAct=function(){
-		
-		return this.mazmorraAct;
-	}
-	this.getMazmorraFinal=function(){
-		return this.mazmorraFinal;
-	}
-	this.setMazmorraFinal=function(idMazmorra){
-		this.mazmorraFinal=idMazmorra;
-		
-	}
-
-	this.insertaPersonaje=function(p){
-		this.personaje=p;
-	}
-
-	this.insertaMazmorra=function(mazmorra){
-		this.mazmorras.push(mazmorra);
-	}
-	this.getMazmorra=function(idMazmorra){
-		var encontrado = false;
-		var i = 0;
-		var ret = -1;
-
-		while(i<this.mazmorras.length && !encontrado){
-			if(this.mazmorras[i].getId() == idMazmorra){
-				encontrado = true;
-				ret = this.mazmorras[i];
-			}
-			
-			i++;
-		}
-		return ret;	
-	}
-
-	this.isInserted=function(idMazmorra){
-		for(i=0;i<mazmorras.length;i++){
-			if(mazmorras[i]==idMazmorra)return true;
-		}
-		return false;
-	}
-
-	this.getMapa=function(){
-		
-		return this.mazmorras;
-	}
-	
-	
-}
-
-//--------------------------------------------------------clase mazmorra----------------------------------------------------------
-var Mazmorra= function(idMazmorra,monstruos, consumibles,historia,numSalidas,recompensa,mazmorraNorte,mazmorraSur,mazmorraEste,mazmorraOeste,rutaImagen,x,y,w,h){
-	var listaConsumibles=new Array();
-	var listaMonstruos=new Array();
-	var listaRespuestas=new Array();
-	var historiaPrincipal;
-	var numSalidas;
-	var recompensa;
-	//argumento para saber si es la ultima mazmorra para poder terminar el juego de forma exitosa.
-	var ultima;
-	var idMazmorra;
-	var mazmorraNorte;
-	var mazmorraSur;
-	var mazmorraEste;
-	var mazmorraOeste;
-	var rutaImagen;
-	var x;
-	var y;
-	var w;
-	var h;
-	
-	this.inicializa= function(){
-		this.listaConsumibles=consumibles;
-		this.listaMonstruos=monstruos;
-		this.numSalidas=numSalidas;
-		this.historiaPrincipal=historia;
-		this.idMazmorra=idMazmorra;
-		this.mazmorraNorte=mazmorraNorte;
-		this.mazmorraSur=mazmorraSur;
-		this.mazmorraOeste=mazmorraOeste;
-		this.mazmorraEste=mazmorraEste;
-		this.rutaImagen=rutaImagen;
-		this.x=x;
-		this.y=y;
-		this.w=w;
-		this.h=h;
-	}
-	this.getImagen=function(){
-		return this.rutaImagen;
-		
-	}
-	this.getNorte=function(){
-		return this.mazmorraNorte;
-	}
-	this.getSur=function(){
-		return this.mazmorraSur;
-	}
-	this.getEste=function(){	
-		return this.mazmorraEste;
-		
-	}
-	this.getOeste=function(){
-		return this.mazmorraOeste;
-		
-	}
-	this.getId=function (){
-		return this.idMazmorra;
-		
-	}
-	this.getHistoriaPrincipal=function(){
-		return this.historiaPrincipal;
-
-	}
-	this.getListaMonstruos=function(){
-		return this.listaMonstruos;
-	}
-	this.getListaConsumibles= function(){
-		return this.listaConsumibles;
-
-	}
-	this.getListaRespuestas = function(){
-		return this.listaRespuestas;
-
-	}
-	this.setHistoriaPrincipal = function(historia){
-		this.historiaPrincipal=historia;
-	}
-	this.getRecompensa= function(){
-		return this.recompensa;
-	}
-	//devuelve si es la mazmorra de salida.
-	this.esFin= function(){
-		return this.ultima;
-	}
-
-
-};
-
-//--------------------------------------------------------clase Consumible----------------------------------------------------------
-var Consumible= function(id,categoria,nombre,fuerza,habilidad,vida,imagenConsumible,x,y,w,h,tipo){
-	//cada consumible tendra una respuesta asociada por lo que en la base de datos debe estar pasada como parametro para cada consumible.
-	//por ejemplo todos los onjetos consumibles se podran coger para añadirse al inventario.
-
-	var categoria;
-	var nombre;
-	var fuerza;
-	var habilidad;
-	var vida;
-	var rutaImagen;
-	var id;
-	var x;
-	var y;
-	var w;
-	var h;
-	var tipo;
-
-
-	this.inicializa= function(){
-		this.categoria=categoria;
-		this.nombre=nombre;
-		this.fuerza=fuerza;
-		this.habilidad=habilidad;
-		this.vida=vida;
-		this.rutaImagen=imagenConsumible;
-		this.x=x;
-		this.y=y;
-		this.w=w;
-		this.h=h;
-		this.tipo=tipo;
-	}
-	//por defecto los efetos que no esten contemplados segun la categoria valdran 0 y no NULL.
-	this.getFuerza=function(){
-		return this.fuerza;
-	}
-	this.getNombre=function(){
-		return this.nombre;
-	}
-	this.getCategoria=function(){
-
-		return this.categoria;
-
-	}
-	this.getHabilidad=function(){
-
-		return this.habilidad;
-
-	}
-	this.getVida=function(){
-		return this.vida;
-	}
-	this.getId=function(){
-		return this.id;
-	}
-
-	this.getTipo=function(){
-		return this.tipo;
-	}
-
-};
-
-//--------------------------------------------------------clase Monstruo----------------------------------------------------------
-var Monstruo= function(vida, ataque,imagenMonstruo,nombre,x,y,w,h,tipo){
-	//en la base de datos los monstruos tendran unas respuestas asociadas fijas, ya que a un monstruo solo se le puede atacar o huir de el.
-
-var vida;
-var ataque;
-var rutaImagen;
-var listaRespuestas;
-var nombre;
-var x;
-var y;
-var w;
-var h;
-var tipo;
-
-this.inicializa=function(){
-	this.vida=vida;
-	this.ataque=ataque;
-	this.rutaImagen=imagenMonstruo;
-	this.nombre=nombre;
-	this.x = x;
-	this.y=y;
-	this.w=w;
-	this.h=h;
-	this.tipo=tipo;
-
-	//this.listaRespuestas=respuestas;
-}
-this.getNombre=function(){
-	return this.nombre;
-}
-
-this.perderVida=function(daño){
-	this.vida-=daño;
-}
-this.getAtaque =function(){
-	return this.ataque;
-}
-this.getListaRespuestas= function(){
-	return this.listaRespuestas;
-}
-
-};
-
-//--------------------------------------------------------clase Personaje----------------------------------------------------------
-var Personaje= function(vida,nombre,fuerza,inventario,imagen,x,y,w,h){ //Esta cruzado con partida por eso sabemos su posicion
-
-	var vidaAct;
-	var vidaMax;
-	var inventario;
-	var rutaImagen;
-	var fuerza;
-	var nombre;
-	var fuerza;
-	var mazMorraActual;
-	var x;
-	var y;
-	var w;
-	var h;
-
-	this.inicializa=function(){
-		this.vidaMax=vida;
-		this.vidaAct=vida;
-		this.nombre=nombre;
-		this.fuerza=fuerza;
-		this.rutaImagen=imagen;
-		this.x = x;
-		this.y=y;
-		this.w=w;
-		this.h=h;
-		this.cargaInv(inventario);
-	}
-	this.cargaInv=function(inventario){
-		for (var i = 0; i < inventario.length; i++) {
-			this.inventario.push(inventario[i]);
-		}
-	}
-
-	this.restavida=function(daño){
-		this.vidaAct-=daño;
-	}
-
-	this.getVida=function(){
-		return this.vida;
-	}
-	this.sumVidaMax= function(vida){
-		this.vidaMax+=vida;
-	}
-	this.sumFuerza= function(fuerzaObjeto){
-		this.fuerza+=fuerzaObjeto;
-	}
-	this.insertaInventario=function(consumible){
-		this.inventario.push(consumible.getId());
-	}
-	//Suma todos los campos del consumible para actualizar el estado del jugador en nivel de caracteristicas
-	this.interactuarConsumible=function(consumible){
-		if(consumible.getCategoria()!="pocion"){
-			if(this.vidaAct < vidaMax )
-				this.vidaAct+=consumible.getVida();
-		}
-		else{
-			this.fuerza+=consumible.getVida();
-			this.habilidad+=consumible.getHabilidad();
-			this.vidaMax+=consumible.getVida();
-		}
-		eliminaInventario(consumible.getId());
-	}
-	this.eliminaInventario=function(idConsum){
-		for (var j = 0; j < this.inventario.length; j++) {
-			if(this.inventario[j]==idConsum){
-				this.inventario.splice(j,1);
-			}
-		}
-	}
-	this.getFuerza=function(){
-		return this.fuerza();
-
-	}
-
-};
-
 

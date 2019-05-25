@@ -18,7 +18,7 @@
 		?>
 		<div id="contenido">
 			<?php
-			//$app->doInclude('/infoTienda.php');
+			$app->doInclude('/infoTienda.php');
 				if(isset($_GET['type'])){
 					$type = $_GET['type'];
 					switch ($type) {

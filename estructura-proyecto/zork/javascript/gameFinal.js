@@ -10,34 +10,6 @@ var ctx, canvas;
  * Transparencia
  * Posicion con respecto al resto del canvas (over...)
  */
- 
-  function loadButton(){
-    var i = 0;
-	
-    $('#target').append('<button id="north" value="Ir norte"></button>');
-    $('#target').append('<button id="west" value="Ir oeste"></button>')
-    $('#target').append('<button id="east" value="Ir este"></button>')
-    $('#target').append('<button id="south" value="Ir sur"></button>')
-    /*for (let elem in rooms[currentRoom].directions) {
-            //$('#target').append(elem) 
-            $('#target').append('<button id="'+elem+'" value="Ir '+ elem +'">'+ elem +'</button>')
-            i += 1
-   }*/
-   $('#target').append('<button id="recoger" value="recoger"></button>');
-   for (i = 2; i < commands.length; i++) {
-        $('#target').append('<button id="buttonCom" value="'+ commands[i] +'">'+ commands[i] +'</button>');
-    }
-
-   $(document).ready(function () {
-        $("button").click(function () {
-            var valor = this.value;
-            valor = valor.toLowerCase()
-            playerInput(valor)
-            //console.log(valor);
-        });
-    });
-}
-
 
 function draw(ctx, objeto, trans, composite){
 
@@ -63,9 +35,6 @@ function drawObject(objeto){
             case "enemigo":
                 trans = objeto.vida/100;
                 break;
-            case "personaje":
-                trans = objeto.vida/100;
-                break;
             default:
                 trans = 1;
                 break;
@@ -84,22 +53,21 @@ function drawAll(ctx, objeto, trans, composite){
                 ctx.drawImage(img,objeto.x, objeto.y, objeto.w, objeto.h);
           };
     }
-} 
+}
 
 
 function changeRoom(dir) {
 
-    $('#target').empty();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     var act = null;
     var maz = mapaCargado.mazmorraActual;
+
     if (maz !== undefined) {
-        
+
         switch(dir){
             case "norte":
                 if(maz.mazmorraNorte !== null)
                     act = mapaCargado.mazmorras[maz.mazmorraNorte -1];
+
                 break;
             case "sur":
                 if(maz.mazmorraSur !== null)
@@ -116,105 +84,104 @@ function changeRoom(dir) {
             default:
                 break;
         }
-        
+
         if(act != null){
-            mapaCargado.mazmorraActual = act;
-            $('#target').append('<div id="decript">' + mapaCargado.mazmorraActual.historiaPrincipal + '</div>');
-			//loadButton();					///////////////////////////////////////////////////////botones
-        }else{
-            $('#target').append('<div id="error">No puedes ir por el ' + dir + ' , prueba otro camino!</div>');
-            $('#target').append('<div id="decript">' + mapaCargado.mazmorraActual.historiaPrincipal + '</div>');
+            $('#description').empty();
+            $('#barras').empty();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            mapaCargado.setMazmorraAct(act);
+            $('#description').append(mapaCargado.mazmorraActual.historiaPrincipal );
+            barraProgreso();
+            actualizaCanvas(mapaCargado, mapaCargado.mazmorraActual.idMazmorra);
+            
+            //esto mejor meterlo en el evento click del inventario .
+            /*if(mapaCargado.esFinal() && mapaCargado.personaje.tieneLLave() && mapaCargado.tieneEnemigos()){
+                $('#description').html('<h1>Has Ganado!</h1><button>Salir</button>');
+            }*/
         }
+    } 
+}
+function consume(boton){
+    console.log("a ver is llegas")
+    var consumible=mapaCargado.personaje.inventario[boton.value];
+    mapaCargado.personaje.consumePocion(consumible);
 
-    } else {
-        $('#target').append('<div id="error">No existe ese camino!!</div>');
-        $('#target').append('<div id="decript">' + mapaCargado.mazmorraActual.historiaPrincipal + '</div>');
+    $('#valorArm').html(mapaCargado.personaje.getFuerza());
+    $('#valorDef').html(mapaCargado.personaje.getVida());
+    $('#valorLl').html(mapaCargado.personaje.tieneLLave());
+    $('#barras').empty();
+    barraProgreso();
+    refrescaInv();
+}
+function refrescaInv() {
+
+
+  var textohtmlPociones="";
+  var textohtmlArmas="";
+  var inventario=mapaCargado.personaje.inventario;
+    for (var i = 0; i < inventario.length; i++){
+        if(inventario[i].getCategoria()=="salud"){
+            textohtmlPociones+='<button id="cosas" value="'+i+'"><img id="vidaInvImg" src="'+inventario[i].rutaImagen+'"></button>';
+        }
+        else{
+            textohtmlArmas+='<button id="cosas" value="'+i+'"><img id="armasInvImg" src="'+inventario[i].rutaImagen+'"></button>';
+        }
     }
+     $('#armas').html(textohtmlArmas);
+    $('#consumibles').html(textohtmlPociones);
 
-    //Pruebas
-    if(mapaCargado.mazmorraActual.listaConsumibles !== null)
-        console.log("aqui consumible: " + mapaCargado.mazmorraActual.listaConsumibles.length);
-    if(mapaCargado.mazmorraActual.listaMonstruos !== null)
-        console.log("aqui enemigos: " + mapaCargado.mazmorraActual.listaMonstruos.length);
+   // $(document).ready(function () {
+       
+   // });
+   $(document).ready(function() {
+        $("#cosas").click(function () {
+            var valor = this.value;
+            console.log("aqui entra"+ valor )
+            consume(this)
+        });
+    });
+    
+   
+       
 
-	loadButton()
- //   $('#target').append('<input id="user-input" placeholder="inserta tu comando.."></input>');
- //   $('#user-input').focus();
-    actualizaCanvas(mapaCargado, mapaCargado.mazmorraActual.idMazmorra);
-
-
-    //Se carga de cero toda la mazmorra.
-    //drawAll(ctx,act.listaConsumibles,1,"source-over");
-    //drawAll(ctx,act.listaMonstruos,1,"source-over");
 }
 
-function showinventario() {
-     // crear un dom hijo, appendchild, para luego borrarlo
-    //Esta variable inventario esta en loadGame
-    if (inventario.length === 0) {
-        panel.append('<div id="target" >No llevas nada !</div>');
-        return; //Que devuelva algo.
-    }
-
-    panel.append('<div id="target">Este es tu inventario: </div>');
-    panel.append("<p><ul>");
-
-    for (var i = 0; i < inventario.length; i++) 
-        panel.append("<li>" + inventario[i] + "</li>");
-
-    panel.append("</ul></p>");  
-}
 
 
 function pickUpThings(objeto){
     
-    $('#target').empty();
-    if (objeto !== undefined) {
-        //Le pasamos el tipo de objeto
-        switch(objeto.tipo){
-            case "consumible":
-                inventario.push(objeto);
-                mapaCargado.mazmorraActual.listaConsumibles.pop();
-                break;
-            case "enemigo":
-                inventario.push(objeto);
-                mapaCargado.mazmorraActual.listaMonstruos.pop();
-                break;
-            default:
-                break;
-        }
-
-        $('#target').append('<div id="decript">' + mapaCargado.mazmorraActual.historiaPrincipal + '</div>');
-    } else {
-        $('#target').append('<div id="error">Ese objeto no esta en esta habitacion!</div>');
-    }
-	
-	loadButton();			/////////////////////////////////////////////botones
-
-    //$('#target').append('<input id="user-input" placeholder="inserta tu comando.."></input>');
-    //$('#user-input').focus();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    actualizaCanvas(mapaCargado,mapaCargado.mazmorraActual.idMazmorra);
-
-    console.log(inventario);
+   
+        mapaCargado.cogeConsumible(objeto);
+       
+        refrescaInv();
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        actualizaCanvas(mapaCargado,mapaCargado.mazmorraActual.idMazmorra);
+        console.log(mapaCargado.personaje.inventario)
+   
 }
 
 
-/*el mounstruo debera tener una vida cargada desde la base de datos*/
-function atacar(arma){
-    
-    if(arma !== undefined && mapaCargado.mazmorraActual.listaMonstruos.length !== 0){ // s iexiste mounstruo
-           var index = inventario.indexOf(arma);
-           if(index != -1 ){//comprobar si existe arma seleccionada
-                 mapaCargado.mazmorraActual.listaMonstruos[0].vida -= 25;
-                 if(mapaCargado.mazmorraActual.listaMonstruos[0].vida <= 0)
-                    mapaCargado.mazmorraActual.listaMonstruos.pop();
-            }
-    }
 
-    //comprobar vida personaje, si muere limpiar y volver a cargar
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    actualizaCanvas(mapaCargado,mapaCargado.mazmorraActual.idMazmorra);
+
+function atacar(){
+    maz  = mapaCargado.mazmorras[mapaCargado.mazmorraActual.idMazmorra - 1];
+  if(maz.listaMonstruos !== null && maz.listaMonstruos.length !== 0){ // si existe mounstruo
+      $('#barras').empty();
+
+      mapaCargado.personaje.ataca(maz.listaMonstruos[0]);
+      
+      if(mapaCargado.personaje.vidaAct <= 0){
+        gameOver();
+      }
+      if(mapaCargado.mazmorraActual.listaMonstruos[0].vida <= 0)
+        mapaCargado.mazmorraActual.listaMonstruos.pop();
+        barraProgreso();
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        actualizaCanvas(mapaCargado,mapaCargado.mazmorraActual.idMazmorra);
+      }
+
 }
 
 function playerInput(input) {
@@ -236,21 +203,23 @@ function playerInput(input) {
                 pickUpThings(mapaCargado.mazmorraActual.listaConsumibles[0]);
             break;
         case "atacar":
-            var arma = input.split(" ")[1];
-            atacar(arma);
+            atacar();
             break;
         default:
-            $('#target').append('<div id="target">Comando invalido!</div>');
+            //$('#target').append('<div id="target">Comando invalido!</div>');
     }
+
+
+
 }
 
 
 function actualizaCanvas(mapa,mazmorraAct){
-    var maz =mapa.mazmorras[mazmorraAct - 1];
+    var maz =mapaCargado.mazmorraActual;
     draw(ctx,maz,1, "destination-over");
             //Comprobar en todos que no es nulo
             if(mapa.personaje !== null)
-                draw(ctx,mapa.personaje,mapa.personaje.vidaAct/100, "source-over");
+                draw(ctx,mapa.personaje,mapa.personaje.factorTrasparencia, "source-over");
 
             if(maz.listaConsumibles !== null && maz.listaConsumibles.length !== 0)
                 drawObject(maz.listaConsumibles[0]);
@@ -259,41 +228,125 @@ function actualizaCanvas(mapa,mazmorraAct){
                 drawObject(maz.listaMonstruos[0]);
 }
 
+function loadButton(){
+
+    $('#mainPanel').append('<div id="direction"></div>')
+    $('#direction').append('<button id="north" value="Ir norte"></button>');
+    $('#direction').append('<button id="west" value="Ir oeste"></button>')
+    $('#direction').append('<button id="east" value="Ir este"></button>')
+    $('#direction').append('<button id="south" value="Ir sur"></button>')
+
+    $('#mainPanel').append('<div id="actions"></div>')
+    $('#actions').append('<button id="recoger" title="Recoger" value="recoger"></button>');
+    $('#actions').append('<button id="atacar" title="Atacar" value="atacar"></button>');
+
+    consumido()
+
+    inventario()
+
+    $(document).ready(function () {
+        $("button").click(function () {
+            var valor = this.value;
+            valor = valor.toLowerCase()
+            playerInput(valor)
+        });
+    });
 
 
+
+    
+        
+}
+
+function consumido(){
+    $('#mainPanel').append('<div id="consumido"></div>')
+    $('#mainPanel').append('<div id="valores"></div>')
+
+    $('#consumido').append('<img id="armasEscudos" src = "/estructura-proyecto-3/img/buttons/inventario.png">')
+    $('#valores').append('<img id="imgInv" src = "/estructura-proyecto/img/buttons/valores.png">')
+    $('#valores').append('<div class="valorArma" id="valorArm"> '+mapaCargado.personaje.getFuerza()+'</div> ')
+    
+    $('#consumido').append('<img id="llave" src = "/estructura-proyecto-3/img/buttons/llave.png">')
+    $('#valores').append('<img id="imgInv3" src = "/estructura-proyecto/img/buttons/valores.png">')
+    $('#valores').append('<div class="valorLlave id="valorLlave">'+mapaCargado.personaje.tieneLLave()+'</div> ')
+    
+}
+
+function inventario(){
+   
+
+    $('#mainPanel').append('<div id="consumibles"></div>')
+
+    $('#mainPanel').append('<div id="armas"></div>')
+
+
+
+
+
+}
+    
+        
+
+function barraProgreso(){
+    maz  = mapaCargado.mazmorras[mapaCargado.mazmorraActual.idMazmorra - 1];
+
+
+    $('#barras').append('<div id="barraP"></div>')
+    $('#barraP').append('<img id="vida" src = "/estructura-proyecto/img/buttons/vida.png">')
+    $('#barraP').append('<progress id=barraVida value="'+mapaCargado.personaje.getVida()+'" max="'+mapaCargado.personaje.getVidaMax()+'">70 %</progress>')
+
+    if(maz.listaMonstruos !== null && maz.listaMonstruos.length !== 0){
+        $('#barras').append('<div id="barraM"></div>')
+        $('#barraM').append('<img id="vida" src = "/estructura-proyecto/img/buttons/monstruoBar.png">')
+        $('#barraM').append('<progress id=barraMonst value="'+mapaCargado.mazmorraActual.listaMonstruos[0].getVida()+'" max="100">70 %</progress>')
+    }
+
+}
+
+function gameOver(){
+    alert("Te has quedado sin vida vuelve a empezar");
+    window.location.pathname = "/estructura-proyecto/juego.php";
+    
+}
 
 
 function startGame(){
 
-        panel.append('<canvas id="canvas" height="453" width="600"></canvas>');        
+        panel.append('<canvas id="canvas" height="410" width="720"  ></canvas>');
 
         canvas =document.getElementById('canvas');
         ctx = canvas.getContext('2d');
 
         if(mapaCargado !== null || mapaCargado.mazmorraActual !== null){
             //console.log(mapaCargado.mazmorraActual.idMazmorra);
+            
             actualizaCanvas(mapaCargado,mapaCargado.mazmorraActual.idMazmorra);
 
-			
-			
-			
+
             panel.append('<div id="target"></div>');
-            $('#target').append('<div id="decript">' + mapaCargado.mazmorraActual.historiaPrincipal + '</div>');
+            $('#target').append('<div id="barras"></div>')
+            barraProgreso()
+            $('#target').append('<div id="description">' + mapaCargado.mazmorraActual.historiaPrincipal + '</div>');
             //$('#target').append('<input id="user-input" placeholder="inserta tu comando.."></input>');
             //$('#user-input').focus();
-			loadButton()					///////////////////////////////////////////////////////botones
-			
 
-            $(document).keypress(function(key) {
+            $('#target').append('<div id="mainPanel"></div>')
+
+            loadButton()
+
+
+            /*$(document).keypress(function(key) {
                 if (key.which === 13 && $('#user-input').is(':focus')) {
                     var value = $('#user-input').val().toLowerCase();
                     $('#user-input').val("");
                     playerInput(value);
                 }
-            });
+            });*/
 
         }
 }
+
+
 
 
 function luchaFinal(){
@@ -305,7 +358,5 @@ function luchaFinal(){
     draw(ctx,mapaCargado.mazmorraFinal,1, "destination-over");
     draw(ctx,personaje,personaje.vida/100, "source-over");
     drawObject(mapaCargado.mazmorraFinal.listaConsumibles);
-    drawObject(mapaCargado.mazmorraFinal.listaMonstruos); 
+    drawObject(mapaCargado.mazmorraFinal.listaMonstruos);
 }
-
-

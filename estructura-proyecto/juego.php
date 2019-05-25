@@ -18,11 +18,18 @@ require_once __DIR__.'/includes/config.php';
         <?php
         $app->doInclude('comun/cabecera.php');
         $app->doInclude('comun/sidebarIzq.php');
+        /*$app->doInclude('comun/sidebarDer.php');*/
         $app->doInclude('contenidos/contenidoJuego.php');
+        
         $app->doInclude('comun/pie.php');
         ?>
             <script type="text/javascript" src="zork/javascript/loadGameFinal.js"></script>
             <script type="text/javascript" src="zork/javascript/gameFinal.js"></script>
+            <script type="text/javascript" src="zork/javascript/Mazmorra.js"></script>
+            <script type="text/javascript" src="zork/javascript/Mapa.js"></script>
+            <script type="text/javascript" src="zork/javascript/Consumible.js"></script>
+            <script type="text/javascript" src="zork/javascript/Personaje.js"></script>
+            <script type="text/javascript" src="zork/javascript/Monstruo.js"></script>
             <!-- <script type="text/javascript" src="zork/javascript/pruebaCuadricula.js"></script> -->
         </div>
     </body>

@@ -4,14 +4,35 @@ use es\ucm\fdi\aw\Aplicacion as App;
 use es\ucm\fdi\aw\ObjetoTienda as Objeto;
 class Personaje extends Objeto
 {
-    //Modificar  
-    public static function getPersonaje($idPartida,$idPersonaje)
+    
+    
+    public static function cargaPersonajes()
     {
 
         $result_array=array();
         $app = App::getSingleton();
         $conn = $app->conexionBd();
-        $query = sprintf("SELECT * FROM personaje,partida WHERE personaje.id =%s",$idPersonaje);
+        $query = sprintf("SELECT * FROM personaje");
+        $rs = $conn->query($query);
+        if ($rs) {
+            if ($rs->num_rows > 0) {
+                while($row = $rs->fetch_assoc()) {
+                    array_push($result_array, $row);
+                }
+                $rs->free();
+            }
+            return $result_array;
+
+        }
+    }
+    //Modificar  
+    public static function getPersonaje($idPersonaje)
+    {
+
+        $result_array=array();
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
+        $query = sprintf("SELECT * FROM personaje WHERE personaje.id =%s",$idPersonaje);
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             $fila = $rs->fetch_assoc(); 
@@ -90,7 +111,7 @@ class Personaje extends Objeto
     private $w;
     private $h;
 
-    private function __construct($id,$fuerza,$nombre,$vida,$precio,$idInventario,$rutaImagen,$w,$h)
+    public function __construct($id,$fuerza,$nombre,$vida,$precio,$idInventario,$rutaImagen,$w,$h)
     {
         parent::__construct($id,$nombre,$precio,$rutaImagen);
         $this->fuerza=$fuerza;
