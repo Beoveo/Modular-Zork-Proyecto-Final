@@ -22,7 +22,7 @@
 }
  .container--tabs .nav-tabs > li.active > a, .container--tabs .nav-tabs > li.active > a:hover, .container--tabs .nav-tabs > li.active > a:focus {
 	 cursor: default;
-	 background-color: #29F3A8;
+	 background-color: #303030;
 	 border: 1px solid #ddd;
 	 border-bottom-color: transparent;
 	 border-radius: 8px 8px 0 0;

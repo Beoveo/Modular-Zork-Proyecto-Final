@@ -13,14 +13,16 @@ require_once __DIR__.'/includes/config.php';
   <title>Portada</title>
 </head>
 <body>
-<div id="contenedor">
-<?php
-$app->doInclude('comun/cabecera.php');
-$app->doInclude('comun/sidebarIzq.php');
-$app->setPagAct("inicio");
-$app->doInclude('contenidos/contenidoDesarrolladores.php');
-$app->doInclude('comun/pie.php');
-?>
-</div>
+	<div id="contenedor">
+	<?php $app->doInclude('comun/cabecera.php');?>
+		<div class="flexDesign">
+		<?php
+		$app->doInclude('comun/sidebarIzq.php');
+		$app->setPagAct("inicio");
+		$app->doInclude('contenidos/contenidoDesarrolladores.php');
+		?>
+		</div>
+	<?php $app->doInclude('comun/pie.php'); ?>
+	</div>
 </body>
 </html>

@@ -7,64 +7,60 @@ use es\ucm\fdi\aw\FormularioMensaje;
 use es\ucm\fdi\aw\FormularioRespuesta;
 use es\ucm\fdi\aw\Aplicacion;
 
-function listadoMensajes($idMensajePadre = NULL)
-{
-  $html = '<ul>';
-  $html .= listadoMensajesRecursivo($idMensajePadre);
-  $html .= '</ul>';
-  return $html;
-}
-
-function listadoMensajesRecursivo($idMensajePadre = NULL)
-{
-  $app = Aplicacion::getSingleton();
-  $html = '';
-  $mensajes = Mensaje::mensajes($idMensajePadre);
-  foreach($mensajes as $m) {
-    $html .= '<li>'.$m->texto(). ' ('.$m->username().')';
-    if ($app->tieneRol('user')) {
-      $formRespuesta = new FormularioRespuesta($m->id());
-      $html .= $formRespuesta->gestiona();
+    function listadoMensajes($idMensajePadre = NULL)
+    {
+        $html = '<ul>';
+        $html .= listadoMensajesRecursivo($idMensajePadre);
+        $html .= '</ul>';
+        return $html;
     }
-    $html .= '</li>';
 
-    if (Mensaje::numMensajes($m->id()) > 0) {
-      $html .= listadoMensajes($m->id());
+    function listadoMensajesRecursivo($idMensajePadre = NULL)
+    {
+        $app = Aplicacion::getSingleton();
+        $html = '';
+        $mensajes = Mensaje::mensajes($idMensajePadre);
+        foreach($mensajes as $m) {
+            $html .= '<li>'.$m->texto(). ' ('.$m->username().')';
+            if ($app->tieneRol('user')) {
+                $formRespuesta = new FormularioRespuesta($m->id());
+                $html .= $formRespuesta->gestiona();
+            }
+            $html .= '</li>';
+
+            if (Mensaje::numMensajes($m->id()) > 0) {
+                $html .= listadoMensajes($m->id());
+            }
+        }
+        return $html;
     }
-  }
-
-  return $html;
-}
 
 ?><!DOCTYPE html>
 <html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estilo.css') ?>" />
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
-  <title>Mensajes</title>
-</head>
-<body>
-<div id="contenedor">
-<?php
-$app->doInclude('comun/cabecera.php');
-$app->doInclude('comun/sidebarIzq.php');
-?>
-  <div id="contenido">
-<?php
-if ($app->tieneRol('user')) {
-  $formMensaje = new FormularioMensaje();
-  echo $formMensaje->gestiona();
-}
-?>
-    <h1>Mensajes</h1>
-<?php
-  echo listadoMensajes();
-?>
-  </div>
-<?php
-$app->doInclude('comun/pie.php');
-?>
-</div>
-</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="<?= $app->resuelve('/css/estilo.css') ?>" />
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
+        <title>Mensajes</title>
+    </head>
+    <body>
+        <div id="contenedor">
+            <?php $app->doInclude('comun/cabecera.php'); ?>
+            <div class="flexDesign">
+            <?php $app->doInclude('comun/sidebarIzq.php'); ?>
+            
+                <div id="contenido">
+                    <?php
+                    if ($app->tieneRol('user')) {
+                        $formMensaje = new FormularioMensaje();
+                        echo $formMensaje->gestiona();
+                    }
+                    ?>
+                    <h1>Mensajes</h1>
+                    <?php echo listadoMensajes(); ?>
+                </div>
+            </div>
+            <?php $app->doInclude('comun/pie.php'); ?>
+        </div>
+    </body>
 </html>

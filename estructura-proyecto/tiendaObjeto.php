@@ -38,9 +38,10 @@
 </head>
 <body>
 	<div id="contenedor">
+		<?php $app->doInclude('comun/cabecera.php');?>
+		<div class="flexDesign">
 		<?php
-			$app->doInclude('comun/cabecera.php');
-			$app->doInclude('comun/sidebarIzq.php');
+		$app->doInclude('comun/sidebarIzq.php');
 		?>
 		<div id="contenido">
 			<?php
@@ -51,6 +52,7 @@
 				echo "<h1>Página no disponible</h1>";
 			?>
 
+		</div>
 		</div>
 		<?php
 			$app->doInclude('comun/pie.php');

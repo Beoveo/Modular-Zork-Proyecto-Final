@@ -1,3 +1,4 @@
+<div id="infoTienda">
 <?php
 
 	use es\ucm\fdi\aw\Usuario as User;
@@ -10,3 +11,4 @@
 	}
 	
 ?>
+</div>

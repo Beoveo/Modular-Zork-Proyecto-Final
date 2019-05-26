@@ -13,15 +13,15 @@
     
             <?php
                 if(!isset($_SESSION['login'])){
-                    echo"<a href='login.php'class='button' >Inicia Sesion</a>
-                    <a href='signin.php'class='button' >Registrate</a>";
+                    echo"<a href='login.php'class='button' id='butRight'>Inicia Sesion</a>
+                    <a href='signin.php'class='button' id='butRight'>Registrate</a>";
                 }
                 else{
                     echo"<a href='miPerfil.php'class='button' >Mi Perfil</a>
                      <a href='misCompras.php'class='button' >Mis Compras.</a>
                      <a href='misCreaciones.php'class='button' >Mis creaciones.</a>
-                    <a href='logout.php' class='button' >Cerrar Sesión</a>";
+                    <a href='logout.php' class='button' id='butRight'>Cerrar Sesión</a>";
                 }
             ?>
-        </div>
+    </div>
 </div>
