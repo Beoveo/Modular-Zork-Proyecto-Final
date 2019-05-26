@@ -30,6 +30,10 @@ require_once __DIR__.'/includes/config.php';
             <script type="text/javascript" src="zork/javascript/Consumible.js"></script>
             <script type="text/javascript" src="zork/javascript/Personaje.js"></script>
             <script type="text/javascript" src="zork/javascript/Monstruo.js"></script>
+            <script type="text/javascript" src="zork/javascript/infoObjeto.js"></script>
+            <script type="text/javascript" src="zork/javascript/arrayMzUsadas.js"></script>
+            <script type="text/javascript" src="zork/javascript/guardarPartida.js"></script>
+            
             <!-- <script type="text/javascript" src="zork/javascript/pruebaCuadricula.js"></script> -->
         </div>
     </body>

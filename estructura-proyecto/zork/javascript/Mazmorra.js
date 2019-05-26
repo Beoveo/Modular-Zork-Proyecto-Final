@@ -1,9 +1,9 @@
-
 //--------------------------------------------------------clase mazmorra----------------------------------------------------------
 var Mazmorra= function(idMazmorra,monstruos, consumibles,historia,numSalidas,recompensa,mazmorraNorte,mazmorraSur,mazmorraEste,mazmorraOeste,rutaImagen,x,y,w,h){
 	var listaConsumibles=new Array();
 	var listaMonstruos=new Array();
 	var listaRespuestas=new Array();
+	var objetosUsados = new Array();//aqui se guardaran todos los objetos que se hayan quitado de la mazmorra
 	var historiaPrincipal;
 	var numSalidas;
 	var recompensa;
@@ -19,7 +19,7 @@ var Mazmorra= function(idMazmorra,monstruos, consumibles,historia,numSalidas,rec
 	var y;
 	var w;
 	var h;
-	
+
 	this.inicializa= function(){
 		this.listaConsumibles=consumibles;
 		this.listaMonstruos=monstruos;

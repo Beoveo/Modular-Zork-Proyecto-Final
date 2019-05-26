@@ -16,14 +16,8 @@ require_once __DIR__.'/includes/config.php';
 <div id="contenedor">
 <?php
 $app->doInclude('comun/cabecera.php');
-?>
-<div class="flexDesign">
-<?php
 $app->doInclude('comun/sidebarIzq.php');
 $app->doInclude('contenidos/contenidoInicio.php');
-?>
-</div>
-<?php
 $app->doInclude('comun/pie.php');
 ?>
 </div>

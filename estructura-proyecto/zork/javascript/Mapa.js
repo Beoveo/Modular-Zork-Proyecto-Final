@@ -78,4 +78,4 @@ var Mapa=function(tamMazmorras,personajeMapa){
 		}
 	}
 	
-}
+};

@@ -6,6 +6,33 @@ use es\ucm\fdi\aw\Aplicacion as App;
 //Devuelve un objeto con las mazmorras contenidas en el mapa.
 class MazmorraContiene
 {
+
+
+
+  public static function guardaMazmorras($inventarioUsados,$personaje,$idMapa ){
+    //$invetarioUsados arrayMazmorra, objetoPersonaje,idPartida
+    //objetoPersonaje
+      // arrayMazmorra <- arrayObjetosQue no estan
+    $inventario=json_encode(json_decode($inventarioUsados));
+    $usuarioAct = $_SESSION['nombre'];
+    $usuarioAct=Usuario::buscaUsuarioPorNombre($usuarioAct);
+    if($usuarioAct){
+      $idUs=$usuario->id();
+      $app = App::getSingleton();
+      $conn = $app->conexionBd();
+      $i=0;
+      $j=0;
+      for($i;$i<sizeof($invetarioUsados.arrayMz);$i++){//por cada mazmorra
+        for($j;$j<sizeof($invetarioUsados.arrayMz[i].arrayObj);$j++)//por cada objeto de la mazmorra
+        $query = sprintf("INSERT INTO objetosusados(idPersonaje,idPartida,idMapa ,idMazmorra ,idUsuario,idObjeto,tipoObjeto) VALUES (%s,%s , %s, %s, %s, %s, '%s')",$conn->real_escape_string($idPersonaje),$conn->real_escape_string($idPartida),$conn->real_escape_string($idMapa),$conn->real_escape_string($invetarioUsados.arrayMz[$i].id),$conn->real_escape_string($idUs),$conn->real_escape_string($invetarioUsados.arrayMz[$i].arrayObj[$j].id),$conn->real_escape_string($invetarioUsados.arrayMz[$i].arrayObj[$j].tipo));
+          $rs = $conn->query($query);
+          if($rs){
+              return true;
+          }
+      }
+              
+    }
+  }
     //carga las mazmorras de un determinado mapa
     public static function cargaMazmorras($idMapa)
     {

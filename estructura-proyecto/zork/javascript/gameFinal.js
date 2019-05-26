@@ -3,7 +3,7 @@ var target = $('#target');
 var commands = ["Ir", "Recoger", "Inventario", "Atacar", "Salir"];
 var ctx, canvas;
 
-
+var arrayMzUsados=[];
 /*
  * Parametros:
  * Objeto
@@ -95,70 +95,81 @@ function changeRoom(dir) {
             actualizaCanvas(mapaCargado, mapaCargado.mazmorraActual.idMazmorra);
             
             //esto mejor meterlo en el evento click del inventario .
-            /*if(mapaCargado.esFinal() && mapaCargado.personaje.tieneLLave() && mapaCargado.tieneEnemigos()){
-                $('#description').html('<h1>Has Ganado!</h1><button>Salir</button>');
+            /*
             }*/
         }
     } 
 }
 function consume(boton){
-    console.log("a ver is llegas")
-    var consumible=mapaCargado.personaje.inventario[boton.value];
-    mapaCargado.personaje.consumePocion(consumible);
+    var consumible = mapaCargado.personaje.inventario[boton.value];
+    
+    if(consumible.getCategoria() == "salud"){
+        mapaCargado.personaje.consumePocion(consumible);
 
-    $('#valorArm').html(mapaCargado.personaje.getFuerza());
-    $('#valorDef').html(mapaCargado.personaje.getVida());
-    $('#valorLl').html(mapaCargado.personaje.tieneLLave());
-    $('#barras').empty();
-    barraProgreso();
-    refrescaInv();
-}
-function refrescaInv() {
-
-
-  var textohtmlPociones="";
-  var textohtmlArmas="";
-  var inventario=mapaCargado.personaje.inventario;
-    for (var i = 0; i < inventario.length; i++){
-        if(inventario[i].getCategoria()=="salud"){
-            textohtmlPociones+='<button id="cosas" value="'+i+'"><img id="vidaInvImg" src="'+inventario[i].rutaImagen+'"></button>';
-        }
-        else{
-            textohtmlArmas+='<button id="cosas" value="'+i+'"><img id="armasInvImg" src="'+inventario[i].rutaImagen+'"></button>';
+        //$('#valorArm').html(mapaCargado.personaje.getFuerza());
+        //$('#valorDef').html(mapaCargado.personaje.getVida());
+        //$('#valorLl').html(mapaCargado.personaje.tieneLLave());
+        $('#barras').empty();
+        $('#vidaInv').empty()
+        $('#vidaInvImg').empty()
+        barraProgreso();
+        console.log(mapaCargado.personaje.inventario)
+        refrescaInv();
+    }
+    else if(consumible.getCategoria() == "key"){
+        if(mapaCargado.esFinal() && mapaCargado.personaje.tieneLLave() && !mapaCargado.tieneEnemigos()){
+            $(panel).empty()
+            //ctx.clearRect(0, 0, canvas.width, canvas.height);
+            panel.append('<img id="imgFinal" src="img/Final.png">')
         }
     }
-     $('#armas').html(textohtmlArmas);
+}
+
+function refrescaInv(){
+
+    var textohtmlPociones="";
+    var textohtmlArmas="";
+    var inventario=mapaCargado.personaje.inventario;
+    for (var i = 0; i < inventario.length; i++){
+        //console.log("aqui que "+ inventario[i])
+        if(inventario[i].getCategoria()=="salud")
+            textohtmlPociones+='<button id="vidaInv" onclick="consume(this)" value="'+i+'"><img id="vidaInvImg" src="'+inventario[i].rutaImagen+'"></button>';
+        else if(inventario[i].getCategoria()=="key")
+            textohtmlPociones+='<button id="vidaInv" onclick="consume(this)" value="'+i+'"><img id="keyInvImg" src="'+inventario[i].rutaImagen+'"></button>';
+        else
+            textohtmlArmas+='<button id="armasInv" value="'+i+'"><img id="armasInvImg" src="'+inventario[i].rutaImagen+'"></button>';
+    }
+    $('#armas').html(textohtmlArmas);
     $('#consumibles').html(textohtmlPociones);
 
-   // $(document).ready(function () {
-       
-   // });
-   $(document).ready(function() {
-        $("#cosas").click(function () {
-            var valor = this.value;
-            console.log("aqui entra"+ valor )
-            consume(this)
-        });
-    });
-    
-   
-       
+    /*$('buton').on('click', function(e) {
+        consume(this)
+        console.log("you clicked" , this.value)
+    });*/
 
 }
 
 
-
+/*
+Mete objeto en el inventario y lo pinta , actualizando la imagen principal 
+*/
 function pickUpThings(objeto){
     
-   
-        mapaCargado.cogeConsumible(objeto);
-       
-        refrescaInv();
+   quitaConsumible(objeto);
+    mapaCargado.cogeConsumible(objeto);
+    $('#valorArm').html(mapaCargado.personaje.getFuerza());
+    $('#valorDef').html(mapaCargado.personaje.getVida());
+    $('.valorLlave').html(mapaCargado.personaje.tieneLLave());
+
+    refrescaInv()
+    
+    $('#barras').empty();
+    barraProgreso();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    actualizaCanvas(mapaCargado,mapaCargado.mazmorraActual.idMazmorra);
+    //console.log(mapaCargado.personaje.inventario)
+        //refrescaInv();
         
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        actualizaCanvas(mapaCargado,mapaCargado.mazmorraActual.idMazmorra);
-        console.log(mapaCargado.personaje.inventario)
-   
 }
 
 
@@ -174,8 +185,10 @@ function atacar(){
       if(mapaCargado.personaje.vidaAct <= 0){
         gameOver();
       }
-      if(mapaCargado.mazmorraActual.listaMonstruos[0].vida <= 0)
+      if(mapaCargado.mazmorraActual.listaMonstruos[0].vida <= 0){
+        quitaEnemigo(mapaCargado.mazmorraActual.listaMonstruos[0]);
         mapaCargado.mazmorraActual.listaMonstruos.pop();
+      }
         barraProgreso();
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -245,7 +258,7 @@ function loadButton(){
     inventario()
 
     $(document).ready(function () {
-        $("button").click(function () {
+        $("button").click(function (e) {
             var valor = this.value;
             valor = valor.toLowerCase()
             playerInput(valor)
@@ -262,27 +275,22 @@ function consumido(){
     $('#mainPanel').append('<div id="consumido"></div>')
     $('#mainPanel').append('<div id="valores"></div>')
 
-    $('#consumido').append('<img id="armasEscudos" src = "/estructura-proyecto-3/img/buttons/inventario.png">')
-    $('#valores').append('<img id="imgInv" src = "/estructura-proyecto/img/buttons/valores.png">')
+    $('#consumido').append('<img id="armasEscudos" src = "img/buttons/inventario.png">')
+    $('#valores').append('<img id="imgInv" src = "img/buttons/valores.png">')
     $('#valores').append('<div class="valorArma" id="valorArm"> '+mapaCargado.personaje.getFuerza()+'</div> ')
     
-    $('#consumido').append('<img id="llave" src = "/estructura-proyecto-3/img/buttons/llave.png">')
-    $('#valores').append('<img id="imgInv3" src = "/estructura-proyecto/img/buttons/valores.png">')
-    $('#valores').append('<div class="valorLlave id="valorLlave">'+mapaCargado.personaje.tieneLLave()+'</div> ')
+    $('#consumido').append('<img id="llave" src = "img/buttons/llave.png">')
+    $('#valores').append('<img id="imgInv3" src = "img/buttons/valores.png">')
+    $('#valores').append('<div class="valorLlave id="valorLl">'+mapaCargado.personaje.tieneLLave()+'</div> ')
     
 }
 
 function inventario(){
-   
 
     $('#mainPanel').append('<div id="consumibles"></div>')
-
     $('#mainPanel').append('<div id="armas"></div>')
 
-
-
-
-
+    
 }
     
         
@@ -292,12 +300,12 @@ function barraProgreso(){
 
 
     $('#barras').append('<div id="barraP"></div>')
-    $('#barraP').append('<img id="vida" src = "/estructura-proyecto/img/buttons/vida.png">')
+    $('#barraP').append('<img id="vida" src = "img/buttons/vida.png">')
     $('#barraP').append('<progress id=barraVida value="'+mapaCargado.personaje.getVida()+'" max="'+mapaCargado.personaje.getVidaMax()+'">70 %</progress>')
 
     if(maz.listaMonstruos !== null && maz.listaMonstruos.length !== 0){
         $('#barras').append('<div id="barraM"></div>')
-        $('#barraM').append('<img id="vida" src = "/estructura-proyecto/img/buttons/monstruoBar.png">')
+        $('#barraM').append('<img id="vida" src = "img/buttons/monstruoBar.png">')
         $('#barraM').append('<progress id=barraMonst value="'+mapaCargado.mazmorraActual.listaMonstruos[0].getVida()+'" max="100">70 %</progress>')
     }
 
@@ -310,7 +318,7 @@ function gameOver(){
 }
 
 
-function startGame(){
+function startGame(mapaSele){
 
         panel.append('<canvas id="canvas" height="410" width="720"  ></canvas>');
 
@@ -331,9 +339,9 @@ function startGame(){
             //$('#user-input').focus();
 
             $('#target').append('<div id="mainPanel"></div>')
-
+                
             loadButton()
-
+            //guardarEstado(mapaSele);
 
             /*$(document).keypress(function(key) {
                 if (key.which === 13 && $('#user-input').is(':focus')) {

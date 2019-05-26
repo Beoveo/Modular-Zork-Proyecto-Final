@@ -138,7 +138,7 @@ function CargaPersonaje(indexPer,mapaSele){
                         //var arstring= [];
          var myArray = [];
          if(result.length !== 0){
-            var per = new Personaje(result.vida, result.nombre,result.fuerza,result.fuerza,2, result.rutaImagen,50,150,123,220);
+            var per = new Personaje(result.id,result.vida, result.nombre,result.fuerza,result.fuerza,2, result.rutaImagen,50,150,123,220);
              per.inicializa();
              rellenaMapa(per,mapaSele);
          }
@@ -204,7 +204,7 @@ var consumibles=[];
 function loadEnemigos(enem){
 	var monstruos=[];
 	for(var z=0;z<enem.length;z++){
-		var m=new Monstruo(enem[z].vida, enem[z].fuerza,enem[z].rutaImagen,
+		var m=new Monstruo(enem[z].id,enem[z].vida, enem[z].fuerza,enem[z].rutaImagen,
 			enem[z].nombre,enem[z].x,enem[z].y,enem[z].w,enem[z].h,enem[z].tipo);
 		m.inicializa();
 		monstruos.push(m);
@@ -219,7 +219,7 @@ function rellenaMapa(personaje,mapaSele){
 
          $.ajax({ 
 			 method: "GET", 
-			 url: "loadMapa.php?idMapa=" + mapaSele ,
+			 url: "loadMapa.php?idPersonaje="+personaje.getId()+"&idMapa=" + mapaSele ,
 			 success: function (msg){
 
 					var result= $.parseJSON(msg); 
@@ -273,7 +273,7 @@ function rellenaMapa(personaje,mapaSele){
 
 						//Le pasamos el objeto mapa a nuestra variable global en game.js
 						mapaCargado = mapa;
-						startGame();
+						startGame(mapaSele);
 					}
 					else{
 						alert("Error al cargar la base de datos");

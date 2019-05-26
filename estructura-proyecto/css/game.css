@@ -1,6 +1,6 @@
 body {
-	font-family: 'Helvetica Neue';
-	background-color: #CDCDCD;
+  font-family: 'Helvetica Neue';
+  background-color: #CDCDCD;
 
 }
 button{
@@ -94,16 +94,17 @@ div#armas {
   
 }
 
-button#cosas {
+button#vidaInv {
   display:inline;
   width: 42px;
   height: 42px;
 
 }
+
 button#armasInv {
   display:inline;
-  width: 50px;
-  height: 50px;
+  width: 42px;
+  height: 42px;
 
 }
 
@@ -205,7 +206,7 @@ img#llave {
 }
 
 img#imgInv {
-  margin: 0px 1px;
+  margin: 1px 1px;
 }
 
 img#armasInvImg {
@@ -215,6 +216,11 @@ img#armasInvImg {
 img#VidaInvImg {
   width: 50px;
   height: 50px;
+}
+
+img#keyInvImg {
+  width: 47px;
+  height: 44px;
 }
 
 img#vida {

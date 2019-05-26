@@ -1,6 +1,5 @@
 //--------------------------------------------------------clase Personaje----------------------------------------------------------
-var Personaje= function(vida,nombre,fuerza,hibilidad,inventario,imagen,x,y,w,h){ //Esta cruzado con partida por eso sabemos su posicion
-
+var Personaje= function(id,vida,nombre,fuerza,hibilidad,inventario,imagen,x,y,w,h){ //Esta cruzado con partida por eso sabemos su posicion
 	var vidaAct;
 	var vidaMax;
 	var inventario;
@@ -15,8 +14,10 @@ var Personaje= function(vida,nombre,fuerza,hibilidad,inventario,imagen,x,y,w,h){
 	var y;
 	var w;
 	var h;
+	var id;
 
 	this.inicializa=function(){
+		this.id=id;
 		this.inventario= [];
 		this.vidaMax=vida;
 		this.vidaAct=vida;
@@ -31,6 +32,10 @@ var Personaje= function(vida,nombre,fuerza,hibilidad,inventario,imagen,x,y,w,h){
 		this.factorTrasparencia=1;
 		this.habilidad=0;
 		this.llave=0;
+	}
+	this.getId=function(){
+
+		return this.id;
 	}
 	this.cargaInv=function(inventario){
 		for (var i = 0; i < inventario.length; i++) {

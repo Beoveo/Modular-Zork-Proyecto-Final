@@ -2,10 +2,10 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 25-05-2019 a las 13:40:22
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 26-05-2019 a las 01:58:47
 -- Versión del servidor: 10.1.38-MariaDB
--- Versión de PHP: 7.1.27
+-- Versión de PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -61,14 +61,13 @@ CREATE TABLE `consumibles` (
 --
 
 INSERT INTO `consumibles` (`id`, `nombre`, `categoria`, `fuerza`, `habilidad`, `vida`, `precio`, `rutaImagen`, `w`, `h`, `tipo`) VALUES
-(1, 'Poción1', 'salud', 20, 10, 10, 10, 'img/pngZork/pocion1.png', 80, 120, 'consumible'),
-(2, 'Poción2', 'salud', 20, 10, 15, 15, 'img/pngZork/pocion2.png', 80, 120, 'consumible'),
-(3, 'Escudoazul', 'defensa', 20, 40, 70, 50, 'img/pngZork/Recurso2.png', 80, 120, 'consumible'),
-(4, 'Escudorojo', 'defensa', 40, 30, 50, 60, 'img/pngZork/Recurso4.png', 80, 120, 'consumible'),
+(1, 'Poción 1', 'salud', 20, 10, 0, 10, 'img/pngZork/pocion1.png', 80, 120, 'consumible'),
+(2, 'Poción 2', 'salud', 20, 10, 15, 15, 'img/pngZork/pocion2.png', 80, 120, 'consumible'),
+(3, 'Escudo azul', 'defensa', 20, 40, 70, 50, 'img/pngZork/Recurso2.png', 80, 120, 'consumible'),
+(4, 'Escudo rojo', 'defensa', 40, 30, 50, 60, 'img/pngZork/Recurso4.png', 80, 120, 'consumible'),
 (5, 'Hacha', 'ataque', 80, 20, 10, 40, 'img/pngZork/Recurso3.png', 80, 120, 'consumible'),
-(6, 'EspadaOro', 'ataque', 50, 40, 20, 50, 'img/pngZork/Recurso5.png', 80, 120, 'consumible'),
-(7, 'EspadaPlata', 'ataque', 40, 30, 30, 60, 'img/pngZork/Recurso6.png', 80, 120, 'consumible'),
-(8, 'Llave', 'key', 0, 0, 0, 0, 'img/pngZork/LlavePlata1.png', 70, 70, 'consumible');
+(6, 'Espada Oro', 'ataque', 50, 40, 20, 50, 'img/pngZork/Recurso5.png', 80, 120, 'consumible'),
+(7, 'Espada Plata', 'ataque', 40, 30, 30, 60, 'img/pngZork/Recurso6.png', 80, 120, 'consumible');
 
 -- --------------------------------------------------------
 
@@ -222,10 +221,7 @@ CREATE TABLE `mazmorraconsumibles` (
 
 INSERT INTO `mazmorraconsumibles` (`idMazmorra`, `idConsumible`, `x`, `y`) VALUES
 (1, 5, 350, 250),
-(2, 2, 350, 250),
-(3, 1, 350, 250),
-(4, 6, 350, 250),
-(5, 8, 250, 250);
+(3, 1, 350, 250);
 
 -- --------------------------------------------------------
 
@@ -309,6 +305,25 @@ CREATE TABLE `mensajes` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `objetosusados`
+--
+
+CREATE TABLE `objetosusados` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `idPartida` int(11) UNSIGNED NOT NULL,
+  `idMapa` int(11) UNSIGNED NOT NULL,
+  `idMazmorra` int(11) UNSIGNED NOT NULL,
+  `idUsuario` int(11) UNSIGNED NOT NULL,
+  `idObjeto` int(11) UNSIGNED NOT NULL,
+  `tipoObjeto` varchar(30) NOT NULL,
+  `fuerzaPj` int(11) UNSIGNED DEFAULT NULL,
+  `habilidadPj` int(11) UNSIGNED DEFAULT NULL,
+  `vidaPj` int(11) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `partida`
 --
 
@@ -317,17 +332,25 @@ CREATE TABLE `partida` (
   `idUsuario` int(11) UNSIGNED NOT NULL,
   `idMapa` int(11) UNSIGNED NOT NULL,
   `idPersonaje` int(11) UNSIGNED NOT NULL,
-  `vidaPersonaje` int(11) NOT NULL,
-  `idInventarioMapa` int(11) UNSIGNED NOT NULL,
-  `IdinventarioUsados` int(11) UNSIGNED NOT NULL,
-  `IdUltimaMazSuperada` int(11) UNSIGNED NOT NULL,
-  `IdSiguienteMazmorra` int(11) UNSIGNED NOT NULL,
-  `superado` tinyint(1) NOT NULL,
   `fechaComienzo` date NOT NULL,
   `fechaUltimoAcceso` date NOT NULL,
   `posX` int(10) DEFAULT NULL,
   `posY` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `partida`
+--
+
+INSERT INTO `partida` (`idPartida`, `idUsuario`, `idMapa`, `idPersonaje`, `fechaComienzo`, `fechaUltimoAcceso`, `posX`, `posY`) VALUES
+(1, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL),
+(2, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
+(3, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
+(4, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
+(5, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
+(6, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
+(7, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
+(8, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -419,9 +442,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `contraseña`, `monedas`, `puntos`, `rutaImagen`, `bloqueado`) VALUES
-(1, 'user', 'user@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 20, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
+(1, 'user', 'user@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
 (2, 'admin', 'admin@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
-(3, 'prueba', 'prueba@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 40, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
+(3, 'prueba', 'prueba@example.org', '$2y$10$0eR.KhfTH5ybn/jlB86hwe/1nQeCKXk2RcLEjBscJbpUaF504kSOi', 100, 0, '\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0', b'0'),
 (4, '1234', '1234@example.org', '$2y$10$crE/87D6eqLr6A6/Vmt4zuDS7/igGThgX6t.ZWwvtyatT4E5gDqgm', 100, 0, NULL, b'0'),
 (5, 'prueba', 'prueba@example.com', '$2y$10$6o18GzEFiT53FYy8sYM19.Nb2/hyVPQkPYeaSfnUndLNPBwsFYs8.', 100, 0, NULL, b'0');
 
@@ -527,16 +550,23 @@ ALTER TABLE `mensajes`
   ADD KEY `idMensajePadre` (`idMensajePadre`);
 
 --
+-- Indices de la tabla `objetosusados`
+--
+ALTER TABLE `objetosusados`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idUsuario` (`idUsuario`),
+  ADD KEY `idMapa` (`idMapa`),
+  ADD KEY `idPartida` (`idPartida`),
+  ADD KEY `idMazmorra` (`idMazmorra`),
+  ADD KEY `idObjeto` (`idObjeto`);
+
+--
 -- Indices de la tabla `partida`
 --
 ALTER TABLE `partida`
   ADD PRIMARY KEY (`idPartida`),
   ADD KEY `idMapa` (`idMapa`),
   ADD KEY `idPersonaje` (`idPersonaje`),
-  ADD KEY `idInventario` (`idInventarioMapa`),
-  ADD KEY `IdUltimaMazSuperada` (`IdUltimaMazSuperada`),
-  ADD KEY `IdMazmorraSig` (`IdSiguienteMazmorra`),
-  ADD KEY `IdinventarioUsados` (`IdinventarioUsados`),
   ADD KEY `idUsuario` (`idUsuario`);
 
 --
@@ -583,7 +613,7 @@ ALTER TABLE `comprados`
 -- AUTO_INCREMENT de la tabla `consumibles`
 --
 ALTER TABLE `consumibles`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `enemigo`
@@ -620,6 +650,12 @@ ALTER TABLE `mazmorras`
 --
 ALTER TABLE `mensajes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `partida`
+--
+ALTER TABLE `partida`
+  MODIFY `idPartida` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -702,16 +738,22 @@ ALTER TABLE `mensajes`
   ADD CONSTRAINT `Mensajes_usuario` FOREIGN KEY (`usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `objetosusados`
+--
+ALTER TABLE `objetosusados`
+  ADD CONSTRAINT `objetosusados_ibfk_2` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`id`),
+  ADD CONSTRAINT `objetosusados_ibfk_3` FOREIGN KEY (`idMazmorra`) REFERENCES `mazmorras` (`id`),
+  ADD CONSTRAINT `objetosusados_ibfk_4` FOREIGN KEY (`idUsuario`) REFERENCES `partida` (`idUsuario`),
+  ADD CONSTRAINT `objetosusados_ibfk_5` FOREIGN KEY (`idObjeto`) REFERENCES `consumibles` (`id`),
+  ADD CONSTRAINT `objetosusados_ibfk_6` FOREIGN KEY (`idPartida`) REFERENCES `partida` (`idPartida`);
+
+--
 -- Filtros para la tabla `partida`
 --
 ALTER TABLE `partida`
-  ADD CONSTRAINT `partida_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`),
-  ADD CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`id`),
-  ADD CONSTRAINT `partida_ibfk_3` FOREIGN KEY (`idPersonaje`) REFERENCES `personaje` (`id`),
-  ADD CONSTRAINT `partida_ibfk_5` FOREIGN KEY (`IdUltimaMazSuperada`) REFERENCES `mazmorras` (`id`),
-  ADD CONSTRAINT `partida_ibfk_6` FOREIGN KEY (`IdSiguienteMazmorra`) REFERENCES `mazmorras` (`id`),
-  ADD CONSTRAINT `partida_ibfk_7` FOREIGN KEY (`idInventarioMapa`) REFERENCES `inventariopartida` (`id`),
-  ADD CONSTRAINT `partida_ibfk_8` FOREIGN KEY (`IdinventarioUsados`) REFERENCES `inventariopartida` (`id`);
+  ADD CONSTRAINT `partida_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `partida_ibfk_3` FOREIGN KEY (`idPersonaje`) REFERENCES `personaje` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `personaje`

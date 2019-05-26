@@ -99,7 +99,7 @@ class Usuario
             $app = App::getSingleton();
             $conn = $app->conexionBd();
             $auxpass=password_hash($password,PASSWORD_DEFAULT);
-            $query = sprintf("INSERT INTO usuarios (nombre,correo, contraseña) VALUES ('%s','%s' , '%s')",$conn->real_escape_string($name),$conn->real_escape_string($usermail),$conn->real_escape_string($auxpass));
+            $query = sprintf("INSERT INTO usuarios (nombre,correo, contraseña) VALUES ('%s','%s','%s')",$conn->real_escape_string($name),$conn->real_escape_string($usermail),$conn->real_escape_string($auxpass));
             $rs = $conn->query($query);
             $user= self::buscaUsuario($usermail);
             if ($rs && $user) {
@@ -195,6 +195,7 @@ class Usuario
   private $rutaImagen;
 
   private $bloqueado;
+  private $partida;
   
   private function __construct($id, $name, $usermail, $password, $monedas, $puntos,$rutaImagen,$bloqueado)
   {
@@ -209,6 +210,13 @@ class Usuario
     $this->bloqueado = $bloqueado;
   }
 
+
+  public function setIdPartida($idPartida){
+    $this->idPartida=$idPartida;
+  }
+  public function getIdPartida(){
+    return $this->idPartida;
+  }
   public function id()
   {
     return $this->id;

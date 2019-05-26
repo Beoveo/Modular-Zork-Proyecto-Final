@@ -1,31 +1,27 @@
 body {
 	font-family: 'Helvetica Neue';
-	background-color: transparent;
-	background-image: url("../img/fondo.jpg");
-	background-repeat: no-repeat;
-	background-attachment: fixed;
+	background-color: #CDCDCD;
+
 }
 
 div#contenedor {
-	min-width: 525px;
-	width: 100%;
+
+	width: 1350px;
 	margin: auto;
+	border: 1px solid black;
+	background-color: #aaaaaa;
 	margin-top: 30px;
 }
 
 div#cabecera {
-	margin-bottom: 50px;
+
 	padding: 30px;
 	height: 100px;
-	color: #ffbf00;
+	background-color: #303030;
+	color: white;
 }
-
 header{
 	font-size: 30px;
-}
-
-div#cabecera h1{
-	font-size: 40px;
 }
 
 div#cabecera img{
@@ -34,21 +30,13 @@ div#cabecera img{
 	width:50px;
 	height:50px;
 }
-
-div#menu{
-    padding: 3px 0px;
-    background-color: #303030;
-    border-radius: 5px;
-}
-
 div#menu a{
-	background-color: transparent;
+	background-color: #555;
 	float: auto;
 	color: #f2f2f2;
 	text-align: center;
 	padding: 14px 20px;
 	font-size: 14px;
-	display: inline-block;
 
 }
 div#cabecera a, div#cabecera a:visited {
@@ -59,19 +47,13 @@ div#cabecera a, div#cabecera a:visited {
 } 
 
 div#cabecera a:hover {
-	color: #ffbf00;
+	color: red;
 	font-weight: bold;
 	text-decoration: underline;
 } 
 
-div#cabecera a#butRight{
-	float:right;
-}
-
-div.flexDesign{
-	display: flex;
-	flex-flow: row;
-	align-items: stretch;
+div#pie a {
+	color: white;
 }
 
 
@@ -100,10 +82,6 @@ div#pie {
 	background-color: #303030;
 	color: white;
 	text-align: center;
-}
-
-div#pie a {
-	color: white;
 }
 
 div.saludo {
@@ -353,14 +331,11 @@ div#botonSideBarIzq a{
 }
 
 div#sidebar-left {
-	margin: 20px 20px 20px 20px;
 	padding: 10px;
 	float: left;
 	max-width: 250px;
 	min-height: 805px; /*si no consigo hacer que se hagan mas peques los items, ponerlo a min*/
 	background-color: #dddddd;
-	border-radius: 5px;
-	display: inline-block;
 }
 
 div#sidebar-left a, div#sidebar-left a:visited {
@@ -371,7 +346,7 @@ div#sidebar-left a, div#sidebar-left a:visited {
 
 /* Cambia el color del texto en los botones del menu*/
 div#sidebar-left a:hover {
-	color: #ffbf00;
+	color: red;
 	text-decoration: underline;
 } 
 
