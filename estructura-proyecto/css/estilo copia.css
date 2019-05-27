@@ -52,6 +52,59 @@ div#menu a{
 
 }
 
+#cabecera > .nav-btn {
+  display: none;
+}
+
+#cabecera > #nav-check {
+  display: none;
+}
+
+@media(min-width: 280px) and (max-width: 780px) {
+  #cabecera > .nav-btn {
+    display: inline-block;
+    position: absolute;
+    left: 360px;
+    top: 85px;
+  }
+  #cabecera > .nav-btn > label {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding: 13px;
+  }
+  #cabecera > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  #cabecera > .nav-btn > label > span {
+    display: block;
+    width: 25px;
+    height: 10px;
+    border-top: 2px solid #eee;
+  }
+  #cabecera > #menu {
+    position: absolute;
+    display: block;
+    width: 100%;
+    background-color: #333;
+    height: 0px;
+    transition: all 0.3s ease-in;
+    overflow-y: hidden;
+    top: 135px;
+    left: 40px;
+  }
+  #cabecera > #menu > a {
+    display: block;
+    width: 100%;
+  }
+  #cabecera > #nav-check:not(:checked) ~ #menu {
+    height: 0px;
+  }
+  #cabecera > #nav-check:checked ~ #menu {
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+  }
+}
 
 
 div#cabecera a, div#cabecera a:visited {
@@ -695,67 +748,6 @@ a.enlAdmin:hover{
 	color: #ffbf00;
 }
 
-#cabecera > .nav-btn {
-  display: none;
-}
-
-#cabecera > #nav-check {
-  display: none;
-}
-
-
-
-
-@media (max-width: 660px)  {
-
-
-  #cabecera > .nav-btn {
-    display: inline-block;
-    position: absolute;
-    left: 360px;
-    top: 85px;
-  }
-  #cabecera > .nav-btn > label {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    padding: 13px;
-  }
-  #cabecera > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-  #cabecera > .nav-btn > label > span {
-    display: block;
-    width: 25px;
-    height: 10px;
-    border-top: 2px solid #eee;
-  }
-  #cabecera > #menu {
-    position: absolute;
-    display: block;
-    width: 100%;
-    background-color: #333;
-    height: 0px;
-    transition: all 0.3s ease-in;
-    overflow-y: hidden;
-    top: 135px;
-    left: 40px;
-  }
-  #cabecera > #menu > a {
-    display: block;
-    width: 100%;
-  }
-  #cabecera > #nav-check:not(:checked) ~ #menu {
-    height: 0px;
-  }
-  #cabecera > #nav-check:checked ~ #menu {
-    height: calc(100vh - 50px);
-    overflow-y: auto;
-  }
-}
-
-
-
 /********Responsive********/
 div.flexDesign{
 	margin: 0% 5%;
@@ -765,14 +757,14 @@ div.flexDesign{
 	align-items: stretch;
 }
 
-@media all and (max-width: 810px) {
+@media all and (max-width: 740px) {
 	div.flexDesign{
 		flex-flow: column;
 		width: 100%;
 	}
 
 	div#contenido{
-		min-width: 75%;
+		min-width: 69%;
 		order: 1;
 	}
 	div#sidebar-left{

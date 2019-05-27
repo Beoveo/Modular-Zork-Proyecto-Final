@@ -13,27 +13,342 @@ button{
   background:transparent;
   font-size: 30px;;
 }
-/*CSS para botones de direccion*/
-div#mainPanel {
-  position: relative;
-  width: 720px;
-  height: 110px;
-  background:#AAAAAA;
-  margin: 10px 0px;
-  box-shadow: 2px 2px 2px #000000;
-  border-radius: 5px;
+/* por debajo de los 1080 moviles , CSS para botones de direccion*/
+@media (max-width: 1080px) {
+      
 
-}
+      canvas#canvas {
+        width: 480px;
+        height: 320px;
+      }
 
-div#description {
-  width: 690px;
-  height: 50px;
-  background:#AAAAAA;
-  box-shadow: 2px 2px 2px #000000;
-  border-radius: 5px;
-  padding: 15px;
+
+      #mainPanel {
+        position: relative;
+        width: 480px;
+        height: 150px;
+        background:#AAAAAA;
+        margin: 10px 0px;
+        box-shadow: 2px 2px 2px #000000;
+        border-radius: 5px;
+
+      }
+      div#description {
+        width: 450px;
+        height: 30px;
+        background:#AAAAAA;
+        box-shadow: 2px 2px 2px #000000;
+        border-radius: 5px;
+        padding: 15px;
+       
+      }
+      div#consumido  {
+        top: 100px;
+        position:absolute;
+        left: 10px;  
+        width: 250px;
+        height: 35px;
+        margin: 0px 0px;
+        /*border: red 5px solid;*/
+       
+
+      }
+      div#valores {
+        position:absolute;
+        left: 60px; 
+        top: 100px; 
+        width: 250px;
+        height: 35px;
+       
+       
+      }
+      img#armasEscudos {
  
+        display:inline;
+        width: 35px;
+        height: 35px;
+
+        margin: 5px 10px;
+       
+      }
+
+
+      img#llave {
+        
+        display:inline;
+        width: 35px;
+        height: 35px;
+
+        margin: 5px 75px;
+       
+      }
+      img#imgInv {
+      
+        margin: 7px 1px;
+      }
+
+      img#imgInv3 {
+
+        margin: 7px 55px;
+      }
+
+      .valorArma {
+          position: absolute;
+          top: 24%;
+          left: 5%;
+          color: #C1C1C1;
+          font-size: 23px;
+          
+        }
+
+
+        .valorLlave {
+          position: absolute;
+          top: 24%;
+          left: 55%;
+          color: #C1C1C1;
+          font-size: 23px;
+          
+        }
+        /*Inventario*/
+
+      div#consumibles {
+          position: absolute;
+          display:inline;
+          left: 272px;
+          width: 200px;
+          height: 69px;
+          border: #353535 4px dotted;
+       
+        
+      }
+      div#armas {
+        position: absolute;
+        top:73px;
+        left: 272px;
+        width: 200px;
+        height: 69px;
+        border: #353535 4px dotted;
+    
+        
+      }
+
+      button#vidaInv {
+        display:inline;
+        width: 42px;
+        height: 42px;
+
+      }
+
+      button#armasInv {
+        display:inline;
+        width: 42px;
+        height: 42px;
+
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+      img#vida {
+      display:inline;
+      width: 15px;
+      height: 15px;
+      
+      }
+
+      #barraP, #barraM {
+        display: inline;
+        width: 150px;
+        height: 15px;
+        margin: 5px 80px;
+      }
+      div#barras {
+        position: relative;
+        width: 480px;
+        height: 20px;
+        background:#AAAAAA;
+        margin: 4px 0px;
+        box-shadow: 2px 2px 2px #000000;
+        border-radius: 5px;
+
+        
+      }
+      progress {
+        position: absolute;
+        height:10px;
+        width:110px;
+        border-radius: 15px;
+        margin: 5px 4px;
+        
+      }
+
+
 }
+
+/*por encima de los 1080, desktop*/
+@media (min-width: 1080px) {
+      div#mainPanel {
+        position: relative;
+        width: 720px;
+        height: 110px;
+        background:#AAAAAA;
+        margin: 10px 0px;
+        box-shadow: 2px 2px 2px #000000;
+        border-radius: 5px;
+
+      }
+
+      div#description {
+        width: 690px;
+        height: 50px;
+        background:#AAAAAA;
+        box-shadow: 2px 2px 2px #000000;
+        border-radius: 5px;
+        padding: 15px;
+       
+      }
+
+      div#consumido  {
+      position:absolute;
+      left: 310px;  
+      width: 280px;
+      height: 50px;
+      margin: 0px 0px;
+     
+
+      }
+      div#valores {
+        position:absolute;
+        left: 310px; 
+        top: 65px; 
+        width: 280px;
+        height: 30px;
+       
+      }
+      img#armasEscudos {
+ 
+        display:inline;
+        width: 50px;
+        height: 50px;
+
+        margin: 5px 5px;
+       
+      }
+      .valorArma {
+          position: absolute;
+          top: 3%;
+          left: 5%;
+          color: #C1C1C1;
+          font-size: 23px;
+          
+        }
+
+
+        .valorLlave {
+          position: absolute;
+          top: 3%;
+          left: 30%;
+          color: #C1C1C1;
+          font-size: 23px;
+          
+        }
+
+
+      img#llave {
+        
+        display:inline;
+        width: 50px;
+        height: 50px;
+
+        margin: 5px 5px;
+       
+      }
+      img#imgInv {
+        margin: 1px 1px;
+      }
+
+      div#consumibles {
+       position: absolute;
+      display:inline;
+      left: 450px;
+      width: 126px;
+      height: 102px;
+      border: #353535 4px dotted;
+      
+      }
+      div#armas {
+        position: absolute;
+
+        left: 580px;
+        width: 126px;
+        height: 102px;
+        border: #353535 4px dotted;
+        
+      }
+
+      button#vidaInv {
+        display:inline;
+        width: 42px;
+        height: 42px;
+
+      }
+
+      button#armasInv {
+        display:inline;
+        width: 42px;
+        height: 42px;
+
+      }
+
+      img#vida {
+      display:inline;
+      width: 30px;
+      height: 30px;
+      
+      }
+
+      #barraP, #barraM {
+        display: inline;
+        width: 190px;
+        height: 35px;
+        margin: 10px 130px;
+      }
+      div#barras {
+        position: relative;
+        width: 720px;
+        height: 35px;
+        background:#AAAAAA;
+        margin: 8px 0px;
+        box-shadow: 2px 2px 2px #000000;
+        border-radius: 5px;
+
+        
+      }
+
+
+      progress {
+        position: absolute;
+        height:11px;
+        width:150px;
+        border-radius: 15px;
+        margin: 10px 8px;
+        
+      }
+
+}
+
+
+
+
 
 div#actions {
   position: absolute;
@@ -55,58 +370,11 @@ div#direction  {
   
 }
 
-div#consumido  {
-  position:absolute;
-  left: 310px;  
-  width: 280px;
-  height: 50px;
-  margin: 0px 0px;
- 
-
-}
-div#valores {
-  position:absolute;
-  left: 310px; 
-  top: 65px; 
-  width: 280px;
-  height: 30px;
- 
-}
 
 
 
-div#consumibles {
-   position: absolute;
-  display:inline;
-  left: 450px;
-  width: 126px;
-  height: 102px;
-  border: #353535 4px dotted;
-  
-}
-div#armas {
-  position: absolute;
 
-  left: 580px;
-  width: 126px;
-  height: 102px;
-  border: #353535 4px dotted;
-  
-}
 
-button#vidaInv {
-  display:inline;
-  width: 42px;
-  height: 42px;
-
-}
-
-button#armasInv {
-  display:inline;
-  width: 42px;
-  height: 42px;
-
-}
 
 
 
@@ -164,50 +432,10 @@ button#armasInv {
 
 
 
-.valorArma {
-  position: absolute;
-  top: 3%;
-  left: 5%;
-  color: #C1C1C1;
-  font-size: 23px;
-  
-}
 
 
-.valorLlave {
-  position: absolute;
-  top: 3%;
-  left: 30%;
-  color: #C1C1C1;
-  font-size: 23px;
-  
-}
-img#armasEscudos {
- 
-  display:inline;
-  width: 50px;
-  height: 50px;
-
-  margin: 5px 5px;
- 
-}
 
 
-img#llave {
-  
-  display:inline;
-  width: 50px;
-  height: 50px;
-
-  margin: 5px 5px;
-
-  
-  
-}
-
-img#imgInv {
-  margin: 1px 1px;
-}
 
 img#armasInvImg {
   width: 50px;
@@ -223,40 +451,7 @@ img#keyInvImg {
   height: 44px;
 }
 
-img#vida {
-  display:inline;
-  width: 30px;
-  height: 30px;
-  
-}
 
-#barraP, #barraM {
-  display: inline;
-  width: 190px;
-  height: 35px;
-  margin: 10px 130px;
-}
-div#barras {
-  position: relative;
-  width: 720px;
-  height: 35px;
-  background:#AAAAAA;
-  margin: 8px 0px;
-  box-shadow: 2px 2px 2px #000000;
-  border-radius: 5px;
-
-  
-}
-
-
-progress {
-  position: absolute;
-  height:11px;
-  width:150px;
-  border-radius: 15px;
-  margin: 10px 8px;
-  
-}
 progress#barraVida::-webkit-progress-value {
   background: #D6182F;
 }

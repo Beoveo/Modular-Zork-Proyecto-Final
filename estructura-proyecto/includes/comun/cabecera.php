@@ -1,6 +1,18 @@
 
 <div id="cabecera">
-	<h1>Modular ZORK</h1>
+	
+    
+    <input type="checkbox" id="nav-check">
+    <h1>Modular ZORK </h1>
+ 
+    <div class="nav-btn">
+        <label for="nav-check">
+            <span></span>
+            <span></span>
+            <span></span>
+    </label>
+    </div>
+  
 	
     <div id="menu">
 	    <a href="index.php" class="button active" >Inicio</a>
