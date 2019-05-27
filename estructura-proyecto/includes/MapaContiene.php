@@ -3,7 +3,7 @@ namespace es\ucm\fdi\aw;
 use es\ucm\fdi\aw\Aplicacion as App;
 
 //Clase que crea un objeto con todos los consumibles, enemigos, mazmorras y personaje del mapa
-class MapaContiene
+class MapaContiene implements \JsonSerializable
 {
 
     //Carga las mazmorras en un determinado mapa pasado por parametro, el seleccionado.
@@ -11,44 +11,56 @@ class MapaContiene
         $mazmorras= MazmorraContiene::cargaMazmorras($idMapa);
         $array=json_decode(json_encode($mazmorras));
         if(sizeof($array)>0){
-            $i=0;
-            $consumibles= array();
-            $enemigos=array();
-            while($i<sizeof($mazmorras)){
-                $consumible=ObjetoConsumible::cargaObjetosMazmorra($array[$i]->idMazmorra);
-                if($consumible!=null){
-                    $consumibles[$i]=$consumible;
-                }
-
-                $enemigo=EnemigoContiene::cargaEnemigos($array[$i]->idMazmorra);
-                if($enemigo!=null){
-                    $enemigos[$i]=$enemigo;
-                }
-
-                $i++;
+                $i=0;
+                $consumibles= array();
+                $enemigos=array();
+                if(sizeof($array)>0){
+                    $i=0;
+                    $objetos= array();
+                    $enemigos=array();
+                    while($i<sizeof($mazmorras)){
+                        $objeto=ObjetoConsumible::cargaObjetosMazmorra($array[$i]->idMazmorra);
+                        if($objeto!=null){
+                            $objetos[$i]=$objeto;
+                        }
+                        
+                        $enemigo=EnemigoContiene::cargaEnemigos($array[$i]->idMazmorra);
+                        if($enemigo!=null){
+                            $enemigos[$i]=$enemigo;
+                        }
+                        $i++;
+                    }
+                $tamanio=sizeof($mazmorras);
+                $mapaPruebe= new MapaContiene($tamanio,$mazmorras,$enemigos,$objetos);
+                return $mapaPruebe;
             }
-            $tamanio=sizeof($mazmorras);
-            $mapa = array('tamanio'=>$tamanio,'mazmorras' => $mazmorras, 'enemigos' => $enemigos, 'objetos' => $consumibles);
-            return $mapa;
         }
         else echo "no es posible construir el mapa";
 
     } 
-    
+    public function jsonSerialize()
+    {
+        $o = new \stdClass();
+        $o->tamanio=$this->tamanio;
+        $o->mazmorras=$this->mazmorras;
+        $o->enemigos=$this->enemigos;
+        $o->consumibles=$this->consumibles;
+        return $o;
+    }
     private $tamanio;
     private $mazmorras;
     private $consumibles;
     private $enemigos;
-    private $personaje;
+
 
     
-    private function __construct($tamanio,$mazmorras,$consumibles,$enemigos,$personaje)
+    private function __construct($tamanio,$mazmorras,$enemigos,$consumibles)
     {
         $this->tamanio=$tamanio;
         $this->mazmorras=$mazmorras;
         $this->consumibles=$consumibles;
         $this->enemigos=$enemigos;
-        $this->personaje=$personaje;
+
     }
 
     private function size(){
@@ -67,10 +79,6 @@ class MapaContiene
     }
     private function getEnemigos(){
         return $this->enemigos;
-    }
-
-    private function getPersonaje(){
-        return $this->personaje;
     }
     
 }

@@ -66,6 +66,30 @@ var Mazmorra= function(idMazmorra,monstruos, consumibles,historia,numSalidas,rec
 	this.getListaMonstruos=function(){
 		return this.listaMonstruos;
 	}
+	this.eliminaMonstruo=function(idMonstruo){
+		for (var j = 0; j < this.listaMonstruos.length; j++) {
+			if(this.listaMonstruos[j]!=null && this.listaMonstruos[j].getId()==idMonstruo){
+				this.listaMonstruos.splice(j,1);
+			}
+		}
+	}
+	this.eliminaConsumible=function(idConsumible){
+		for (var j = 0; j < this.listaConsumibles.length; j++) {
+			if(this.listaConsumibles[j]!=null && this.listaConsumibles[j].getId()==idConsumible){
+				this.listaConsumibles.splice(j,1);
+			}
+		}
+	}
+	this.existeConsumible=function(idConsumible){
+		if(this.listaConsumibles!=null){
+			for (var j = 0; j < this.listaConsumibles.length; j++) {
+				if(this.listaConsumibles[j]!=null && this.listaConsumibles[j].getId()==idConsumible){
+					return this.listaConsumibles[j];
+				}
+			}
+		}
+		return -1;
+	}
 	this.getListaConsumibles= function(){
 		return this.listaConsumibles;
 

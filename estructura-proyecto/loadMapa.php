@@ -8,7 +8,11 @@ require_once __DIR__.'/includes/config.php';
     else{
                 $idMapa=$_GET['idMapa'];
                 $idPj=$_GET['idPersonaje'];
-                es\ucm\fdi\aw\Partida::insertaPartida($idMapa,$idPj);
+                $demo=$_GET['demo'];
+                $cargado=$_GET['cargado'];
+                if($demo==0 && $cargado==0){
+                    es\ucm\fdi\aw\Partida::insertaPartida($idMapa,$idPj);
+                }
                 $mapa= es\ucm\fdi\aw\MapaContiene::construyeMapa($idMapa);
                 //echo $mapa;
                 echo json_encode($mapa);

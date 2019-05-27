@@ -2,13 +2,51 @@ var panel = $('#zork-area');
 
 var inventario = [];
 var mapaCargado = {};
+var demo=0;
+var cargado=0;
 
+$(document).on('click', '#carga', function() {
+    $(function(){ 
+        panel.empty();
+             $.ajax({ 
+                        method: "GET", 
+                        
+                        url: "loadPartidas.php",
+                        success: function( data ) { 
+                           
+                            var result= $.parseJSON(data); 
+                            panel.append('<br><button id="getvalue">Siguiente</button>');
+
+                            var myArray = [];
+                           
+                            if(result.length !== 0){
+                               /* from result create a string of data and append to the div */
+                                $.each( result, function( key, value ) { 
+                                        myArray.push(value);
+                                 }); 
+                                  
+                                panel.empty();
+                                cargado=1;
+                                demo=0;
+                                choicePartida(myArray,cargado);
+                            }
+                            else{
+                                alert("Error al cargar la base de datos");
+                                p.empty();   
+                            }
+                        }
+
+                      }); 
+         
+    }); 
+})
 $(document).on('click', '#prueba', function() {
 	$(function(){ 
         panel.empty();
         //Descomentar cuando funcione personaje
         //selPersonaje(selValue, mapa, personajes);
-        CargaPersonaje(1,1)
+        var demo=1;
+        CargaPersonaje(1,1,demo);
          
     }); 
 })
@@ -35,7 +73,9 @@ $(document).on('click', '#start', function(e) {
                      }); 
                       
                     panel.empty();
-                    choiceMap(myArrayMap);
+                    cargado=0;
+                    demo=0;
+                    choiceMap(myArrayMap,demo,cargado);
                 }
                 else{
                     alert("Error al cargar la base de datos");
@@ -50,8 +90,29 @@ $(document).on('click', '#start', function(e) {
     
 
 })
+function choicePartida(myArray,cargado){
 
-function choiceMap (myArray){
+    panel.append("Selecciona tu partida");
+    panel.append("<form name=fmap>");
+
+    for(i=0; i<myArray.length; i++){     
+        panel.append('<legend><input type="Radio" name="partida" value="'
+            + i +'">Partida: '+i+"</legend><p>inicio:   "+ myArray[i].fechaInicio+"</p> ");
+    }
+    panel.append('<p></p><button id="getvalue">Siguiente</button>'); 
+    panel.append("</form>");
+
+    jQuery('#getvalue').on('click', function(e) {  
+        partidaSele = document.querySelector('input[name = "partida"]:checked').value;
+        panel.empty();
+        CargaPersonaje(myArray[partidaSele].idPartida,myArray[partidaSele].idPersonaje,myArray[partidaSele].idMapa,demo,cargado);
+        //Descomentar cuando funcione personaje
+        //selPersonaje(selValue, mapa, personajes);
+        //loadPersonajes(mapaSele);
+    });
+
+}
+function choiceMap (myArray,demo,cargado){
 
     panel.append("Selecciona el mapa que quieras jugar");
     panel.append("<form name=fmap>");
@@ -70,10 +131,10 @@ function choiceMap (myArray){
         panel.empty();
         //Descomentar cuando funcione personaje
         //selPersonaje(selValue, mapa, personajes);
-		loadPersonajes(mapaSele);
+		loadPersonajes(mapaSele,demo,cargado);
     });
 }
-function loadPersonajes(mapaSele){
+function loadPersonajes(mapaSele,demo,cargado){
     $.ajax({ 
 
             method: "GET", 
@@ -93,7 +154,7 @@ function loadPersonajes(mapaSele){
                      }); 
                       
                     panel.empty();
-                    choicePersonaje(myArrayPerson,mapaSele);
+                    choicePersonaje(myArrayPerson,mapaSele,demo,cargado);
                 }
                 else{
                     alert("Error al cargar la base de datos");
@@ -103,7 +164,7 @@ function loadPersonajes(mapaSele){
 
           }); 
 }
-function choicePersonaje(myArrayPerson,mapaSele){
+function choicePersonaje(myArrayPerson,mapaSele,demo,cargado){
 
     panel.append("Selecciona el personaje con el que piensas jugar.");
     panel.append("<form name=fmap>");
@@ -123,12 +184,12 @@ function choicePersonaje(myArrayPerson,mapaSele){
 
         panel.empty();
         //var per = new Personaje(100, "Caballero",50,2, "img/pngZork/personaje1.png",50,150,123,220);
-        CargaPersonaje(indexPer,mapaSele);
+        CargaPersonaje(null,indexPer,mapaSele,demo,cargado);
     });
 }
 
 
-function CargaPersonaje(indexPer,mapaSele){
+function CargaPersonaje(idPartida,indexPer,mapaSele,demo,cargado){
     $.ajax({ 
          method: "GET", 
          url: "loadPersonajes.php?idPersonaje=" + indexPer ,
@@ -140,7 +201,8 @@ function CargaPersonaje(indexPer,mapaSele){
          if(result.length !== 0){
             var per = new Personaje(result.id,result.vida, result.nombre,result.fuerza,result.fuerza,2, result.rutaImagen,50,150,123,220);
              per.inicializa();
-             rellenaMapa(per,mapaSele);
+             rellenaMapa(idPartida,per,mapaSele,demo,cargado);
+
          }
     }
 
@@ -149,45 +211,44 @@ function CargaPersonaje(indexPer,mapaSele){
         
 
 }
-//Funcionalidad de juego
+function consultaCargados(mapa,idPartida,mapaSele){
 
-/*
-//Dividir en carga mapa y carga personaje
-function selPersonaje(selValue, mapa, personajes){
-    var personajes = mapa.personajes.split(",");
+    $.ajax({ 
+        method: "GET", 
+        url: "consultaCargados.php?idPartida="+idPartida ,
+        success: function (msg){
+            var result= $.parseJSON(msg); 
+            var myArray = [];
+            if(result.length !== 0){
+                /* from result create a string of data and append to the div */
+                $.each( result, function( key, value ) {
+                    myArray.push(value);  
+                }); 
+                for (var i = 0; i < myArray[1].length; i++) {
+                        var ret =mapa.buscaConsumibleEnMapa(myArray[1][i].idConsumible);
+                        if(ret!=-1){
+                            mapa.personaje.interactuarConsumible(ret);
+                        }
+                }
+                for (var i = 0; i < myArray[0].length; i++) {
+                    var mazmorra= mapa.getMazmorra(myArray[0][i].idMazmorra);
+                    if(myArray[0][i].tipoObjeto=="consumible"){
+                        mazmorra.eliminaConsumible(myArray[0][i].idObjeto);
 
-    panel.append("Selecciona el personaje con el que quieres jugar");
+                    }
+                    else if(myArray[0][i].tipoObjeto=="enemigo"){
+                         mazmorra.eliminaMonstruo(myArray[0][i].idObjeto);
+                        
+                    }
+                }
 
-    for(i=0; i<personajes.length; i++){
-        panel.append("<form name=fper>");
-        panel.append('<input type="Radio" name="person" value="'+ i +'">Personaje: '+ i +'<br>');
-        panel.append('<img id="personajes" src="' + personajes[i] + '" />');
-    }
-    panel.append('<br><button id="getvalue">Siguiente</button>');
-    panel.append("</form>");
-
-    jQuery('#getvalue').on('click', function(e) {  
-        indexPer = document.querySelector('input[name = "person"]:checked').value;
-        personaje.rutaImagen = personajes[indexPer];
-        personaje.vida = mapa.vida;
-        personaje.x = mapa.x;
-        personaje.y = mapa.y;
-        personaje.w = mapa.w;
-        personaje.h = mapa.h;
-
-        
-        console.log(personaje);
-        panel.empty();
-        var per = new Personaje(100, "Caballero",50,2, "img/pngZork/personaje1.png",50,150,123,220);
-        rellenaMapa(selValue);
-        //sqlRooms(selValue);
-        
-    });  
+                mapaCargado = mapa;
+                startGame(mapaSele);
+            }
+         }
+    });
 }
-*/
-
-
-
+//Funcionalidad de juego
 function loadConsumibles(consum){
 //Guardar en partida.inventario
 var consumibles=[];
@@ -213,13 +274,13 @@ function loadEnemigos(enem){
 }
 
 
-function rellenaMapa(personaje,mapaSele){ 
+function rellenaMapa(idPartida,personaje,mapaSele,demo,cargado){ 
 	var mazmorra;
 	var mapa;
 
          $.ajax({ 
 			 method: "GET", 
-			 url: "loadMapa.php?idPersonaje="+personaje.getId()+"&idMapa=" + mapaSele ,
+			 url: "loadMapa.php?idPersonaje="+personaje.getId()+"&idMapa=" + mapaSele+"&demo="+demo+ "&cargado="+cargado ,
 			 success: function (msg){
 
 					var result= $.parseJSON(msg); 
@@ -272,8 +333,14 @@ function rellenaMapa(personaje,mapaSele){
 						}
 
 						//Le pasamos el objeto mapa a nuestra variable global en game.js
-						mapaCargado = mapa;
-						startGame(mapaSele);
+						
+                        if(cargado){
+                            consultaCargados(mapa,idPartida,mapaSele);
+                        }
+                        else{
+                          mapaCargado = mapa;
+						  startGame(mapaSele);
+                        }
 					}
 					else{
 						alert("Error al cargar la base de datos");

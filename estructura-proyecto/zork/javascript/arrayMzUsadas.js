@@ -18,6 +18,9 @@ var arrayMzUsadas= function(idMazmorra){
 
 		return this.idMazmorra;
 	}
+	this.datosGuarda=function(){
+		var datos={"idMazmorra":this.idMazmorra,"arrayObjetos":this.arrayObjetos};
+	}
 
 };
 

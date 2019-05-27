@@ -33,20 +33,24 @@ function existeMz(idMzAct){
     return -1;
 }
 function guardarEstado(mapaSele){
-        datos = {"idMapa":mapaSele,"arrayMz":arrayMzUsados, "personaje":mapaCargado.personaje};
+    //var personaje= mapaCargado.personaje;
+
+        datos= {"idMapa":mapaSele,"arrayMz":arrayMzUsados,"personaje":mapaCargado.personaje.datosGuarda()};
+        /*
+        datos[0]=mapaSele;
+        datos[1]=arrayMzUsados;
+        datos[3]=mapaCargado.personaje.datosGuarda();
+        */
      $.ajax({
           type: "POST",
           url: "guardarPartida.php",
           data: datos,
          success: function (msg){
-             var result= $.parseJSON(msg); 
-                            //var arstring= [];
-             var myArray = [];
-             if(result.length !== 0){
-                var per = new Personaje(result.id,result.vida, result.nombre,result.fuerza,result.fuerza,2, result.rutaImagen,50,150,123,220);
-                 per.inicializa();
-                 rellenaMapa(per,mapaSele);
-             }
-        }
+            if(msg){
+                panel.append("TU PARTIDA SE HA GUARDADO CORRECTAMENTE!!");
+            }
+            else 
+                panel.append("Ha habido un problema al guardar tu partida :( ");
+            }
     });
 }

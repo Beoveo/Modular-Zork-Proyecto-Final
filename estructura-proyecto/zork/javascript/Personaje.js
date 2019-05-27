@@ -15,6 +15,7 @@ var Personaje= function(id,vida,nombre,fuerza,hibilidad,inventario,imagen,x,y,w,
 	var w;
 	var h;
 	var id;
+	var idInventario;
 
 	this.inicializa=function(){
 		this.id=id;
@@ -25,13 +26,17 @@ var Personaje= function(id,vida,nombre,fuerza,hibilidad,inventario,imagen,x,y,w,
 		this.fuerza=fuerza;
 		this.rutaImagen=imagen;
 		this.habilidad=habilidad;
-		this.x = x;
+		this.x=x;
 		this.y=y;
 		this.w=w;
 		this.h=h;
 		this.factorTrasparencia=1;
 		this.habilidad=0;
 		this.llave=0;
+		this.idInventario=idInventario;
+	}
+	this.getIdInventario=function(){
+		return this.idInventario;
 	}
 	this.getId=function(){
 
@@ -79,13 +84,11 @@ var Personaje= function(id,vida,nombre,fuerza,hibilidad,inventario,imagen,x,y,w,
 	this.consumePocion=function(consumible){
 		if(this.vidaAct < this.vidaMax ){
 			this.vidaAct=parseInt(this.vidaAct)+parseInt(consumible.getVida());
-			this.eliminaInventario(consumible.getId());
 		}
-		else{
-			this.fuerza=parseInt(this.fuerza)+parseInt(consumible.getFuerza());
-			this.habilidad=parseInt(this.habilidad)+parseInt(consumible.getHabilidad());
-			this.vidaMax=parseInt(this.vidaMax)+parseInt(consumible.getVida());
-		}
+		this.fuerza=parseInt(this.fuerza)+parseInt(consumible.getFuerza());
+		this.habilidad=parseInt(this.habilidad)+parseInt(consumible.getHabilidad());
+		this.vidaMax=parseInt(this.vidaMax)+parseInt(consumible.getVida());
+		this.eliminaInventario(consumible.getId());
 		
 	}
 	//Suma todos los campos del consumible para actualizar el estado del jugador en nivel de caracteristicas
@@ -115,6 +118,23 @@ var Personaje= function(id,vida,nombre,fuerza,hibilidad,inventario,imagen,x,y,w,
 	this.tieneLLave=function(){
 		return this.llave;
 		
+	}
+	this.setMazmorraAct=function(mz){
+		this.mazMorraActual=mz;
+
+	}
+	this.datosGuarda=function(){
+		var datos={
+			"idInventario":this.idInventario,
+			"idPersonaje":this.id,
+			"vidaAct":this.vidaAct,
+			"vidaMax":this.vidaMax,
+			"fuerza":this.fuerza,
+			"habilidad":this.habilidad,
+			"inventario":this.inventario,
+			"trasparencia":this.factorTrasparencia
+		};
+		return datos;
 	}
 
 };

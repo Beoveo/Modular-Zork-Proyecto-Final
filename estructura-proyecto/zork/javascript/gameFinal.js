@@ -4,6 +4,7 @@ var commands = ["Ir", "Recoger", "Inventario", "Atacar", "Salir"];
 var ctx, canvas;
 
 var arrayMzUsados=[];
+var idMapaAct;
 /*
  * Parametros:
  * Objeto
@@ -90,6 +91,7 @@ function changeRoom(dir) {
             $('#barras').empty();
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             mapaCargado.setMazmorraAct(act);
+            mapaCargado.personaje.setMazmorraAct(act);
             $('#description').append(mapaCargado.mazmorraActual.historiaPrincipal );
             barraProgreso();
             actualizaCanvas(mapaCargado, mapaCargado.mazmorraActual.idMazmorra);
@@ -112,6 +114,9 @@ function consume(boton){
         $('#barras').empty();
         $('#vidaInv').empty()
         $('#vidaInvImg').empty()
+        $('#valorArm').html(mapaCargado.personaje.getFuerza());
+        $('#valorDef').html(mapaCargado.personaje.getVida());
+        $('.valorLlave').html(mapaCargado.personaje.tieneLLave());
         barraProgreso();
         console.log(mapaCargado.personaje.inventario)
         refrescaInv();
@@ -155,8 +160,10 @@ Mete objeto en el inventario y lo pinta , actualizando la imagen principal
 */
 function pickUpThings(objeto){
     
-   quitaConsumible(objeto);
+    quitaConsumible(objeto);
     mapaCargado.cogeConsumible(objeto);
+    if(objeto.getId()==1)
+    guardarEstado(idMapaAct);
     $('#valorArm').html(mapaCargado.personaje.getFuerza());
     $('#valorDef').html(mapaCargado.personaje.getVida());
     $('.valorLlave').html(mapaCargado.personaje.tieneLLave());
@@ -256,6 +263,7 @@ function loadButton(){
     consumido()
 
     inventario()
+    refrescaInv();
 
     $(document).ready(function () {
         $("button").click(function (e) {
@@ -319,7 +327,7 @@ function gameOver(){
 
 
 function startGame(mapaSele){
-
+        idMapaAct=mapaSele;
         panel.append('<canvas id="canvas" height="410" width="720"  ></canvas>');
 
         canvas =document.getElementById('canvas');
@@ -329,7 +337,7 @@ function startGame(mapaSele){
             //console.log(mapaCargado.mazmorraActual.idMazmorra);
             
             actualizaCanvas(mapaCargado,mapaCargado.mazmorraActual.idMazmorra);
-
+            
 
             panel.append('<div id="target"></div>');
             $('#target').append('<div id="barras"></div>')
@@ -341,7 +349,7 @@ function startGame(mapaSele){
             $('#target').append('<div id="mainPanel"></div>')
                 
             loadButton()
-            //guardarEstado(mapaSele);
+            
 
             /*$(document).keypress(function(key) {
                 if (key.which === 13 && $('#user-input').is(':focus')) {

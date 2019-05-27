@@ -195,7 +195,7 @@ class Usuario
   private $rutaImagen;
 
   private $bloqueado;
-  private $partida;
+
   
   private function __construct($id, $name, $usermail, $password, $monedas, $puntos,$rutaImagen,$bloqueado)
   {
@@ -208,14 +208,6 @@ class Usuario
     $this->puntos = $puntos;
     $this->rutaImagen = $rutaImagen;
     $this->bloqueado = $bloqueado;
-  }
-
-
-  public function setIdPartida($idPartida){
-    $this->idPartida=$idPartida;
-  }
-  public function getIdPartida(){
-    return $this->idPartida;
   }
   public function id()
   {

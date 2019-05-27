@@ -6,13 +6,14 @@
             if(!isset($_SESSION["login"])){
             ?>
                 <h1>¡REGISTRATE!</h1>
-            <p>Para poder guardar tu progreso, puntuar en el ranking y probar otros mapas que no sean de demostración,debes <em>estar registrado</em> .</p>
-                <button id="prueba">Empieza tu prueba</button>
+                <p>Para poder guardar tu progreso, puntuar en el ranking y probar otros mapas que no sean de demostración,debes <em>estar registrado</em> .</p>
+                    <button id="prueba">Empieza tu prueba</button>
             <?php
             }
             else{
             ?>
-                <button id="start">Comenzar</button>
+                <button id="carga">Cargar partida</button>
+                <button id="start">Nueva partida</button>
             <?php   
             }   
             ?>

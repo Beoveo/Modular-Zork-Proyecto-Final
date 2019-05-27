@@ -13,25 +13,46 @@ class MazmorraContiene
     //$invetarioUsados arrayMazmorra, objetoPersonaje,idPartida
     //objetoPersonaje
       // arrayMazmorra <- arrayObjetosQue no estan
-    $inventario=json_encode(json_decode($inventarioUsados));
     $usuarioAct = $_SESSION['nombre'];
     $usuarioAct=Usuario::buscaUsuarioPorNombre($usuarioAct);
     if($usuarioAct){
-      $idUs=$usuario->id();
+      $idUs=$usuarioAct->id();
       $app = App::getSingleton();
       $conn = $app->conexionBd();
-      $i=0;
-      $j=0;
-      for($i;$i<sizeof($invetarioUsados.arrayMz);$i++){//por cada mazmorra
-        for($j;$j<sizeof($invetarioUsados.arrayMz[i].arrayObj);$j++)//por cada objeto de la mazmorra
-        $query = sprintf("INSERT INTO objetosusados(idPersonaje,idPartida,idMapa ,idMazmorra ,idUsuario,idObjeto,tipoObjeto) VALUES (%s,%s , %s, %s, %s, %s, '%s')",$conn->real_escape_string($idPersonaje),$conn->real_escape_string($idPartida),$conn->real_escape_string($idMapa),$conn->real_escape_string($invetarioUsados.arrayMz[$i].id),$conn->real_escape_string($idUs),$conn->real_escape_string($invetarioUsados.arrayMz[$i].arrayObj[$j].id),$conn->real_escape_string($invetarioUsados.arrayMz[$i].arrayObj[$j].tipo));
-          $rs = $conn->query($query);
-          if($rs){
-              return true;
-          }
+     
+      $idPartida=$_SESSION['idPartida'];
+      for($i=0;$i<sizeof($inventarioUsados);$i++){//por cada mazmorra
+        for($w=0;$w<sizeof($inventarioUsados[$i]['arrayObjetos']);$w++){//length del array de objetos
+              $idPj=$personaje["idPersonaje"];
+              $idMz=$inventarioUsados[$i]["idMazmorra"];
+              $idObj=$inventarioUsados[$i]['arrayObjetos'][$w]['id'];
+              $tipoObj=$inventarioUsados[$i]['arrayObjetos'][$w]['tipo'];
+              $query = sprintf("INSERT INTO objetosusados(idPersonaje,idPartida,idMapa,idMazmorra,idUsuario,idObjeto,tipoObjeto,vidaAct,vidaMax,fuerza,trasparencia,habilidad) VALUES ('%s','%s', '%s','%s','%s','%s','%s','%s', '%s','%s','%s','%s')",
+                  $conn->real_escape_string($idPj)
+                  ,$conn->real_escape_string($idPartida)
+                  ,$conn->real_escape_string($idMapa)
+                  ,$conn->real_escape_string($idMz)
+                  ,$conn->real_escape_string($idUs)
+                  ,$conn->real_escape_string($idObj)
+                  ,$conn->real_escape_string($tipoObj)
+                  ,$conn->real_escape_string($personaje["vidaAct"])
+                  ,$conn->real_escape_string($personaje["vidaMax"])
+                  ,$conn->real_escape_string($personaje["fuerza"])
+                  ,$conn->real_escape_string($personaje["trasparencia"])
+                  ,$conn->real_escape_string($personaje["habilidad"])
+              );
+                $rs = $conn->query($query);
+                if(!$rs){
+                 // 
+                  echo $conn->error;
+                }
+                
+        }
       }
-              
+       $tamanio= sizeof($personaje['inventario']);
+        return Personaje::guardaInventario($personaje);
     }
+     //return "<p> no se puede obtener el usuario pero entra en la funcion</p> " ;
   }
     //carga las mazmorras de un determinado mapa
     public static function cargaMazmorras($idMapa)

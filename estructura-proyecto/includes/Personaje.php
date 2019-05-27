@@ -4,8 +4,39 @@ use es\ucm\fdi\aw\Aplicacion as App;
 use es\ucm\fdi\aw\ObjetoTienda as Objeto;
 class Personaje extends Objeto
 {
-    
-    
+
+    public static function guardaInventario($personaje){
+
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
+        //return sizeof($personaje['idInventario']);
+        for($z=0;$z<sizeof($personaje['inventario']);$z++){
+            $idInventario=self::buscaInventarioPorId();
+            $idConsumible=$personaje['inventario'][$z]['id'];
+            $query = sprintf("INSERT INTO inventariocontiene(idInventario,idConsumible) values ('%s','%s')",$conn->real_escape_string($idInventario),$conn->real_escape_string($idConsumible));
+            $rs = $conn->query($query);
+        }
+
+        
+        if($rs)
+            return true;
+        else
+            return false;
+
+    }
+    public static function buscaInventarioPorId(){
+        $idPartida=$_SESSION['idPartida'];
+        $app = App::getSingleton();
+        $conn = $app->conexionBd();
+        $query = sprintf("SELECT * FROM inventario WHERE inventario.idPartida=%s",$idPartida);
+        $rs = $conn->query($query);
+        if($rs && $rs->num_rows == 1){
+            $fila = $rs->fetch_assoc();
+            return $fila['id'];
+
+        }
+        return false;
+    }
     public static function cargaPersonajes()
     {
 
@@ -36,7 +67,7 @@ class Personaje extends Objeto
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             $fila = $rs->fetch_assoc(); 
-            $personaje= new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['w'],$fila['h']);
+            $personaje= new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['rutaImagen'],$fila['w'],$fila['h']);
             $rs->free();
             return $fila;
         }
@@ -52,7 +83,7 @@ class Personaje extends Objeto
         $rs = $conn->query($query);
         if ($rs && $rs->num_rows == 1) {
             $fila = $rs->fetch_assoc(); 
-            $personaje = new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['w'],$fila['h']);
+            $personaje = new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['rutaImagen'],$fila['w'],$fila['h']);
             $rs->free();
             return $personaje;
         }
@@ -69,7 +100,7 @@ class Personaje extends Objeto
           $rs = $conn->query($query);
           if ($rs && $rs->num_rows == 1) {
               $fila = $rs->fetch_assoc(); 
-              $personaje= new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['w'],$fila['h']);
+              $personaje= new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['rutaImagen'],$fila['w'],$fila['h']);
               $rs->free();
               return $fila;
             }
@@ -86,7 +117,7 @@ class Personaje extends Objeto
         $rs = $conn->query($query);
         if($rs && $rs->num_rows > 0){
             while($fila = $rs->fetch_assoc()){ 
-                $personaje = new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['idInventario'],$fila['rutaImagen'],$fila['w'],$fila['h']);
+                $personaje = new Personaje($fila['id'],$fila['fuerza'],$fila['nombre'],$fila['vida'],$fila['precio'],$fila['rutaImagen'],$fila['w'],$fila['h']);
                 array_push($personajes, $personaje);
             }
             $rs->free();
@@ -107,16 +138,14 @@ class Personaje extends Objeto
 
     private $fuerza;
     private $vida;
-    private $idInventario;
     private $w;
     private $h;
 
-    public function __construct($id,$fuerza,$nombre,$vida,$precio,$idInventario,$rutaImagen,$w,$h)
+    public function __construct($id,$fuerza,$nombre,$vida,$precio,$rutaImagen,$w,$h)
     {
         parent::__construct($id,$nombre,$precio,$rutaImagen);
         $this->fuerza=$fuerza;
         $this->vida=$vida;
-        $this->idInventario=$idInventario;
         $this->w=$w;
         $this->h=$h;
 

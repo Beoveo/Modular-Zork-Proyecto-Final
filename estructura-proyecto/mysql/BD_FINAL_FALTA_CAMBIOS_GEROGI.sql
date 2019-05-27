@@ -2,10 +2,10 @@
 -- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost
--- Tiempo de generación: 26-05-2019 a las 10:43:33
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 27-05-2019 a las 04:28:41
 -- Versión del servidor: 10.1.38-MariaDB
--- Versión de PHP: 7.1.27
+-- Versión de PHP: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `sw2`
+-- Base de datos: `sw3`
 --
 
 -- --------------------------------------------------------
@@ -111,16 +111,8 @@ INSERT INTO `enemigo` (`id`, `nombre`, `fuerza`, `habilidad`, `vida`, `precio`, 
 
 CREATE TABLE `inventario` (
   `id` int(11) UNSIGNED NOT NULL,
-  `tamaño` int(11) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
-
---
--- Volcado de datos para la tabla `inventario`
---
-
-INSERT INTO `inventario` (`id`, `tamaño`) VALUES
-(1, 10),
-(2, 5);
+  `idPartida` int(11) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -317,10 +309,13 @@ CREATE TABLE `objetosusados` (
   `idMazmorra` int(11) UNSIGNED NOT NULL,
   `idUsuario` int(11) UNSIGNED NOT NULL,
   `idObjeto` int(11) UNSIGNED NOT NULL,
-  `tipoObjeto` varchar(30) NOT NULL,
-  `fuerzaPj` int(11) UNSIGNED DEFAULT NULL,
-  `habilidadPj` int(11) UNSIGNED DEFAULT NULL,
-  `vidaPj` int(11) UNSIGNED DEFAULT NULL
+  `tipoObjeto` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `idPersonaje` int(11) UNSIGNED NOT NULL,
+  `vidaAct` int(11) UNSIGNED NOT NULL,
+  `vidaMax` int(11) UNSIGNED NOT NULL,
+  `fuerza` int(11) UNSIGNED NOT NULL,
+  `trasparencia` int(11) UNSIGNED NOT NULL,
+  `habilidad` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -340,27 +335,6 @@ CREATE TABLE `partida` (
   `posY` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
---
--- Volcado de datos para la tabla `partida`
---
-
-INSERT INTO `partida` (`idPartida`, `idUsuario`, `idMapa`, `idPersonaje`, `fechaComienzo`, `fechaUltimoAcceso`, `posX`, `posY`) VALUES
-(1, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL),
-(2, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
-(3, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
-(4, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
-(5, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
-(6, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
-(7, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
-(8, 1, 1, 1, '0000-00-00', '0000-00-00', NULL, NULL),
-(9, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL),
-(10, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL),
-(11, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL),
-(12, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL),
-(13, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL),
-(14, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL),
-(15, 1, 1, 2, '0000-00-00', '0000-00-00', NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -374,7 +348,6 @@ CREATE TABLE `personaje` (
   `habilidad` int(11) UNSIGNED NOT NULL,
   `vida` int(11) UNSIGNED NOT NULL,
   `precio` int(11) UNSIGNED NOT NULL,
-  `idInventario` int(11) UNSIGNED NOT NULL,
   `rutaImagen` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
   `w` int(10) DEFAULT NULL,
   `h` int(10) DEFAULT NULL
@@ -384,9 +357,9 @@ CREATE TABLE `personaje` (
 -- Volcado de datos para la tabla `personaje`
 --
 
-INSERT INTO `personaje` (`id`, `nombre`, `fuerza`, `habilidad`, `vida`, `precio`, `idInventario`, `rutaImagen`, `w`, `h`) VALUES
-(1, 'Anciana', 70, 50, 50, 60, 1, 'img/pngZork/anciana.png', NULL, NULL),
-(2, 'Caballero', 80, 70, 100, 60, 2, 'img/pngZork/personaje1.png', NULL, NULL);
+INSERT INTO `personaje` (`id`, `nombre`, `fuerza`, `habilidad`, `vida`, `precio`, `rutaImagen`, `w`, `h`) VALUES
+(1, 'Anciana', 70, 50, 50, 60, 'img/pngZork/anciana.png', NULL, NULL),
+(2, 'Caballero', 80, 70, 100, 60, 'img/pngZork/personaje1.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -486,7 +459,8 @@ ALTER TABLE `enemigo`
 -- Indices de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idPartida` (`idPartida`);
 
 --
 -- Indices de la tabla `inventariocontiene`
@@ -582,8 +556,7 @@ ALTER TABLE `partida`
 -- Indices de la tabla `personaje`
 --
 ALTER TABLE `personaje`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `idInventario` (`idInventario`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `roles`
@@ -634,7 +607,7 @@ ALTER TABLE `enemigo`
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `inventariopartida`
@@ -661,10 +634,16 @@ ALTER TABLE `mensajes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `objetosusados`
+--
+ALTER TABLE `objetosusados`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `partida`
 --
 ALTER TABLE `partida`
-  MODIFY `idPartida` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `idPartida` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `roles`
@@ -687,6 +666,12 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `comprados`
   ADD CONSTRAINT `comprados_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`);
+
+--
+-- Filtros para la tabla `inventario`
+--
+ALTER TABLE `inventario`
+  ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`idPartida`) REFERENCES `partida` (`idPartida`);
 
 --
 -- Filtros para la tabla `inventariocontiene`
@@ -763,12 +748,6 @@ ALTER TABLE `partida`
   ADD CONSTRAINT `partida_ibfk_1` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `partida_ibfk_2` FOREIGN KEY (`idMapa`) REFERENCES `mapas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `partida_ibfk_3` FOREIGN KEY (`idPersonaje`) REFERENCES `personaje` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `personaje`
---
-ALTER TABLE `personaje`
-  ADD CONSTRAINT `idInventario` FOREIGN KEY (`idInventario`) REFERENCES `inventario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `rolesusuario`

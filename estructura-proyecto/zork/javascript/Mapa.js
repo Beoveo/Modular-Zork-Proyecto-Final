@@ -77,5 +77,12 @@ var Mapa=function(tamMazmorras,personajeMapa){
 			return false;
 		}
 	}
-	
+	this.buscaConsumibleEnMapa=function(idConsumible){
+		for (var i = 0; i < this.mazmorras.length; i++) {
+			var objeto=this.mazmorras[i].existeConsumible(idConsumible);
+			if(objeto!=-1)
+			return objeto;
+		}
+
+	}
 };
