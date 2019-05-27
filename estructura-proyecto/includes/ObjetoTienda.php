@@ -25,16 +25,13 @@ abstract class ObjetoTienda
     	$imagen = self::getRutaImagen();
     	$nombre = self::getNombre();
     	$precio = self::getPrecio();
+        $formBotCompra = new \es\ucm\fdi\aw\FormularioBotonComprar();
     	echo "<div class='supTienda'>
-				<div class='imgCompra'>
-					<img class='imgCompra' src='$imagen'/>
-				</div>
+				<div class='imgCompra'><img class='imgCompra' src='$imagen'/></div>
 				<div class='infoCompra'>
 					<h1>$nombre</h1>
-					<h2 class='precio'>$precio zorkians</h2><div id='errorTienda'>";
-					$formBotCompra = new \es\ucm\fdi\aw\FormularioBotonComprar(); echo $formBotCompra->gestiona();
-		echo "</div></div>
-			</div>";
+					<h2 class='precio'>$precio zorkians</h2>
+                    <div id='errorTienda'>".$formBotCompra->gestiona()."</div></div></div>";
     }
 
 	protected $id;

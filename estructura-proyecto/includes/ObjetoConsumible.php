@@ -79,7 +79,7 @@ class ObjetoConsumible extends Objeto
 
             //Si la consulta devuelve 1 fila, crea el objeto y lo devuelve con los datos recogidos (Si existe, lo devuelve)
             $obj = new ObjetoConsumible($fila['id'], $fila['nombre'], $fila['categoria'], $fila['fuerza'], $fila['habilidad'], $fila['vida'], $fila['precio'],$fila['rutaImagen'],
-            $fila['x'],$fila['y'],$fila['w'],$fila['h'],$fila['tipo']);
+            0,0,$fila['w'],$fila['h'],$fila['tipo']);
             $rs->free();
             return $obj;
         }
@@ -99,7 +99,7 @@ class ObjetoConsumible extends Objeto
 
             //Si la consulta devuelve 1 fila, crea el objeto y lo devuelve con los datos recogidos (Si existe, lo devuelve)
             $obj = new ObjetoConsumible($fila['id'], $fila['nombre'], $fila['categoria'], $fila['fuerza'], $fila['habilidad'], $fila['vida'], $fila['precio'],$fila['rutaImagen'],
-            $fila['x'],$fila['y'],$fila['w'],$fila['h'],$fila['tipo']);
+                0,0,$fila['w'],$fila['h'],$fila['tipo']);
             $rs->free();
             return $obj;
         }
@@ -111,7 +111,7 @@ class ObjetoConsumible extends Objeto
         $objetos = array();
         $app = App::getSingleton();
         $conn = $app->conexionBd();
-        $query = "SELECT * FROM consumibles";
+        $query = "SELECT * FROM consumibles WHERE categoria != 'key'";
         $rs = $conn->query($query);
         if($rs && $rs->num_rows > 0){
             while($fila = $rs->fetch_assoc()){ 
@@ -131,10 +131,11 @@ class ObjetoConsumible extends Objeto
         $vida = self::getVida();
         $habilidad = self::getHabilidad();
         $categoria = self::getCategoria();
-        echo "<p><strong>Fuerza: </strong>$fuerza</p>
-            <p><strong>Vida: </strong>$vida</p>
-            <p><strong>Habilidad: </strong>$habilidad</p>
-            <p><strong>Categoria: </strong>$categoria</p>";
+        echo "<h2>Detalles</h2>
+            <p><em>Fuerza: </em>$fuerza</p>
+            <p><em>Vida: </em>$vida</p>
+            <p><em>Habilidad: </em>$habilidad</p>
+            <p><em>Categoria: </em>$categoria</p>";
     }
 
     private $categoria;
@@ -162,7 +163,6 @@ class ObjetoConsumible extends Objeto
     }
 
 
-
     private function getFuerza(){
         return $this->fuerza;
 
@@ -178,7 +178,7 @@ class ObjetoConsumible extends Objeto
 
     }
     private function getVida(){
-        return $this->nombre;
+        return $this->vida;
     }
 
     private function getX(){

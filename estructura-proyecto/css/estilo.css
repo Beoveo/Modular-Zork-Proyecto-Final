@@ -1,9 +1,10 @@
 body {
-	font-family: 'Helvetica Neue';
+	font-family: sans-serif;
 	background-color: transparent;
 	background-image: url("../img/fondo.jpg");
 	background-repeat: no-repeat;
 	background-attachment: fixed;
+	background-size:cover;
 }
 
 div#contenedor {
@@ -59,8 +60,8 @@ div#menu a:active{
 }
 
 
-div#cabecera a, div#cabecera a:visited {
-
+div#cabecera a, div#cabecera a{
+	font-size: 16px;
 	color: white;
 	font-weight: bold;
 	text-decoration: none;
@@ -76,17 +77,15 @@ div#cabecera a#butRight{
 	float:right;
 }
 
-
-
 div#contenido {
 	display:inline-block;
 	margin: 20px 0px 20px 20px;
 	min-height: 805px;
 	box-shadow: 2px 2px 2px #000000;
 	background:#dddddd;
-	padding: 10px 50px;
+	padding: 10px 40px;
 	border-radius: 5px;
-	width: calc(100% - 280px);
+	width: calc(100% - 310px);
 	/*padding: 10px;
 	float: left;
 	min-height: 600px;
@@ -159,11 +158,13 @@ ul#principal, li.prin, a.prin{
 	height:80px;
     text-align: center;
 	font-size:xx-large;
+	display: inline;
 }
 
 a.prin:hover{
 	color:#ffbf00;
 }
+
 
 
 /************************** AQUI EMPIEZAN LAS MODIFICACIONES DE BEA **************************************************/
@@ -363,7 +364,7 @@ div#sidebar-left {
 	margin: 20px 0px;
 	padding: 10px;
 	float: left;
-	width: 250px;
+	width: 280px;
 	min-width: 120px;
 	max-width: 250px;
 	min-height: 805px; /*si no consigo hacer que se hagan mas peques los items, ponerlo a min*/
@@ -567,11 +568,11 @@ ul a {
 }
 
 img.imgCompra{
-	height: 250px;
-	max-width: 400px;
+	max-width: 100%;
+    height: 20em;
 }
 
-div#errorTienda{
+#errorTienda{
 	color:red;
 	font-weight: bold;
 }
@@ -585,12 +586,53 @@ div#errorTienda{
  	padding: 0px 8px;
  	color: #ffbf00;
  	background-color: #303030;
- 	position: relative;
+ 	position: static;
  	float: right;
  	border-radius: 5px;
  	font-weight: bold;
  }
 
+p em{
+	font-style: normal;
+ 	font-weight: bold;
+}
+
+div.supTienda{
+	display:inline-flex;
+	width: 100%;
+}
+
+div.imgCompra{
+	flex-wrap: wrap;
+    min-width: 50%;
+    min-height: 20em;
+    padding-right: 20px;
+    text-align: center;
+}
+
+div.infoCompra{
+	flex-wrap: wrap;
+    width: 50%;
+    overflow: auto;
+    padding-left: 2%;
+    overflow-wrap: break-word;
+}
+#formBotonComprar button {
+	text-align: left;
+	margin: 5px;
+	padding: 5px;
+	background-color: #303030;
+	color:#f2f2f2;
+	font-size: 20px;
+}
+
+#formBotonComprar button:hover{
+	color:#ffbf00;
+}
+
+#errorTienda ul {
+	width: 100%;
+}
 
 /************************** AQUI TERMINAN LAS MODIFICACIONES DE LIDIA **************************************/
 /****************************************************ALBERTO CAMBIOS CSS*************************************/
@@ -743,7 +785,7 @@ div.flexDesign{
 }
 /*Cuando la pantalla ocupa menos de 600px se oculta el menu menos 
 el primer link.*/
-@media all and (max-width: 680px) {
+@media all and (max-width: 740px) {
 	div#cabecera{
 		margin-bottom: 0px;
 	}
@@ -754,6 +796,7 @@ el primer link.*/
   	display: none;
   }
   #titulo a.icon {
+  	font-size: smaller;
   	background-color: #303030;
   	margin:0px 10px;
     float: left;
@@ -762,10 +805,18 @@ el primer link.*/
     margin: 0px 10px;
     border-radius: 5px;
   }
+
+  div.supTienda{
+	display:block;
+	width: 100%;
+}
+div.infoCompra{
+	width: 100%;
+}
 }
 
 /*La clase "responsive" esta añadida al menú con JavaScript*/
-@media all and (max-width: 680px) {
+@media all and (max-width: 740px) {
 div#menu.responsive{
 		background-color: #303030;
 	}

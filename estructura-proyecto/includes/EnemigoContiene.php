@@ -70,9 +70,10 @@ class EnemigoContiene extends Objeto
         $fuerza = self::getFuerza();
         $vida = self::getVida();
         $habilidad = self::getHabilidad();
-        echo "<p><strong>Fuerza: </strong>$fuerza</p>
-            <p><strong>Vida: </strong>$vida</p>
-            <p><strong>Habilidad: </strong>$habilidad</p>";
+        echo "<h2>Detalles</h2>
+            <p><em>Fuerza: </em>$fuerza</p>
+            <p><em>Vida: </em>$vida</p>
+            <p><em>Habilidad: </em>$habilidad</p>";
     }
 
     private $fuerza;
@@ -108,7 +109,7 @@ class EnemigoContiene extends Objeto
 
     }
     private function getVida(){
-        return $this->nombre;
+        return $this->vida;
 
     }
 

@@ -48,7 +48,7 @@ class Compra
     	$rsMonedas = $conn->query($queryMonedas);echo $conn->error;
     	if($rsMonedas && $rsMonedas->num_rows == 1){
     		$filaMonedas = $rsMonedas->fetch_assoc();
-    		if($filaMonedas['monedas'] > $precio){
+    		if($filaMonedas['monedas'] >= $precio){
     			return true;
     		}
     	}
@@ -82,13 +82,13 @@ class Compra
 						$conn->query($queryD);
 					}
 				}else{
-					echo "<p>Error en la base de datos</p>";
+					echo "<p id='errorTienda'>Error en la base de datos</p>";
 				}
     		}else{
-    			echo "<p>No tienes monedas suficientes para comprar este objeto</p>";
+    			echo "<p id='errorTienda'>No tienes monedas suficientes para comprar este objeto</p>";
     		}
     	}else{
-    		echo "<p>Ya tienes este objeto</p>";
+    		echo "<p id='errorTienda'>Ya tienes este objeto</p>";
     	}
 		
 		return false;

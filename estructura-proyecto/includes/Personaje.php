@@ -132,8 +132,9 @@ class Personaje extends Objeto
         parent::mostrarSupTienda();
         $fuerza = self::getFuerza();
         $vida = self::getVida();
-        echo "<p><strong>Fuerza: </strong>$fuerza</p>
-            <p><strong>Vida: </strong>$vida</p>";
+        echo "<h2>Detalles</h2>
+            <p><em>Fuerza: </em>$fuerza</p>
+            <p><em>Vida: </em>$vida</p>";
     }
 
     private $fuerza;

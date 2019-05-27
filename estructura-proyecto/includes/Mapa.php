@@ -6,6 +6,73 @@ use es\ucm\fdi\aw\ObjetoTienda as Objeto;
 
 class Mapa extends Objeto
 {
+
+    /************************************ MODIFICACIONES BEA **********************************************/
+    //Modificarlo para que cree el mapa cogiendo el idUsuario
+    public static function crearMapa($nombre,$dificultad,$numMazmorras,$recompensa,$idUsuario,$descripcion)
+    {
+      $app = App::getSingleton();
+      $conn = $app->conexionBd();
+      $query = sprintf("INSERT INTO mapas (nombre,dificultad,numMazmorras,recompensa,propietario,descripcion) VALUES ('%s','%s','%s' , '%s', '%s','%s')",
+       $conn->real_escape_string($nombre), $conn->real_escape_string($dificultad),$conn->real_escape_string($numMazmorras),$conn->real_escape_string($recompensa),
+       $conn->real_escape_string($idUsuario),$conn->real_escape_string($descripcion));
+
+      $rs = $conn->query($query);
+      if ($rs) {
+        $query = sprintf("SELECT * FROM mapas WHERE id = (SELECT MAX(id) FROM mapas)");
+        $rs = $conn->query($query);
+        
+        if ($rs && $rs->num_rows >0) {
+         $fila = $rs->fetch_assoc(); 
+         $mapa = new Mapa($fila['id'], $fila['nombre'], $fila['dificultad'], $fila['precio'], $fila['numMazmorras'],$fila['recompensa'],$fila['propietario'], $fila['rutaImagen'], $fila['descripcion'], $fila['valoracion'], $fila['numJugado'], $fila['terminadoCreado']);
+         $rs->free();
+         return $mapa;
+       }
+     }
+     else{
+      echo"$conn->error";
+      return false;
+    }
+  }
+
+    //Se usa para poder acceder al mapa creado y acceder a datos necesarios para crear mazmorras
+  public static function ultimoMapaCreado()
+  {
+   $result_array=array();
+
+   $app = App::getSingleton();
+   $conn = $app->conexionBd();
+   $query = sprintf("SELECT * FROM mapas WHERE id = (SELECT MAX(id) FROM mapas)");
+   $rs = $conn->query($query);
+   
+   
+   if ($rs && $rs->num_rows > 0) {
+    while($row = $rs->fetch_assoc()) {
+      array_push($result_array, $row);
+    }
+    $rs->free();
+  }
+  return $result_array;
+}
+
+
+public static function buscaMapaPorNombre($nombre)
+{
+  $app = App::getSingleton();
+  $conn = $app->conexionBd();
+  $query = sprintf("SELECT * FROM mapas WHERE nombre =%s",$nombre);
+  $rs = $conn->query($query);
+  if ($rs && $rs->num_rows == 1) {
+    $fila = $rs->fetch_assoc(); 
+    $mapa = new Mapa($fila['id'], $fila['nombre'], $fila['dificultad'], $fila['precio'], $fila['numMazmorras'],$fila['recompensa'],$fila['propietario'], $fila['rutaImagen'], $fila['descripcion'], $fila['valoracion'], $fila['numJugado'], $fila['terminadoCreado']);
+    $rs->free();
+    return $mapa;
+  }
+  return false;
+}
+
+
+    /************************************ MODIFICACIONES BEA **********************************************/
  
     public static function buscaMapaPorId($idMapa)
     {
@@ -89,12 +156,13 @@ class Mapa extends Objeto
         $nombPropietario = self::getNombPropietario();
         $descripcion = self::getDescripcion();
         $valoracion = self::getValoracion();
-        echo "<p><strong>Dificultad: </strong>$dificultad</p>
-            <p><strong>Número de mazmorras: </strong>$numMazmorras</p>
-            <p><strong>Recompensa: </strong>$recompensa</p>
-            <p><strong>Propietario: </strong>$nombPropietario</p>
-            <p><strong>Descripción: </strong>$descripcion</p>
-            <p><strong>Valoración: </strong>$valoracion</p>";
+        echo "<h2>Detalles</h2>
+            <p><em>Dificultad: </em>$dificultad</p>
+            <p><em>Número de mazmorras: </em>$numMazmorras</p>
+            <p><em>Recompensa: </em>$recompensa</p>
+            <p><em>Propietario: </em>$nombPropietario</p>
+            <p><em>Descripción: </em>$descripcion</p>
+            <p><em>Valoración: </em>$valoracion</p>";
     }
     
 

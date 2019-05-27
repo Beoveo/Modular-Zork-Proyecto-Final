@@ -19,19 +19,11 @@ require_once __DIR__.'/includes/config.php';
     echo "<div id='sidebar-left'>";
     $app->doInclude('comun/sidebarIzq.php');
     echo"</div>";
-    //$app->doInclude('contenidos/contenidoCreacion1.php');  
-
-
-    echo"<div id='contenido'>
-    <h1>Creacion de Mapa</h1>";
-    $formCrear= new \es\ucm\fdi\aw\FormularioCreacionMapa(); echo $formCrear->gestiona();
-    echo "</div>";
-
+    $app->doInclude('contenidos/contenidoCreacion1.php');
     $app->doInclude('comun/pie.php');
 ?>
 
     <script type="text/javascript" src="zork/javascript/creacionFinal.js"></script>
-    <!-- script type="text/javascript" src="zork/javascript/pruebaCuadricula.js"></script -->
 </div>
 </body>
 </html>
