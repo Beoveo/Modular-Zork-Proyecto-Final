@@ -713,16 +713,20 @@ div.flexDesign{
 	align-items: stretch;
 }
 
-@media all and (max-width: 740px) {
+@media all and (max-width: 822px) {
 	div.flexDesign{
 		flex-flow: column;
 		width: 100%;
 	}
 
 	div#contenido{
+		min-height: auto;
+    	padding: 30px 50px;
+    	margin: 30px 0px 20px 20px;
 		min-width: 69%;
 		order: 1;
 	}
+
 	div#sidebar-left{
 		width: 100%;
 		order: 2;
@@ -739,7 +743,7 @@ div.flexDesign{
 }
 /*Cuando la pantalla ocupa menos de 600px se oculta el menu menos 
 el primer link.*/
-@media all and (max-width: 600px) {
+@media all and (max-width: 680px) {
 	div#cabecera{
 		margin-bottom: 0px;
 	}
@@ -761,7 +765,7 @@ el primer link.*/
 }
 
 /*La clase "responsive" esta añadida al menú con JavaScript*/
-@media all and (max-width: 600px) {
+@media all and (max-width: 680px) {
 div#menu.responsive{
 		background-color: #303030;
 	}
