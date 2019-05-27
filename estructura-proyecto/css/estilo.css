@@ -39,19 +39,24 @@ div#menu{
     padding: 3px 0px;
     background-color: #303030;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 div#menu a{
 	background-color: transparent;
-	float: auto;
+	float: left;
 	color: #f2f2f2;
 	text-align: center;
 	padding: 14px 20px;
 	font-size: 14px;
-	display: inline-block;
+	display: block;
 
 }
 
+div#menu a:active{
+	color: #ffbf00;
+	background-color: #f2f2f2;
+}
 
 
 div#cabecera a, div#cabecera a:visited {
@@ -311,7 +316,7 @@ div#contenidoboton {
 	float: left;
 }
 
-/* Botón */
+/* BotÃ³n */
 
 input[type="submit"] {
    background-color: #555;
@@ -365,6 +370,10 @@ div#sidebar-left {
 	background-color: #dddddd;
 	border-radius: 5px;
 	display: inline-block;
+}
+
+div#sidebar-left .icon{
+	display:none;
 }
 
 div#sidebar-left a, div#sidebar-left a:visited {
@@ -575,7 +584,7 @@ div#errorTienda{
  div#infoTienda{
  	padding: 0px 8px;
  	color: #ffbf00;
- 	background-color: #555;
+ 	background-color: #303030;
  	position: relative;
  	float: right;
  	border-radius: 5px;
@@ -695,67 +704,6 @@ a.enlAdmin:hover{
 	color: #ffbf00;
 }
 
-#cabecera > .nav-btn {
-  display: none;
-}
-
-#cabecera > #nav-check {
-  display: none;
-}
-
-
-
-
-@media (max-width: 660px)  {
-
-
-  #cabecera > .nav-btn {
-    display: inline-block;
-    position: absolute;
-    left: 360px;
-    top: 85px;
-  }
-  #cabecera > .nav-btn > label {
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    padding: 13px;
-  }
-  #cabecera > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-  #cabecera > .nav-btn > label > span {
-    display: block;
-    width: 25px;
-    height: 10px;
-    border-top: 2px solid #eee;
-  }
-  #cabecera > #menu {
-    position: absolute;
-    display: block;
-    width: 100%;
-    background-color: #333;
-    height: 0px;
-    transition: all 0.3s ease-in;
-    overflow-y: hidden;
-    top: 135px;
-    left: 40px;
-  }
-  #cabecera > #menu > a {
-    display: block;
-    width: 100%;
-  }
-  #cabecera > #nav-check:not(:checked) ~ #menu {
-    height: 0px;
-  }
-  #cabecera > #nav-check:checked ~ #menu {
-    height: calc(100vh - 50px);
-    overflow-y: auto;
-  }
-}
-
-
-
 /********Responsive********/
 div.flexDesign{
 	margin: 0% 5%;
@@ -765,14 +713,14 @@ div.flexDesign{
 	align-items: stretch;
 }
 
-@media all and (max-width: 810px) {
+@media all and (max-width: 740px) {
 	div.flexDesign{
 		flex-flow: column;
 		width: 100%;
 	}
 
 	div#contenido{
-		min-width: 75%;
+		min-width: 69%;
 		order: 1;
 	}
 	div#sidebar-left{
@@ -781,4 +729,59 @@ div.flexDesign{
 		margin-left: 20px;
 		max-width: 82%;
 	}
+}
+
+.topnav{
+	overflow: hidden;
+}
+#titulo a.icon{
+	display: none;
+}
+/*Cuando la pantalla ocupa menos de 600px se oculta el menu menos 
+el primer link.*/
+@media all and (max-width: 600px) {
+	div#cabecera{
+		margin-bottom: 0px;
+	}
+	div#menu{
+		background-color: transparent;
+	}
+  #menu a.button{
+  	display: none;
+  }
+  #titulo a.icon {
+  	background-color: #303030;
+  	margin:0px 10px;
+    float: left;
+    display: block;
+    padding: 0px 10px;
+    margin: 0px 10px;
+    border-radius: 5px;
+  }
+}
+
+/*La clase "responsive" esta añadida al menú con JavaScript*/
+@media all and (max-width: 600px) {
+div#menu.responsive{
+		background-color: #303030;
+	}
+  #menu.responsive {position: relative;}
+  #titulo.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  #menu.responsive a{
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+
+@media all and (orientation: landscape){
+	div#cabecera{
+		padding: 0px 30px;
+	}
+
+
 }
