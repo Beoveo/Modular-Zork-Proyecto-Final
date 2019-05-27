@@ -8,18 +8,27 @@ use es\ucm\fdi\aw\ObjetoTienda as Objeto;
 class ObjetoConsumible extends Objeto
 {
     //Comprobar que se le pasa un objeto Objeto, falta comprobar lo de admin
-    public static function cargarObjeto()
+    public function cargarObjeto()
     {
         //Si existe un objeto con ese nombre
         $nombre = parent::getNombre();
         if($objName = self::buscaObjetoPorNombre($nombre)){
-            echo "Ese nombre ya existe. Elige otro."; 
+            echo "Ese nombre ya existe. Intentalo de nuevo."; 
         }else{
             //Si no está, lo inserta y lo devuelve.
             $app = App::getSingleton();
             $conn = $app->conexionBd();
+            $rutaImg = parent::getRutaImagen();
+            $precio = parent::getPrecio();
+            $categoria = self::getCategoria();
+            $fuerza = self::getFuerza();
+            $habilidad = self::getHabilidad();
+            $vida = self::getVida();
+            $w = self::getW();
+            $h = self::getH();
+            $tipo = self::getTipo();
             //Obtiene el último id y lo incrementa para incluir otro consumible 
-            $query = sprintf("INSERT INTO consumibles (nombre,categoria,fuerza,habilidad,vida,precio,rutaImagen) VALUES ('%s','%s','%s' , '%s', '%s','%s' , '%s')", $conn->real_escape_string($nombre), $conn->real_escape_string($objeto->categoria),$conn->real_escape_string($objeto->fuerza),$conn->real_escape_string($objeto->habilidad),$conn->real_escape_string($objeto->vida),$conn->real_escape_string($objeto->precio),$conn->real_escape_string($objeto->rutaImg));
+            $query = sprintf("INSERT INTO consumibles (nombre,categoria,fuerza,habilidad,vida,precio,rutaImagen, w,h,tipo) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')", $conn->real_escape_string($nombre), $conn->real_escape_string($categoria),$conn->real_escape_string($fuerza),$conn->real_escape_string($habilidad),$conn->real_escape_string($vida),$conn->real_escape_string($precio),$conn->real_escape_string($rutaImg),$conn->real_escape_string($w),$conn->real_escape_string($h),$conn->real_escape_string($tipo));
 
             $rs = $conn->query($query);
             if ($rs) {
@@ -116,7 +125,7 @@ class ObjetoConsumible extends Objeto
         return $objetos;
     }
 
-    public function infoObjetoTienda(){
+   public function infoObjetoTienda(){
         parent::mostrarSupTienda();
         $fuerza = self::getFuerza();
         $vida = self::getVida();
@@ -185,10 +194,10 @@ class ObjetoConsumible extends Objeto
         return $this->h;   
     }
 
-private function getTipo(){
-  return $this->tipo;
+    private function getTipo(){
+      return $this->tipo;
 
-}
+    }
 
 
 }
