@@ -12,7 +12,7 @@ class EnemigoContiene extends Objeto
     $enemigos=array();
     $app = App::getSingleton(); 
     $conn = $app->conexionBd();
-    $query = sprintf("SELECT * FROM enemigo e,mazmorraenemigo m WHERE m.idMazmorra=%s AND e.id=m.idEnemigo",$idMazmorra);
+    $query = sprintf("SELECT * FROM enemigo e,mazmorraenemigo m WHERE m.idMazmorra=%s AND e.id=m.idEnemigo",$conn->real_escape_string($idMazmorra));
     $rs = $conn->query($query);
     if ($rs) {
       if ($rs->num_rows > 0) {
@@ -34,7 +34,7 @@ class EnemigoContiene extends Objeto
         $enemigos = array();
         $app = App::getSingleton();
         $conn = $app->conexionBd();
-        $query = "SELECT * FROM enemigo";
+        $query = sprintf("SELECT * FROM enemigo");
         $rs = $conn->query($query);
         if($rs && $rs->num_rows > 0){
             while($fila = $rs->fetch_assoc()){ 
@@ -51,7 +51,7 @@ class EnemigoContiene extends Objeto
     public static function getEnemigo($id){
         $app = App::getSingleton();
         $conn = $app->conexionBd();
-        $query = "SELECT * FROM enemigo WHERE id = $id";
+        $query = sprintf("SELECT * FROM enemigo WHERE id = %s",$conn->real_escape_string($id));
         $rs = $conn->query($query);
         if($rs && $rs->num_rows == 1){
             while($fila = $rs->fetch_assoc()){ 

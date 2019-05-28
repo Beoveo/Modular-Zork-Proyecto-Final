@@ -111,7 +111,7 @@ class ObjetoConsumible extends Objeto
         $objetos = array();
         $app = App::getSingleton();
         $conn = $app->conexionBd();
-        $query = "SELECT * FROM consumibles WHERE categoria != 'key'";
+        $query = sprintf("SELECT * FROM consumibles WHERE categoria != 'key'");
         $rs = $conn->query($query);
         if($rs && $rs->num_rows > 0){
             while($fila = $rs->fetch_assoc()){ 

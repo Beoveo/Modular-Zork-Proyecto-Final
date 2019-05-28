@@ -575,6 +575,7 @@ img.imgCompra{
 #errorTienda{
 	color:red;
 	font-weight: bold;
+	
 }
 
  a.enlTienda{
@@ -628,10 +629,6 @@ div.infoCompra{
 
 #formBotonComprar button:hover{
 	color:#ffbf00;
-}
-
-#errorTienda ul {
-	width: 100%;
 }
 
 /************************** AQUI TERMINAN LAS MODIFICACIONES DE LIDIA **************************************/

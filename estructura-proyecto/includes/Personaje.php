@@ -113,7 +113,7 @@ class Personaje extends Objeto
         $personajes = array();
         $app = App::getSingleton();
         $conn = $app->conexionBd();
-        $query = "SELECT * FROM personaje";
+        $query = sprintf("SELECT * FROM personaje");
         $rs = $conn->query($query);
         if($rs && $rs->num_rows > 0){
             while($fila = $rs->fetch_assoc()){ 

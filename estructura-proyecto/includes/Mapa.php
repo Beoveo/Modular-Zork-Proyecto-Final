@@ -60,7 +60,7 @@ public static function buscaMapaPorNombre($nombre)
 {
   $app = App::getSingleton();
   $conn = $app->conexionBd();
-  $query = sprintf("SELECT * FROM mapas WHERE nombre =%s",$nombre);
+  $query = sprintf("SELECT * FROM mapas WHERE nombre =%s",$conn->real_escape_string($nombre));
   $rs = $conn->query($query);
   if ($rs && $rs->num_rows == 1) {
     $fila = $rs->fetch_assoc(); 
@@ -78,7 +78,7 @@ public static function buscaMapaPorNombre($nombre)
     {
         $app = App::getSingleton();
       $conn = $app->conexionBd();
-      $query = sprintf("SELECT * FROM mapas WHERE id =%s",$idMapa);
+      $query = sprintf("SELECT * FROM mapas WHERE id =%s",$conn->real_escape_string($idMapa));
       $rs = $conn->query($query);
       if ($rs && $rs->num_rows == 1) {
       $fila = $rs->fetch_assoc(); 
@@ -95,7 +95,7 @@ public static function buscaMapaPorNombre($nombre)
         $mapas = array();
       $app = App::getSingleton();
       $conn = $app->conexionBd();
-      $query = "SELECT * FROM mapas WHERE terminadoCreado = 1";
+      $query = sprintf("SELECT * FROM mapas WHERE terminadoCreado = 1");
       $rs = $conn->query($query);
       if($rs && $rs->num_rows > 0){
         while($fila = $rs->fetch_assoc()){ 
@@ -115,9 +115,9 @@ public static function buscaMapaPorNombre($nombre)
     {
       $app = App::getSingleton();
       $conn = $app->conexionBd();
-      $query =   "SELECT * 
+      $query = sprintf("SELECT * 
             FROM mapas m INNER JOIN comprados c ON m.id = idObjeto
-            WHERE c.tipo = 'mapa' and terminadoCreado = 1 and c.idUsuario = $idUser";
+            WHERE c.tipo = 'mapa' and terminadoCreado = 1 and c.idUsuario = %s",$conn->real_escape_string($idUser));
       $rs = $conn->query($query);
       if($rs){
         $mapas = array();
@@ -136,7 +136,7 @@ public static function buscaMapaPorNombre($nombre)
         $app = App::getSingleton();
         $conn = $app->conexionBd();
         $IDpropietario = self::getPropietario();
-        $query = "SELECT nombre FROM usuarios WHERE id = $IDpropietario";
+        $query = sprintf("SELECT nombre FROM usuarios WHERE id = %s",$conn->real_escape_string($IDpropietario));
         $consulta = $conn->query($query);
         if($consulta->num_rows > 0){
             $fila = $consulta->fetch_assoc();

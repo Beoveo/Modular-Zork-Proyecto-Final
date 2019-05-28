@@ -32,14 +32,14 @@
 							echo "<h1>Enemigos</h1>";
 							$enemigos = es\ucm\fdi\aw\EnemigoContiene::getEnemigosTienda();
 							foreach ($enemigos as $enemigo) {
-								$enemigo->mostrarSimpleInfo('enemigos');
+								$enemigo->mostrarSimpleInfo('enemigo');
 							}
 							break;
 						case 'personaje':
 							echo "<h1>Personajes</h1>";
 							$personajes = es\ucm\fdi\aw\Personaje::getPersonajesTienda();
 							foreach ($personajes as $personaje) {
-								$personaje->mostrarSimpleInfo('personajes');
+								$personaje->mostrarSimpleInfo('personaje');
 							}
 							break;
 						case 'consumibles':

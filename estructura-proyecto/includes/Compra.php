@@ -17,7 +17,7 @@ class Compra
 			$IDUser = $user->id();
 			$app = App::getSingleton();
     		$conn = $app->conexionBd();
-    		$query = "SELECT precio FROM $type WHERE id = $id";
+    		$query = sprintf("SELECT precio FROM '%s' WHERE id = %s", $conn->real_escape_string($type), $conn->real_escape_string($id))
     		$rs = $conn->query($query);
     		if ($rs && $rs->num_rows == 1) {
       			$fila = $rs->fetch_assoc();
@@ -35,7 +35,7 @@ class Compra
 		$idUser = self::IDUser();
 		$idObjeto = self::idObjeto();
 		$tipo = self::type();
-		$query = "SELECT * FROM comprados WHERE idObjeto = $idObjeto AND tipo = '$tipo' and idUsuario = $idUser";
+		$query = sprintf("SELECT * FROM comprados WHERE idObjeto = %s AND tipo = '%s' and idUsuario = %s",$conn->real_escape_string($idObjeto),$conn->real_escape_string($tipo),$conn->real_escape_string($idUser));
 		$consulta = $conn->query($query);
 		return ($consulta && $consulta->num_rows == 0);
 	}
@@ -44,7 +44,7 @@ class Compra
 	private function monedasSuficientes($conn){
 		$idUser = self::IDUser();
     	$precio = self::precio();
-    	$queryMonedas = "SELECT monedas FROM usuarios WHERE id = $idUser";
+    	$queryMonedas = sprintf("SELECT monedas FROM usuarios WHERE id = %s",$conn->real_escape_string($idUser));
     	$rsMonedas = $conn->query($queryMonedas);echo $conn->error;
     	if($rsMonedas && $rsMonedas->num_rows == 1){
     		$filaMonedas = $rsMonedas->fetch_assoc();
@@ -67,18 +67,18 @@ class Compra
 				$idObjeto = self::idObjeto();
 		    	$tipo = self::type();
 		    	//Inserta la compra en la tabla comprados
-		    	$query = "INSERT INTO comprados(idUsuario,idObjeto,tipo,precio)
-		    			  VALUES($idUser,$idObjeto,'$tipo',$precio)";
-		    	$res = $conn->query($query);echo $conn->error;
+		    	$query = sprintf("INSERT INTO comprados(idUsuario,idObjeto,tipo,precio)
+		    			  VALUES(%s,%s,'%s',%s)",$conn->real_escape_string($idUser),$conn->real_escape_string($idObjeto),$conn->real_escape_string($tipo),$conn->real_escape_string($precio));
+		    	$res = $conn->query($query);
 				if($res){
 					//Restar el dinero al usuario
-					$queryUser = "UPDATE usuarios SET monedas=monedas-$precio WHERE id = $idUser";
+					$queryUser = sprintf("UPDATE usuarios SET monedas=monedas-%s WHERE id = %s",$conn->real_escape_string($precio),$conn->real_escape_string($idUser));
 					$rsUser = $conn->query($queryUser);
 					if($rsUser){
 						return true;
 					}else{
 						//Si falla el restar las monedas del user, eliminar la compra
-						$queryD = "DELETE FROM comprados WHERE idUsuario = $idUser and idObjeto = $idObjeto";
+						$queryD = sprintf("DELETE FROM comprados WHERE idUsuario = %s and idObjeto = %s",$conn->real_escape_string($idUser),$conn->real_escape_string($idObjeto));
 						$conn->query($queryD);
 					}
 				}else{
